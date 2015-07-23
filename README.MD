@@ -3,10 +3,6 @@ This repository contains the COAWST version to compute the effects of vegetation
 1) Analytical inputs to plant properties 
 2) NETCDF based inputs to plant properties
 
-Brief History of Vegetation Folder 
-Written by Tarandeep S. Kalra - 06/10/2015
-Co-editors : Neil K. Ganju, Alexis Beudin 
-
 -------------------------------------------------
  TURNING ON VEGETATION  
 ************************************************
