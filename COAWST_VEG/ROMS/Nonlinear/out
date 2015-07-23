@@ -1,0 +1,744 @@
+bulk_flux.F:     &                     nrhs(ng),                                    &
+bulk_flux.F:     &                           nrhs,                                  &
+bulk_flux.F:      integer, intent(in) :: nrhs
+bulk_flux.F:          TseaC(i)=t(i,j,N(ng),nrhs,itemp)
+bulk_flux.F:            sfc_temp = t(i,j,N(ng),nrhs,itemp) + 273.16_r8
+bulk_flux.F:     &                     nrhs(ng),                                    &
+bulk_flux.F:     &                           nrhs,                                  &
+bulk_flux.F:      integer, intent(in) :: nrhs
+ccsm_flux.F:     &                     nrhs(ng),                                    &
+ccsm_flux.F:     &                           nrhs,                                  &
+ccsm_flux.F:      integer, intent(in) :: nrhs
+ccsm_flux.F:          vmag   = max(umin, sqrt( (Uwind(i,j)-u(i,j,N(ng),nrhs))**2 +  &
+ccsm_flux.F:     &                             (Vwind(i,j)-v(i,j,N(ng),nrhs))**2) )
+ccsm_flux.F:          TseaK = t(i,j,N(ng),nrhs,itemp) + 273.16_r8
+ccsm_flux.F:          delt   = Tair(i,j) - t(i,j,N(ng),nrhs,itemp)                  ! pot temp diff (K)
+ccsm_flux.F:          Taux(i,j) = tau * (Uwind(i,j)-u(i,j,N(ng),nrhs)) / vmag
+ccsm_flux.F:          Tauy(i,j) = tau * (Vwind(i,j)-v(i,j,N(ng),nrhs)) / vmag
+ccsm_flux.F:            sfc_temp = t(i,j,N(ng),nrhs,itemp) + 273.16_r8
+ccsm_flux.F:          tsk = t(i,j,N(ng),nrhs,itemp) + 273.16_r8
+ccsm_flux.F:          Hlv = (2.501_r8-0.00237_r8*t(i,j,N(ng),nrhs,itemp))*1.0e+6_r8
+hmixing.F:     &                   nrhs(ng),                                      &
+hmixing.F:     &                         nrhs,                                    &
+hmixing.F:      integer, intent(in) :: nrhs
+hmixing.F:            DefRate=SQRT(((u(i+1,j,k,nrhs)-                             &
+hmixing.F:                           u(i  ,j,k,nrhs))*pm(i,j))**2+                &
+hmixing.F:     &                   ((v(i,j+1,k,nrhs)-                             &
+hmixing.F:     &                     v(i,j  ,k,nrhs))*pn(i,j))**2+                &
+hmixing.F:     &                           (u(i  ,j+1,k,nrhs)+                    &
+hmixing.F:     &                            u(i+1,j+1,k,nrhs)-                    &
+hmixing.F:     &                            u(i  ,j-1,k,nrhs)-                    &
+hmixing.F:     &                            u(i+1,j-1,k,nrhs))+                   &
+hmixing.F:     &                           (v(i+1,j  ,k,nrhs)+                    &
+hmixing.F:     &                            v(i+1,j+1,k,nrhs)-                    &
+hmixing.F:     &                            v(i-1,j  ,k,nrhs)-                    &
+hmixing.F:     &                            v(i-1,j+1,k,nrhs)))**2)
+hmixing.F:     &          ABS(u(i,j,k,nrhs)+u(i+1,j,k,nrhs))
+hmixing.F:     &          ABS(v(i,j,k,nrhs)+v(i,j+1,k,nrhs))
+hmixing.F:     &                      ABS(u(i,j,k,nrhs))
+hmixing.F:     &                      ABS(v(i,j,k,nrhs))
+initial.F:        nrhs(ng)=1
+main3d.F:              nrhs(ng)=nstp(ng)
+main3d.F:                CALL nesting (ng, iNLM, nrhst)
+main3d_offline.F:          nrhs(ng)=nstp(ng)
+mb_bbl.h:     &                nrhs(ng),                                         &
+mb_bbl.h:     &                      nrhs,                                       &
+mb_bbl.h:      integer, intent(in) :: nrhs
+mb_bbl.h:          Ur_mb(i,j)=u(i,j,1,nrhs)
+mb_bbl.h:          Vr_mb(i,j)=v(i,j,1,nrhs)
+mb_bbl.h:     &               ABS(u(i,j,1,nrhs))*cff2/dt(ng))
+mb_bbl.h:     &               ABS(v(i,j,1,nrhs))*cff2/dt(ng))
+nesting.F:     &        (isection.eq.nrhst).or.                                   &
+nesting.F:              IF (isection.eq.nrhst) THEN
+nesting.F:     &        (isection.eq.nrhst).or.                                   &
+nesting.F:              IF (isection.eq.nrhst) THEN
+pre_step3d.F:     &                      nrhs(ng), nstp(ng), nnew(ng),               &
+pre_step3d.F:     &                            nrhs, nstp, nnew,                     &
+pre_step3d.F:      integer, intent(in) :: nrhs, nstp, nnew
+pre_step3d.F:        indx=3-nrhs
+pre_step3d.F:     &                      DC(i,0)*(cff1*ru(i,j,k,nrhs)-               &
+pre_step3d.F:     &                                (cff1*DiaRU(i,j,k,nrhs,idiag)-    &
+pre_step3d.F:     &                               (cff1*DiaRU(i,j,k,nrhs,M3vvis)-    &
+pre_step3d.F:     &                        DC(i,0)*(cff1*rv(i,j,k,nrhs)-             &
+pre_step3d.F:     &                                  (cff1*DiaRV(i,j,k,nrhs,idiag)-  &
+pre_step3d.F:     &                                 (cff1*DiaRV(i,j,k,nrhs,M3vvis)-  &
+prsgrd31.h:     &                  nrhs(ng),                                       &
+prsgrd31.h:     &                        nrhs,                                     &
+prsgrd31.h:      integer, intent(in) :: nrhs
+prsgrd31.h:          ru(i,j,N(ng),nrhs)=-0.5_r8*(Hz(i,j,N(ng))+Hz(i-1,j,N(ng)))*   &
+prsgrd31.h:          ru(i,j,N(ng),nrhs)=ru(i,j,N(ng),nrhs)*umask_wet(i,j)
+prsgrd31.h:          DiaRU(i,j,N(ng),nrhs,M3pgrd)=ru(i,j,N(ng),nrhs)
+prsgrd31.h:            ru(i,j,k,nrhs)=-0.5_r8*(Hz(i,j,k)+Hz(i-1,j,k))*             &
+prsgrd31.h:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)*umask_wet(i,j)
+prsgrd31.h:            DiaRU(i,j,k,nrhs,M3pgrd)=ru(i,j,k,nrhs)
+prsgrd31.h:            rv(i,j,N(ng),nrhs)=-0.5_r8*(Hz(i,j,N(ng))+Hz(i,j-1,N(ng)))* &
+prsgrd31.h:            rv(i,j,N(ng),nrhs)=rv(i,j,N(ng),nrhs)*vmask_wet(i,j)
+prsgrd31.h:            DiaRV(i,j,N(ng),nrhs,M3pgrd)=rv(i,j,N(ng),nrhs)
+prsgrd31.h:              rv(i,j,k,nrhs)=-0.5_r8*(Hz(i,j,k)+Hz(i,j-1,k))*           &
+prsgrd31.h:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)*vmask_wet(i,j)
+prsgrd31.h:              DiaRV(i,j,k,nrhs,M3pgrd)=rv(i,j,k,nrhs)
+prsgrd32.h:     &                  nrhs(ng),                                       &
+prsgrd32.h:     &                        nrhs,                                     &
+prsgrd32.h:      integer, intent(in) :: nrhs
+prsgrd32.h:            ru(i,j,k,nrhs)=on_u(i,j)*0.5_r8*                            &
+prsgrd32.h:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)*umask_wet(i,j)
+prsgrd32.h:            DiaRU(i,j,k,nrhs,M3pgrd)=ru(i,j,k,nrhs)
+prsgrd32.h:            rv(i,j,k,nrhs)=om_v(i,j)*0.5_r8*                            &
+prsgrd32.h:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)*vmask_wet(i,j)
+prsgrd32.h:            DiaRV(i,j,k,nrhs,M3pgrd)=rv(i,j,k,nrhs)
+prsgrd40.h:     &                  nrhs(ng),                                       &
+prsgrd40.h:     &                        nrhs,                                     &
+prsgrd40.h:      integer, intent(in) :: nrhs
+prsgrd40.h:              ru(i,j,k,nrhs)=(cff*(Hz(i-1,j,k)+                         &
+prsgrd40.h:              ru(i,j,k,nrhs)=ru(i,j,k,nrhs)*umask_wet(i,j)
+prsgrd40.h:              DiaRU(i,j,k,nrhs,M3pgrd)=ru(i,j,k,nrhs)
+prsgrd40.h:              rv(i,j,k,nrhs)=(cff*(Hz(i,j-1,k)+                         &
+prsgrd40.h:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)*vmask_wet(i,j)
+prsgrd40.h:              DiaRV(i,j,k,nrhs,M3pgrd)=rv(i,j,k,nrhs)
+prsgrd42.h:     &                  nrhs(ng),                                       &
+prsgrd42.h:     &                        nrhs,                                     &
+prsgrd42.h:      integer, intent(in) :: nrhs
+prsgrd42.h:              ru(i,j,k,nrhs)=2.0_r8*(FX(i-1,j,k)-FX(i,j,k)+             &
+prsgrd42.h:              ru(i,j,k,nrhs)=ru(i,j,k,nrhs)*umask(i,j)
+prsgrd42.h:              ru(i,j,k,nrhs)=ru(i,j,k,nrhs)*umask_wet(i,j)
+prsgrd42.h:              rv(i,j,k,nrhs)=2.0_r8*(FX(i,j-1,k)-FX(i,j,k)+             &
+prsgrd42.h:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)*vmask(i,j)
+prsgrd42.h:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)*vmask_wet(i,j)
+prsgrd42.h:     &                 (ru(i,j,k+1,nrhs)+ru(i+1,j,k  ,nrhs)-            &
+prsgrd42.h:     &                  ru(i,j,k  ,nrhs)-ru(i-1,j,k+1,nrhs))+           &
+prsgrd42.h:     &                 (ru(i,j,k  ,nrhs)+ru(i+1,j,k+1,nrhs)-            &
+prsgrd42.h:     &                  ru(i,j,k+1,nrhs)-ru(i-1,j,k  ,nrhs))
+prsgrd42.h:     &               (ru(i  ,j,1,nrhs)-ru(i-1,j,1,nrhs))+               &
+prsgrd42.h:     &               (ru(i+1,j,1,nrhs)-ru(i  ,j,1,nrhs))
+prsgrd42.h:            ru(i,j,k,nrhs)=(cff*(z_w(i-1,j,N(ng))-z_w(i,j,N(ng)))+      &
+prsgrd42.h:     &                      cff1*ru(i,j,k,nrhs))*                       &
+prsgrd42.h:            DiaRU(i,j,k,nrhs,M3pgrd)=ru(i,j,k,nrhs)
+prsgrd42.h:     &                   (rv(i,j,k+1,nrhs)+rv(i+1,j  ,k  ,nrhs)-        &
+prsgrd42.h:     &                    rv(i,j,k  ,nrhs)-rv(i  ,j-1,k+1,nrhs))+       &
+prsgrd42.h:     &                   (rv(i,j,k  ,nrhs)+rv(i+1,j  ,k+1,nrhs)-        &
+prsgrd42.h:     &                    rv(i,j,k+1,nrhs)-rv(i  ,j-1,k  ,nrhs))
+prsgrd42.h:     &                 (rv(i  ,j,1,nrhs)-rv(i,j-1,1,nrhs))+             &
+prsgrd42.h:     &                 (rv(i+1,j,1,nrhs)-rv(i,j  ,1,nrhs))
+prsgrd42.h:            rv(i,j,k,nrhs)=(cff*(z_w(i,j-1,N(ng))-z_w(i,j,N(ng)))+      &
+prsgrd42.h:     &                      cff1*rv(i,j,k,nrhs))*                       &
+prsgrd42.h:            DiaRV(i,j,k,nrhs,M3pgrd)=rv(i,j,k,nrhs)
+prsgrd44.h:     &                  nrhs(ng),                                       &
+prsgrd44.h:     &                        nrhs,                                     &
+prsgrd44.h:      integer, intent(in) :: nrhs
+prsgrd44.h:              ru(i,j,k,nrhs)=(cff*(Hz(i-1,j,k)+Hz(i,j,k))*              &
+prsgrd44.h:              ru(i,j,k,nrhs)=ru(i,j,k,nrhs)*umask_wet(i,j)
+prsgrd44.h:              DiaRU(i,j,k,nrhs,M3pgrd)=ru(i,j,k,nrhs)
+prsgrd44.h:              rv(i,j,k,nrhs)=(cff*(Hz(i,j-1,k)+Hz(i,j,k))*              &
+prsgrd44.h:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)*vmask_wet(i,j)
+prsgrd44.h:              DiaRV(i,j,k,nrhs,M3pgrd)=rv(i,j,k,nrhs)
+rho_eos.F:     &                   nrhs(ng),                                      &
+rho_eos.F:     &                         nrhs,                                    &
+rho_eos.F:      integer, intent(in) :: nrhs
+rho_eos.F:            Tt=MAX(-2.5_r8,t(i,j,k,nrhs,itemp))
+rho_eos.F:            Ts=MAX(0.0_r8,t(i,j,k,nrhs,isalt))
+rho_eos.F:     &               t(i,j,k,nrhs,itrc)*                                &
+rho_eos.F:     &                         nrhs,                                    &
+rho_eos.F:      integer, intent(in) :: nrhs
+rho_eos.F:     &                 R0(ng)*Tcoef(ng)*(t(i,j,k,nrhs,itemp)-T0(ng))
+rho_eos.F:     &                 R0(ng)*Scoef(ng)*(t(i,j,k,nrhs,isalt)-S0(ng))
+rho_eos.F:     &               t(i,j,k,nrhs,itrc)*                                &
+rhs3d.F:     &                 nrhs(ng),                                        &
+rhs3d.F:     &                       nrhs,                                      &
+rhs3d.F:      integer, intent(in) :: nrhs
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3vvis)=0.0_r8
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3vvis)=0.0_r8
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)+cff
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3vvis)=DiaRU(i,j,k,nrhs,M3vvis)+cff
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)+cff
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3vvis)=DiaRV(i,j,k,nrhs,M3vvis)+cff
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)-cff
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3vvis)=DiaRU(i,j,k,nrhs,M3vvis)-cff
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3vvis)=DiaRV(i,j,k,nrhs,M3vvis)-cff
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)-cff
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3fsgr)=cff
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3fsgr)=cff
+rhs3d.F:            UFx(i,j)=cff*(v(i,j  ,k,nrhs)+                              &
+rhs3d.F:     &                    v(i,j+1,k,nrhs))
+rhs3d.F:            VFe(i,j)=cff*(u(i  ,j,k,nrhs)+                              &
+rhs3d.F:     &                    u(i+1,j,k,nrhs))
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)+cff1
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3fcor)=cff1
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff1
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3fcor)=-cff1
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)+cff1
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3fsco)=cff1
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff1
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3fsco)=-cff1
+rhs3d.F:            cff1=0.5_r8*(v(i,j  ,k,nrhs)+                               &
+rhs3d.F:     &                   v(i,j+1,k,nrhs))
+rhs3d.F:            cff2=0.5_r8*(u(i  ,j,k,nrhs)+                               &
+rhs3d.F:     &                   u(i+1,j,k,nrhs))
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)+cff1
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3xadv)=DiaRU(i,j,k,nrhs,M3xadv)+cff1-cff2
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3yadv)=DiaRU(i,j,k,nrhs,M3yadv)+cff2
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3hadv)=DiaRU(i,j,k,nrhs,M3hadv)+cff1
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3xadv)=cff1-cff2
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3yadv)=cff2
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3hadv)=cff1
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff1
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3xadv)=DiaRV(i,j,k,nrhs,M3xadv)-cff1+cff2
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3yadv)=DiaRV(i,j,k,nrhs,M3yadv)-cff2
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3hadv)=DiaRV(i,j,k,nrhs,M3hadv)-cff1
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3xadv)=-cff1+cff2
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3yadv)=-cff2
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3hadv)=-cff1
+rhs3d.F:              ru(i,j,k,nrhs)=ru(i,j,k,nrhs)+                            &
+rhs3d.F:     &                        u(i,j,k,nrhs))
+rhs3d.F:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)+                            &
+rhs3d.F:     &                        v(i,j,k,nrhs))
+rhs3d.F:            UFx(i,j)=0.25_r8*(u(i  ,j,k,nrhs)+                          &
+rhs3d.F:     &                        u(i+1,j,k,nrhs))*                         &
+rhs3d.F:            UFe(i,j)=0.25_r8*(u(i,j-1,k,nrhs)+                          &
+rhs3d.F:     &                        u(i,j  ,k,nrhs))*                         &
+rhs3d.F:            VFx(i,j)=0.25_r8*(v(i-1,j,k,nrhs)+                          &
+rhs3d.F:     &                        v(i  ,j,k,nrhs))*                         &
+rhs3d.F:            VFe(i,j)=0.25_r8*(v(i,j  ,k,nrhs)+                          &
+rhs3d.F:     &                        v(i,j+1,k,nrhs))*                         &
+rhs3d.F:            uxx(i,j)=u(i-1,j,k,nrhs)-2.0_r8*u(i,j,k,nrhs)+              &
+rhs3d.F:     &               u(i+1,j,k,nrhs)
+rhs3d.F:            UFx(i,j)=0.25_r8*(u(i  ,j,k,nrhs)+                          &
+rhs3d.F:     &                        u(i+1,j,k,nrhs)-                          &
+rhs3d.F:            cff1=u(i  ,j,k,nrhs)+                                       &
+rhs3d.F:     &           u(i+1,j,k,nrhs)
+rhs3d.F:            uee(i,j)=u(i,j-1,k,nrhs)-2.0_r8*u(i,j,k,nrhs)+              &
+rhs3d.F:     &               u(i,j+1,k,nrhs)
+rhs3d.F:            UFe(i,j)=0.25_r8*(u(i,j  ,k,nrhs)+                          &
+rhs3d.F:     &                        u(i,j-1,k,nrhs)-                          &
+rhs3d.F:            cff1=u(i,j  ,k,nrhs)+                                       &
+rhs3d.F:     &           u(i,j-1,k,nrhs)
+rhs3d.F:            vxx(i,j)=v(i-1,j,k,nrhs)-2.0_r8*v(i,j,k,nrhs)+              &
+rhs3d.F:     &               v(i+1,j,k,nrhs)
+rhs3d.F:            VFx(i,j)=0.25_r8*(v(i  ,j,k,nrhs)+                          &
+rhs3d.F:     &                        v(i-1,j,k,nrhs)-                          &
+rhs3d.F:            cff1=v(i  ,j,k,nrhs)+                                       &
+rhs3d.F:     &           v(i-1,j,k,nrhs)
+rhs3d.F:            vee(i,j)=v(i,j-1,k,nrhs)-2.0_r8*v(i,j,k,nrhs)+              &
+rhs3d.F:     &               v(i,j+1,k,nrhs)
+rhs3d.F:            VFe(i,j)=0.25_r8*(v(i,j  ,k,nrhs)+                          &
+rhs3d.F:     &                        v(i,j+1,k,nrhs)-                          &
+rhs3d.F:            cff1=v(i,j  ,k,nrhs)+                                       &
+rhs3d.F:     &           v(i,j+1,k,nrhs)
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)-cff
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3xadv)=DiaRU(i,j,k,nrhs,M3xadv)-cff1
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3yadv)=DiaRU(i,j,k,nrhs,M3yadv)-cff2
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3hadv)=DiaRU(i,j,k,nrhs,M3hadv)-cff
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3xadv)=-cff1
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3yadv)=-cff2
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3hadv)=-cff
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3xadv)=DiaRV(i,j,k,nrhs,M3xadv)-cff1
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3yadv)=DiaRV(i,j,k,nrhs,M3yadv)-cff2
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3hadv)=DiaRV(i,j,k,nrhs,M3hadv)-cff
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3xadv)=-cff1
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3yadv)=-cff2
+rhs3d.F:            DiaRV(i,j,k,nrhs,M3hadv)=-cff
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)-                              &
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)-rulag3d(i,j,k)
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-                              &
+rhs3d.F:            rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-rvlag3d(i,j,k)
+rhs3d.F:            CF(i,k)=cff*(6.0_r8*(u(i,j,k+1,nrhs)-                       &
+rhs3d.F:     &                           u(i,j,k  ,nrhs))-                      &
+rhs3d.F:     &              (u(i,j,k,nrhs)+                                     &
+rhs3d.F:            FC(i,k)=0.25_r8*(u(i,j,k  ,nrhs)+                           &
+rhs3d.F:     &                       u(i,j,k+1,nrhs))*                          &
+rhs3d.F:          FC(i,0)=0.5_r8*(u(i,j,1,nrhs)+u_stokes(i,j,1))*               &
+rhs3d.F:          FC(i,0)=0.5_r8*u(i,j,1,nrhs)*                                 &
+rhs3d.F:            FC(i,k)=(cff1*(u(i,j,k  ,nrhs)+                             &
+rhs3d.F:     &                     u(i,j,k+1,nrhs))-                            &
+rhs3d.F:     &               cff2*(u(i,j,k-1,nrhs)+                             &
+rhs3d.F:     &                     u(i,j,k+2,nrhs)))*                           &
+rhs3d.F:          FC(i,N(ng)-1)=(cff1*(u(i,j,N(ng)-1,nrhs)+                     &
+rhs3d.F:     &                         u(i,j,N(ng)  ,nrhs))-                    &
+rhs3d.F:     &                   cff2*(u(i,j,N(ng)-2,nrhs)+                     &
+rhs3d.F:     &                         u(i,j,N(ng)  ,nrhs)))*                   &
+rhs3d.F:          FC(i,1)=(cff1*(u(i,j,1,nrhs)+                                 &
+rhs3d.F:     &                   u(i,j,2,nrhs))-                                &
+rhs3d.F:     &             cff2*(u(i,j,1,nrhs)+                                 &
+rhs3d.F:     &                   u(i,j,3,nrhs)))*                               &
+rhs3d.F:     &            (cff1*(u(i,j,1,nrhs)+u_stokes(i,j,1))-                &
+rhs3d.F:     &             cff2*(u(i,j,2,nrhs)+u_stokes(i,j,2)))*               &
+rhs3d.F:     &            (cff1*u(i,j,1,nrhs)-                                  &
+rhs3d.F:     &             cff2*u(i,j,2,nrhs))*                                 &
+rhs3d.F:            FC(i,k)=(cff1*(u(i,j,k  ,nrhs)+                             &
+rhs3d.F:     &                     u(i,j,k+1,nrhs))-                            &
+rhs3d.F:     &               cff2*(u(i,j,k-1,nrhs)+                             &
+rhs3d.F:     &                     u(i,j,k+2,nrhs)))*                           &
+rhs3d.F:          FC(i,N(ng)-1)=(cff1*(u(i,j,N(ng)-1,nrhs)+                     &
+rhs3d.F:     &                         u(i,j,N(ng)  ,nrhs))-                    &
+rhs3d.F:     &                   cff2*(u(i,j,N(ng)-2,nrhs)+                     &
+rhs3d.F:     &                         u(i,j,N(ng)  ,nrhs)))*                   &
+rhs3d.F:          FC(i,1)=(cff1*(u(i,j,1,nrhs)+                                 &
+rhs3d.F:     &                   u(i,j,2,nrhs))-                                &
+rhs3d.F:     &             cff2*(u(i,j,1,nrhs)+                                 &
+rhs3d.F:     &                   u(i,j,3,nrhs)))*                               &
+rhs3d.F:     &            (cff1*(u(i,j,1,nrhs)+u_stokes(i,j,1))-                &
+rhs3d.F:     &             cff2*(u(i,j,2,nrhs)+u_stokes(i,j,2)))*               &
+rhs3d.F:     &            (cff1*u(i,j,1,nrhs)-                                  &
+rhs3d.F:     &             cff2*u(i,j,2,nrhs))*                                 &
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)-cff
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3vadv)=-cff
+rhs3d.F:              CF(i,k)=cff*(6.0_r8*(v(i,j,k+1,nrhs)-                     &
+rhs3d.F:     &                             v(i,j,k  ,nrhs))-                    &
+rhs3d.F:     &                (v(i,j,k,nrhs)+                                   &
+rhs3d.F:              FC(i,k)=0.25_r8*(v(i,j,k  ,nrhs)+                         &
+rhs3d.F:     &                         v(i,j,k+1,nrhs))*                        &
+rhs3d.F:            FC(i,0)=0.5_r8*(v(i,j,1,nrhs)+v_stokes(i,j,1))*             &
+rhs3d.F:            FC(i,0)=0.5_r8*v(i,j,1,nrhs)*                               &
+rhs3d.F:              FC(i,k)=(cff1*(v(i,j,k  ,nrhs)+                           &
+rhs3d.F:     &                       v(i,j,k+1,nrhs))-                          &
+rhs3d.F:     &                 cff2*(v(i,j,k-1,nrhs)+                           &
+rhs3d.F:     &                       v(i,j,k+2,nrhs)))*                         &
+rhs3d.F:            FC(i,N(ng)-1)=(cff1*(v(i,j,N(ng)-1,nrhs)+                   &
+rhs3d.F:     &                           v(i,j,N(ng)  ,nrhs))-                  &
+rhs3d.F:     &                     cff2*(v(i,j,N(ng)-2,nrhs)+                   &
+rhs3d.F:     &                           v(i,j,N(ng)  ,nrhs)))*                 &
+rhs3d.F:            FC(i,1)=(cff1*(v(i,j,1,nrhs)+                               &
+rhs3d.F:     &                     v(i,j,2,nrhs))-                              &
+rhs3d.F:     &               cff2*(v(i,j,1,nrhs)+                               &
+rhs3d.F:     &                     v(i,j,3,nrhs)))*                             &
+rhs3d.F:     &              (cff1*(v(i,j,1,nrhs)+v_stokes(i,j,1))-              &
+rhs3d.F:     &               cff2*(v(i,j,2,nrhs)+v_stokes(i,j,2)))*             &
+rhs3d.F:     &              (cff1*v(i,j,1,nrhs)-                                &
+rhs3d.F:     &               cff2*v(i,j,2,nrhs))*                               &
+rhs3d.F:              FC(i,k)=(cff1*(v(i,j,k  ,nrhs)+                           &
+rhs3d.F:     &                       v(i,j,k+1,nrhs))-                          &
+rhs3d.F:     &                 cff2*(v(i,j,k-1,nrhs)+                           &
+rhs3d.F:     &                       v(i,j,k+2,nrhs)))*                         &
+rhs3d.F:            FC(i,N(ng)-1)=(cff1*(v(i,j,N(ng)-1,nrhs)+                   &
+rhs3d.F:     &                           v(i,j,N(ng)  ,nrhs))-                  &
+rhs3d.F:     &                     cff2*(v(i,j,N(ng)-2,nrhs)+                   &
+rhs3d.F:     &                           v(i,j,N(ng)  ,nrhs)))*                 &
+rhs3d.F:            FC(i,1)=(cff1*(v(i,j,1,nrhs)+                               &
+rhs3d.F:     &                     v(i,j,2,nrhs))-                              &
+rhs3d.F:     &               cff2*(v(i,j,1,nrhs)+                               &
+rhs3d.F:     &                     v(i,j,3,nrhs)))*                             &
+rhs3d.F:     &              (cff1*(v(i,j,1,nrhs)+v_stokes(i,j,1))-              &
+rhs3d.F:     &               cff2*(v(i,j,2,nrhs)+v_stokes(i,j,2)))*             &
+rhs3d.F:     &              (cff1*v(i,j,1,nrhs)-                                &
+rhs3d.F:     &               cff2*v(i,j,2,nrhs))*                               &
+rhs3d.F:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff
+rhs3d.F:              DiaRV(i,j,k,nrhs,M3vadv)=-cff
+rhs3d.F:            CF(i,k)=cff*(6.0_r8*(u(i,j,k+1,nrhs)-                       &
+rhs3d.F:     &                           u(i,j,k  ,nrhs))-                      &
+rhs3d.F:     &              (u(i,j,k,nrhs)+                                     &
+rhs3d.F:            FC(i,k)=0.25_r8*(u(i,j,k  ,nrhs)+                           &
+rhs3d.F:     &                       u(i,j,k+1,nrhs))*                          &
+rhs3d.F:            FC(i,k)=(cff1*(u(i,j,k  ,nrhs)+                             &
+rhs3d.F:     &                     u(i,j,k+1,nrhs))-                            &
+rhs3d.F:     &               cff2*(u(i,j,k-1,nrhs)+                             &
+rhs3d.F:     &                     u(i,j,k+2,nrhs)))*                           &
+rhs3d.F:          FC(i,N(ng)-1)=(cff1*(u(i,j,N(ng)-1,nrhs)+                     &
+rhs3d.F:     &                         u(i,j,N(ng)  ,nrhs))-                    &
+rhs3d.F:     &                   cff2*(u(i,j,N(ng)-2,nrhs)+                     &
+rhs3d.F:     &                         u(i,j,N(ng)  ,nrhs)))*                   &
+rhs3d.F:          FC(i,1)=(cff1*(u(i,j,1,nrhs)+                                 &
+rhs3d.F:     &                   u(i,j,2,nrhs))-                                &
+rhs3d.F:     &             cff2*(u(i,j,1,nrhs)+                                 &
+rhs3d.F:     &                   u(i,j,3,nrhs)))*                               &
+rhs3d.F:            FC(i,k)=(cff1*(u(i,j,k  ,nrhs)+                             &
+rhs3d.F:     &                     u(i,j,k+1,nrhs))-                            &
+rhs3d.F:     &               cff2*(u(i,j,k-1,nrhs)+                             &
+rhs3d.F:     &                     u(i,j,k+2,nrhs)))*                           &
+rhs3d.F:          FC(i,N(ng)-1)=(cff1*(u(i,j,N(ng)-1,nrhs)+                     &
+rhs3d.F:     &                         u(i,j,N(ng)  ,nrhs))-                    &
+rhs3d.F:     &                   cff2*(u(i,j,N(ng)-2,nrhs)+                     &
+rhs3d.F:     &                         u(i,j,N(ng)  ,nrhs)))*                   &
+rhs3d.F:          FC(i,1)=(cff1*(u(i,j,1,nrhs)+                                 &
+rhs3d.F:     &                   u(i,j,2,nrhs))-                                &
+rhs3d.F:     &             cff2*(u(i,j,1,nrhs)+                                 &
+rhs3d.F:     &                   u(i,j,3,nrhs)))*                               &
+rhs3d.F:            cff1=u(i,j,k,nrhs)*(FCs(i,k)-FCs(i,k-1))
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)-cff
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3vadv)=DiaRU(i,j,k,nrhs,M3vadv)-cff1
+rhs3d.F:            DiaRU(i,j,k,nrhs,M3vjvf)=-(cff-cff1)
+rhs3d.F:              CF(i,k)=cff*(6.0_r8*(v(i,j,k+1,nrhs)-                     &
+rhs3d.F:     &                             v(i,j,k  ,nrhs))-                    &
+rhs3d.F:     &                (v(i,j,k,nrhs)+                                   &
+rhs3d.F:              FC(i,k)=0.25_r8*(v(i,j,k  ,nrhs)+                         &
+rhs3d.F:     &                         v(i,j,k+1,nrhs))*                        &
+rhs3d.F:              FC(i,k)=(cff1*(v(i,j,k  ,nrhs)+                           &
+rhs3d.F:     &                       v(i,j,k+1,nrhs))-                          &
+rhs3d.F:     &                 cff2*(v(i,j,k-1,nrhs)+                           &
+rhs3d.F:     &                       v(i,j,k+2,nrhs)))*                         &
+rhs3d.F:            FC(i,N(ng)-1)=(cff1*(v(i,j,N(ng)-1,nrhs)+                   &
+rhs3d.F:     &                           v(i,j,N(ng)  ,nrhs))-                  &
+rhs3d.F:     &                     cff2*(v(i,j,N(ng)-2,nrhs)+                   &
+rhs3d.F:     &                           v(i,j,N(ng)  ,nrhs)))*                 &
+rhs3d.F:            FC(i,1)=(cff1*(v(i,j,1,nrhs)+                               &
+rhs3d.F:     &                     v(i,j,2,nrhs))-                              &
+rhs3d.F:     &               cff2*(v(i,j,1,nrhs)+                               &
+rhs3d.F:     &                     v(i,j,3,nrhs)))*                             &
+rhs3d.F:              FC(i,k)=(cff1*(v(i,j,k  ,nrhs)+                           &
+rhs3d.F:     &                       v(i,j,k+1,nrhs))-                          &
+rhs3d.F:     &                 cff2*(v(i,j,k-1,nrhs)+                           &
+rhs3d.F:     &                       v(i,j,k+2,nrhs)))*                         &
+rhs3d.F:            FC(i,N(ng)-1)=(cff1*(v(i,j,N(ng)-1,nrhs)+                   &
+rhs3d.F:     &                           v(i,j,N(ng)  ,nrhs))-                  &
+rhs3d.F:     &                     cff2*(v(i,j,N(ng)-2,nrhs)+                   &
+rhs3d.F:     &                           v(i,j,N(ng)  ,nrhs)))*                 &
+rhs3d.F:            FC(i,1)=(cff1*(v(i,j,1,nrhs)+                               &
+rhs3d.F:     &                     v(i,j,2,nrhs))-                              &
+rhs3d.F:     &               cff2*(v(i,j,1,nrhs)+                               &
+rhs3d.F:     &                     v(i,j,3,nrhs)))*                             &
+rhs3d.F:              cff1=v(i,j,k,nrhs)*(FCs(i,k)-FCs(i,k-1))
+rhs3d.F:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff
+rhs3d.F:              DiaRV(i,j,k,nrhs,M3vadv)=DiaRV(i,j,k,nrhs,M3vadv)-cff1
+rhs3d.F:              DiaRV(i,j,k,nrhs,M3vjvf)=-(cff-cff1)
+rhs3d.F:          ru(i,j,1,nrhs)=ru(i,j,1,nrhs)*umask_wet(i,j)
+rhs3d.F:          rufrc(i,j)=ru(i,j,1,nrhs)
+rhs3d.F:          DiaRUfrc(i,j,3,M2pgrd)=DiaRU(i,j,1,nrhs,M3pgrd)
+rhs3d.F:          DiaRUfrc(i,j,3,M2fcor)=DiaRU(i,j,1,nrhs,M3fcor)
+rhs3d.F:          DiaRUfrc(i,j,3,M2xadv)=DiaRU(i,j,1,nrhs,M3xadv)
+rhs3d.F:          DiaRUfrc(i,j,3,M2yadv)=DiaRU(i,j,1,nrhs,M3yadv)
+rhs3d.F:          DiaRUfrc(i,j,3,M2hadv)=DiaRU(i,j,1,nrhs,M3hadv)
+rhs3d.F:          DiaRUfrc(i,j,3,M2hrad)=DiaRU(i,j,1,nrhs,M3hrad)
+rhs3d.F:          DiaRUfrc(i,j,3,M2hjvf)=DiaRU(i,j,1,nrhs,M3hjvf)
+rhs3d.F:          DiaRUfrc(i,j,3,M2kvrf)=DiaRU(i,j,1,nrhs,M3kvrf)
+rhs3d.F:          DiaRUfrc(i,j,3,M2fsco)=DiaRU(i,j,1,nrhs,M3fsco)
+rhs3d.F:          DiaRUfrc(i,j,3,M2bstm)=DiaRU(i,j,1,nrhs,M3bstm)
+rhs3d.F:          DiaRUfrc(i,j,3,M2sstm)=DiaRU(i,j,1,nrhs,M3sstm)
+rhs3d.F:          DiaRUfrc(i,j,3,M2wrol)=DiaRU(i,j,1,nrhs,M3wrol)
+rhs3d.F:          DiaRUfrc(i,j,3,M2wbrk)=DiaRU(i,j,1,nrhs,M3wbrk)
+rhs3d.F:!!        DiaRUfrc(i,j,3,M2strs)=DiaRU(i,j,1,nrhs,M3vvis)
+rhs3d.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)*umask_wet(i,j)
+rhs3d.F:            rufrc(i,j)=rufrc(i,j)+ru(i,j,k,nrhs)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3pgrd)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3fcor)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3xadv)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3yadv)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3hadv)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3hrad)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3hjvf)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3kvrf)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3fsco)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3bstm)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3sstm)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3wrol)
+rhs3d.F:     &                             DiaRU(i,j,k,nrhs,M3wbrk)
+rhs3d.F:!!   &                             DiaRU(i,j,k,nrhs,M3vvis)
+rhs3d.F:            rv(i,j,1,nrhs)=rv(i,j,1,nrhs)*vmask_wet(i,j)
+rhs3d.F:            rvfrc(i,j)=rv(i,j,1,nrhs)
+rhs3d.F:            DiaRVfrc(i,j,3,M2pgrd)=DiaRV(i,j,1,nrhs,M3pgrd)
+rhs3d.F:            DiaRVfrc(i,j,3,M2fcor)=DiaRV(i,j,1,nrhs,M3fcor)
+rhs3d.F:            DiaRVfrc(i,j,3,M2xadv)=DiaRV(i,j,1,nrhs,M3xadv)
+rhs3d.F:            DiaRVfrc(i,j,3,M2yadv)=DiaRV(i,j,1,nrhs,M3yadv)
+rhs3d.F:            DiaRVfrc(i,j,3,M2hadv)=DiaRV(i,j,1,nrhs,M3hadv)
+rhs3d.F:            DiaRVfrc(i,j,3,M2hrad)=DiaRV(i,j,1,nrhs,M3hrad)
+rhs3d.F:            DiaRVfrc(i,j,3,M2hjvf)=DiaRV(i,j,1,nrhs,M3hjvf)
+rhs3d.F:            DiaRVfrc(i,j,3,M2kvrf)=DiaRV(i,j,1,nrhs,M3kvrf)
+rhs3d.F:            DiaRVfrc(i,j,3,M2fsco)=DiaRV(i,j,1,nrhs,M3fsco)
+rhs3d.F:            DiaRVfrc(i,j,3,M2bstm)=DiaRV(i,j,1,nrhs,M3bstm)
+rhs3d.F:            DiaRVfrc(i,j,3,M2sstm)=DiaRV(i,j,1,nrhs,M3sstm)
+rhs3d.F:            DiaRVfrc(i,j,3,M2wrol)=DiaRV(i,j,1,nrhs,M3wrol)
+rhs3d.F:            DiaRVfrc(i,j,3,M2wbrk)=DiaRV(i,j,1,nrhs,M3wbrk)
+rhs3d.F:!           DiaRVfrc(i,j,3,M2strs)=DiaRV(i,j,1,nrhs,M3vvis)
+rhs3d.F:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)*vmask_wet(i,j)
+rhs3d.F:              rvfrc(i,j)=rvfrc(i,j)+rv(i,j,k,nrhs)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3pgrd)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3fcor)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3xadv)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3yadv)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3hadv)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3hrad)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3hjvf)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3kvrf)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3fsco)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3bstm)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3sstm)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3wrol)
+rhs3d.F:     &                               DiaRV(i,j,k,nrhs,M3wbrk)
+rhs3d.F:!!   &                               DiaRV(i,j,k,nrhs,M3vvis)
+set_massflux.F:     &                        nrhs(ng),                                 &
+set_massflux.F:     &                              nrhs,                               &
+set_massflux.F:      integer, intent(in) :: nrhs
+set_massflux.F:            Huon(i,j,k)=0.5_r8*(Hz(i,j,k)+Hz(i-1,j,k))*u(i,j,k,nrhs)*   &
+set_massflux.F:            Hvom(i,j,k)=0.5_r8*(Hz(i,j,k)+Hz(i,j-1,k))*v(i,j,k,nrhs)*   &
+set_tides.F:      USE mod_stepping, ONLY : nrhs
+set_tides.F:                sum_ubot(i,j)=sum_ubot(i,j)+OCEAN(ng)%u(i,j,1,nrhs(ng))
+set_tides.F:                sum_ubot(i,j)=OCEAN(ng)%u(i,j,1,nrhs(ng))
+set_tides.F:                sum_vbot(i,j)=sum_vbot(i,j)+OCEAN(ng)%v(i,j,1,nrhs(ng))
+set_tides.F:                sum_vbot(i,j)=OCEAN(ng)%v(i,j,1,nrhs(ng))
+set_tides.F:                sum_ubot(i,j)=sum_ubot(i,j)+OCEAN(ng)%u(i,j,1,nrhs(ng))
+set_tides.F:                sum_vbot(i,j)=sum_vbot(i,j)+OCEAN(ng)%v(i,j,1,nrhs(ng))
+set_vbc.F:     &                   nrhs(ng),                                      &
+set_vbc.F:     &                         nrhs,                                    &
+set_vbc.F:      integer, intent(in) :: nrhs
+set_vbc.F:     &                     dqdt(i,j)*(t(i,j,N(ng),nrhs,itemp)-sst(i,j))
+set_vbc.F:     &                         (t(i,j,N(ng),nrhs,isalt)-sss(i,j)))
+set_vbc.F:     &                     (t(i,j,N(ng),nrhs,isalt)-sss(i,j))
+set_vbc.F:          stflx(i,j,isalt)=stflx(i,j,isalt)*t(i,j,N(ng),nrhs,isalt)-    &
+set_vbc.F:     &                         (t(i,j,N(ng),nrhs,isalt)-sss(i,j)))
+set_vbc.F:     &                     (t(i,j,N(ng),nrhs,isalt)-sss(i,j))
+set_vbc.F:     &                         (t(i,j,N(ng),nrhs,isalt)-sss(i,j)))
+set_vbc.F:     &                     (t(i,j,N(ng),nrhs,isalt)-sss(i,j))
+set_vbc.F:          stflx(i,j,isalt)=stflx(i,j,isalt)*t(i,j,N(ng),nrhs,isalt)
+set_vbc.F:     &                     (t(i,j,N(ng),nrhs,isalt)-sss(i,j))
+set_vbc.F:          btflx(i,j,isalt)=btflx(i,j,isalt)*t(i,j,1,nrhs,isalt)
+set_vbc.F:            cff1=0.25_r8*(v(i  ,j  ,N(ng),nrhs)+                        &
+set_vbc.F:     &                    v(i  ,j+1,N(ng),nrhs)+                        &
+set_vbc.F:     &                    v(i-1,j  ,N(ng),nrhs)+                        &
+set_vbc.F:     &                    v(i-1,j+1,N(ng),nrhs))
+set_vbc.F:            cff2=SQRT(u(i,j,N(ng),nrhs)*u(i,j,N(ng),nrhs)+cff1*cff1)
+set_vbc.F:     &                 u(i,j,N(ng),nrhs)*cff2
+set_vbc.F:            cff1=0.25_r8*(u(i  ,j  ,N(ng),nrhs)+                        &
+set_vbc.F:     &                    u(i+1,j  ,N(ng),nrhs)+                        &
+set_vbc.F:     &                    u(i  ,j-1,N(ng),nrhs)+                        &
+set_vbc.F:     &                    u(i+1,j-1,N(ng),nrhs))
+set_vbc.F:            cff2=SQRT(cff1*cff1+v(i,j,N(ng),nrhs)*v(i,j,N(ng),nrhs))
+set_vbc.F:     &                 v(i,j,N(ng),nrhs)*cff2
+set_vbc.F:            cff1=0.25_r8*(v(i  ,j  ,N(ng),nrhs)+                        &
+set_vbc.F:     &                    v(i  ,j+1,N(ng),nrhs)+                        &
+set_vbc.F:     &                    v(i-1,j  ,N(ng),nrhs)+                        &
+set_vbc.F:     &                    v(i-1,j+1,N(ng),nrhs))
+set_vbc.F:            cff2=SQRT(u(i,j,N(ng),nrhs)*u(i,j,N(ng),nrhs)+cff1*cff1)
+set_vbc.F:     &                 u(i,j,N(ng),nrhs)*cff2
+set_vbc.F:            cff1=0.25_r8*(u(i  ,j  ,N(ng),nrhs)+                        &
+set_vbc.F:     &                    u(i+1,j  ,N(ng),nrhs)+                        &
+set_vbc.F:     &                    u(i  ,j-1,N(ng),nrhs)+                        &
+set_vbc.F:     &                    u(i+1,j-1,N(ng),nrhs))
+set_vbc.F:            cff2=SQRT(cff1*cff1+v(i,j,N(ng),nrhs)*v(i,j,N(ng),nrhs))
+set_vbc.F:     &                 v(i,j,N(ng),nrhs)*cff2
+set_vbc.F:     &                 u(i,j,N(ng),nrhs)
+set_vbc.F:     &                 v(i,j,N(ng),nrhs)
+set_vbc.F:            cff1=cff*((0.0939_r8-t(i,j,N(ng),nrhs,itemp))+              &
+set_vbc.F:     &           cff*0.057_r8*gamma_s*t(i,j,N(ng),nrhs,isalt)
+set_vbc.F:     &                   (1.0_r8-(t(i,j,N(ng),nrhs,isalt)/salt_b))
+set_vbc.F:     &                       (temp_b-t(i,j,N(ng),nrhs,itemp))*Hscale
+set_vbc.F:            IF (t(i,j,N(ng),nrhs,isalt) .gt. 0.001_r8) THEN
+set_vbc.F:     &                         (salt_b-t(i,j,N(ng),nrhs,isalt))/        &
+set_vbc.F:     &                         t(i,j,N(ng),nrhs,isalt)
+set_vbc.F:     &                         (salt_b-t(i,j,N(ng),nrhs,isalt))
+set_vbc.F:            temp_f=0.0939_r8-0.057_r8*t(i,j,N(ng),nrhs,isalt)+          &
+set_vbc.F:            stflx(i,j,itemp)=gamma*(temp_f-t(i,j,N(ng),nrhs,itemp))
+set_vbc.F:     &                       (sfcTemp-t(i,j,N(ng),nrhs,itemp))/trelax
+set_vbc.F:            IF (t(i,j,N(ng),nrhs,isalt) .gt. 0.001_r8) THEN
+set_vbc.F:     &                         (sfcTemp-t(i,j,N(ng),nrhs,itemp))/       &
+set_vbc.F:     &                         (trelax*t(i,j,N(ng),nrhs,isalt))
+set_vbc.F:     &                       (sfcSalt-t(i,j,N(ng),nrhs,isalt))/trelax
+set_vbc.F:          cff1=0.25_r8*(v(i  ,j  ,1,nrhs)+                              &
+set_vbc.F:     &                  v(i  ,j+1,1,nrhs)+                              &
+set_vbc.F:     &                  v(i-1,j  ,1,nrhs)+                              &
+set_vbc.F:     &                  v(i-1,j+1,1,nrhs))
+set_vbc.F:          cff2=SQRT(u(i,j,1,nrhs)*u(i,j,1,nrhs)+cff1*cff1)
+set_vbc.F:     &               u(i,j,1,nrhs)*cff2
+set_vbc.F:     &                   ABS(u(i,j,1,nrhs))*cff3)
+set_vbc.F:          cff1=0.25_r8*(u(i  ,j  ,1,nrhs)+                              &
+set_vbc.F:     &                  u(i+1,j  ,1,nrhs)+                              &
+set_vbc.F:     &                  u(i  ,j-1,1,nrhs)+                              &
+set_vbc.F:     &                  u(i+1,j-1,1,nrhs))
+set_vbc.F:          cff2=SQRT(cff1*cff1+v(i,j,1,nrhs)*v(i,j,1,nrhs))
+set_vbc.F:     &               v(i,j,1,nrhs)*cff2
+set_vbc.F:     &                   ABS(v(i,j,1,nrhs))*cff3)
+set_vbc.F:          cff1=0.25_r8*(v(i  ,j  ,1,nrhs)+                              &
+set_vbc.F:     &                  v(i  ,j+1,1,nrhs)+                              &
+set_vbc.F:     &                  v(i-1,j  ,1,nrhs)+                              &
+set_vbc.F:     &                  v(i-1,j+1,1,nrhs))
+set_vbc.F:          cff2=SQRT(u(i,j,1,nrhs)*u(i,j,1,nrhs)+cff1*cff1)
+set_vbc.F:     &               u(i,j,1,nrhs)*cff2
+set_vbc.F:     &                   ABS(u(i,j,1,nrhs))*cff3)
+set_vbc.F:          cff1=0.25_r8*(u(i  ,j  ,1,nrhs)+                              &
+set_vbc.F:     &                  u(i+1,j  ,1,nrhs)+                              &
+set_vbc.F:     &                  u(i  ,j-1,1,nrhs)+                              &
+set_vbc.F:     &                  u(i+1,j-1,1,nrhs))
+set_vbc.F:          cff2=SQRT(cff1*cff1+v(i,j,1,nrhs)*v(i,j,1,nrhs))
+set_vbc.F:     &               v(i,j,1,nrhs)*cff2
+set_vbc.F:     &                   ABS(v(i,j,1,nrhs))*cff3)
+set_vbc.F:     &               u(i,j,1,nrhs)
+set_vbc.F:     &                   ABS(u(i,j,1,nrhs))*cff1)
+set_vbc.F:     &               v(i,j,1,nrhs)
+set_vbc.F:     &                   ABS(v(i,j,1,nrhs))*cff1)
+sg_bbl.h:     &                nrhs(ng),                                         &
+sg_bbl.h:     &                      nrhs,                                       &
+sg_bbl.h:      integer, intent(in) :: nrhs
+sg_bbl.h:          Ur_sg(i,j)=u(i,j,1,nrhs)
+sg_bbl.h:          Vr_sg(i,j)=v(i,j,1,nrhs)
+sg_bbl.h:                Ur_sg(i,j)=fac1*u(i,j,k-1,nrhs)+fac2*u(i,j,k,nrhs)
+sg_bbl.h:                Vr_sg(i,j)=fac1*v(i,j,k-1,nrhs)+fac2*v(i,j,k,nrhs)
+sg_bbl.h:     &               ABS(u(i,j,1,nrhs))*cff2/dt(ng))
+sg_bbl.h:     &               ABS(v(i,j,1,nrhs))*cff2/dt(ng))
+ssw_bbl.h:     &                nrhs(ng),                                         &
+ssw_bbl.h:     &                      nrhs,                                       &
+ssw_bbl.h:      integer, intent(in) :: nrhs
+ssw_bbl.h:          Ur_sg(i,j)=u(i,j,1,nrhs)
+ssw_bbl.h:          Vr_sg(i,j)=v(i,j,1,nrhs)
+ssw_bbl.h:                Ur_sg(i,j)=fac1*u(i,j,k-1,nrhs)+fac2*u(i,j,k,nrhs)
+ssw_bbl.h:                Vr_sg(i,j)=fac1*v(i,j,k-1,nrhs)+fac2*v(i,j,k,nrhs)
+ssw_bbl.h:     &               ABS(u(i,j,1,nrhs))*cff2/dt(ng))
+ssw_bbl.h:     &               ABS(v(i,j,1,nrhs))*cff2/dt(ng))
+step3d_t.F:     &                    nrhs(ng), nstp(ng), nnew(ng),                 &
+step3d_t.F:     &                          nrhs, nstp, nnew,                       &
+step3d_t.F:      integer, intent(in) :: nrhs, nstp, nnew
+step3d_uv.F:     &                     nrhs(ng), nstp(ng), nnew(ng),                &
+step3d_uv.F:     &                           nrhs, nstp, nnew,                      &
+step3d_uv.F:      integer, intent(in) :: nrhs, nstp, nnew
+step3d_uv.F:     &                    DC(i,0)*ru(i,j,k,nrhs)
+step3d_uv.F:     &                               DC(i,0)*DiaRU(i,j,k,nrhs,idiag))*  &
+step3d_uv.F:     &                             DC(i,0)*DiaRU(i,j,k,nrhs,M3vvis)*    &
+step3d_uv.F:            ru(i,j,k,nrhs)=ru(i,j,k,nrhs)*umask_wet(i,j)
+step3d_uv.F:              v(i,j,k,nnew)=v(i,j,k,nnew)+DC(i,0)*rv(i,j,k,nrhs)
+step3d_uv.F:     &                                 DiaRV(i,j,k,nrhs,idiag))*        &
+step3d_uv.F:     &                               DC(i,0)*DiaRV(i,j,k,nrhs,M3vvis)*  &
+step3d_uv.F:              rv(i,j,k,nrhs)=rv(i,j,k,nrhs)*vmask_wet(i,j)
+t3dmix2_geo.h:     &                   nrhs(ng), nstp(ng), nnew(ng),                  &
+t3dmix2_geo.h:     &                         nrhs, nstp, nnew,                        &
+t3dmix2_geo.h:      integer, intent(in) :: nrhs, nstp, nnew
+t3dmix2_geo.h:!  as: 3/4 t(:,:,:,nrhs,:) + 1/4 t(:,:,:,nstp,:).
+t3dmix2_geo.h:                dTdx(i,j,k2)=cff*(0.75_r8*(t(i  ,j,k+1,nrhs,itrc)-      &
+t3dmix2_geo.h:     &                                     t(i-1,j,k+1,nrhs,itrc))+     &
+t3dmix2_geo.h:                dTdx(i,j,k2)=cff*((t(i  ,j,k+1,nrhs,itrc)-              &
+t3dmix2_geo.h:     &                            (t(i-1,j,k+1,nrhs,itrc)-              &
+t3dmix2_geo.h:                dTdx(i,j,k2)=cff*(t(i  ,j,k+1,nrhs,itrc)-               &
+t3dmix2_geo.h:     &                            t(i-1,j,k+1,nrhs,itrc))
+t3dmix2_geo.h:                dTde(i,j,k2)=cff*(0.75_r8*(t(i,j  ,k+1,nrhs,itrc)-      &
+t3dmix2_geo.h:     &                                     t(i,j-1,k+1,nrhs,itrc))+     &
+t3dmix2_geo.h:                dTde(i,j,k2)=cff*((t(i,j  ,k+1,nrhs,itrc)-              &
+t3dmix2_geo.h:     &                            (t(i,j-1,k+1,nrhs,itrc)-              &
+t3dmix2_geo.h:                dTde(i,j,k2)=cff*(t(i,j  ,k+1,nrhs,itrc)-               &
+t3dmix2_geo.h:     &                            t(i,j-1,k+1,nrhs,itrc))
+t3dmix2_geo.h:                dTdz(i,j,k2)=cff*(0.75_r8*(t(i,j,k+1,nrhs,itrc)-        &
+t3dmix2_geo.h:     &                                     t(i,j,k  ,nrhs,itrc))+       &
+t3dmix2_geo.h:                dTdz(i,j,k2)=cff*((t(i,j,k+1,nrhs,itrc)-                &
+t3dmix2_geo.h:     &                            (t(i,j,k  ,nrhs,itrc)-                &
+t3dmix2_geo.h:                dTdz(i,j,k2)=cff*(t(i,j,k+1,nrhs,itrc)-                 &
+t3dmix2_geo.h:     &                            t(i,j,k  ,nrhs,itrc))
+t3dmix2_iso.h:     &                   nrhs(ng), nnew(ng),                            &
+t3dmix2_iso.h:     &                         nrhs, nnew,                              &
+t3dmix2_iso.h:      integer, intent(in) :: nrhs, nnew
+t3dmix2_iso.h:                dTdx(i,j,k2)=cff*((t(i  ,j,k+1,nrhs,itrc)-              &
+t3dmix2_iso.h:     &                            (t(i-1,j,k+1,nrhs,itrc)-              &
+t3dmix2_iso.h:                dTdx(i,j,k2)=cff*(t(i  ,j,k+1,nrhs,itrc)-               &
+t3dmix2_iso.h:     &                            t(i-1,j,k+1,nrhs,itrc))
+t3dmix2_iso.h:                dTde(i,j,k2)=cff*((t(i,j  ,k+1,nrhs,itrc)-              &
+t3dmix2_iso.h:     &                            (t(i,j-1,k+1,nrhs,itrc)-              &
+t3dmix2_iso.h:                dTde(i,j,k2)=cff*(t(i,j  ,k+1,nrhs,itrc)-               &
+t3dmix2_iso.h:     &                            t(i,j-1,k+1,nrhs,itrc))
+t3dmix2_iso.h:                dTdr(i,j,k2)=cff*((t(i,j,k+1,nrhs,itrc)-                &
+t3dmix2_iso.h:     &                            (t(i,j,k  ,nrhs,itrc)-                &
+t3dmix2_iso.h:                dTdr(i,j,k2)=cff*(t(i,j,k+1,nrhs,itrc)-                 &
+t3dmix2_iso.h:     &                            t(i,j,k  ,nrhs,itrc))
+t3dmix2_s.h:     &                   nrhs(ng), nstp(ng), nnew(ng),                  &
+t3dmix2_s.h:     &                         nrhs, nstp, nnew,                        &
+t3dmix2_s.h:      integer, intent(in) :: nrhs, nstp, nnew
+t3dmix2_s.h:!  as: 3/4 t(:,:,:,nrhs,:) + 1/4 t(:,:,:,nstp,:).
+t3dmix2_s.h:     &                (0.75_r8*(t(i  ,j,k,nrhs,itrc)-                   &
+t3dmix2_s.h:     &                          t(i-1,j,k,nrhs,itrc))+                  &
+t3dmix2_s.h:     &                ((t(i  ,j,k,nrhs,itrc)-tclm(i  ,j,k,itrc))-       &
+t3dmix2_s.h:     &                 (t(i-1,j,k,nrhs,itrc)-tclm(i-1,j,k,itrc)))
+t3dmix2_s.h:     &                (t(i,j,k,nrhs,itrc)-t(i-1,j,k,nrhs,itrc))
+t3dmix2_s.h:     &                (0.75_r8*(t(i,j  ,k,nrhs,itrc)-                   &
+t3dmix2_s.h:     &                          t(i,j-1,k,nrhs,itrc))+                  &
+t3dmix2_s.h:     &                ((t(i,j  ,k,nrhs,itrc)-tclm(i,j  ,k,itrc))-       &
+t3dmix2_s.h:     &                 (t(i,j-1,k,nrhs,itrc)-tclm(i,j-1,k,itrc)))
+t3dmix2_s.h:     &                (t(i,j,k,nrhs,itrc)-t(i,j-1,k,nrhs,itrc))
+t3dmix4_geo.h:     &                   nrhs(ng), nstp(ng), nnew(ng),                  &
+t3dmix4_geo.h:     &                         nrhs, nstp, nnew,                        &
+t3dmix4_geo.h:      integer, intent(in) :: nrhs, nstp, nnew
+t3dmix4_geo.h:!  as: 3/4 t(:,:,:,nrhs,:) + 1/4 t(:,:,:,nstp,:).
+t3dmix4_geo.h:                dTdx(i,j,k2)=cff*(0.75_r8*(t(i  ,j,k+1,nrhs,itrc)-      &
+t3dmix4_geo.h:     &                                     t(i-1,j,k+1,nrhs,itrc))+     &
+t3dmix4_geo.h:                dTdx(i,j,k2)=cff*((t(i  ,j,k+1,nrhs,itrc)-              &
+t3dmix4_geo.h:     &                            (t(i-1,j,k+1,nrhs,itrc)-              &
+t3dmix4_geo.h:                dTdx(i,j,k2)=cff*(t(i  ,j,k+1,nrhs,itrc)-               &
+t3dmix4_geo.h:     &                            t(i-1,j,k+1,nrhs,itrc))
+t3dmix4_geo.h:                dTde(i,j,k2)=cff*(0.75_r8*(t(i,j  ,k+1,nrhs,itrc)-      &
+t3dmix4_geo.h:     &                                     t(i,j-1,k+1,nrhs,itrc))+     &
+t3dmix4_geo.h:                dTde(i,j,k2)=cff*((t(i,j  ,k+1,nrhs,itrc)-              &
+t3dmix4_geo.h:     &                            (t(i,j-1,k+1,nrhs,itrc)-              &
+t3dmix4_geo.h:                dTde(i,j,k2)=cff*(t(i,j  ,k+1,nrhs,itrc)-               &
+t3dmix4_geo.h:     &                            t(i,j-1,k+1,nrhs,itrc))
+t3dmix4_geo.h:                dTdz(i,j,k2)=cff*(0.75_r8*(t(i,j,k+1,nrhs,itrc)-        &
+t3dmix4_geo.h:     &                                     t(i,j,k  ,nrhs,itrc))+       &
+t3dmix4_geo.h:                dTdz(i,j,k2)=cff*((t(i,j,k+1,nrhs,itrc)-                &
+t3dmix4_geo.h:     &                            (t(i,j,k  ,nrhs,itrc)-                &
+t3dmix4_geo.h:                dTdz(i,j,k2)=cff*(t(i,j,k+1,nrhs,itrc)-                 &
+t3dmix4_geo.h:     &                            t(i,j,k  ,nrhs,itrc))
+t3dmix4_iso.h:     &                   nrhs(ng), nnew(ng),                            &
+t3dmix4_iso.h:     &                         nrhs, nnew,                              &
+t3dmix4_iso.h:      integer, intent(in) :: nrhs, nnew
+t3dmix4_iso.h:                dTdx(i,j,k2)=cff*((t(i  ,j,k+1,nrhs,itrc)-              &
+t3dmix4_iso.h:     &                            (t(i-1,j,k+1,nrhs,itrc)-              &
+t3dmix4_iso.h:                dTdx(i,j,k2)=cff*(t(i  ,j,k+1,nrhs,itrc)-               &
+t3dmix4_iso.h:     &                            t(i-1,j,k+1,nrhs,itrc))
+t3dmix4_iso.h:                dTde(i,j,k2)=cff*((t(i,j  ,k+1,nrhs,itrc)-              &
+t3dmix4_iso.h:     &                            (t(i,j-1,k+1,nrhs,itrc)-              &
+t3dmix4_iso.h:                dTde(i,j,k2)=cff*(t(i,j  ,k+1,nrhs,itrc)-               &
+t3dmix4_iso.h:     &                            t(i,j-1,k+1,nrhs,itrc))
+t3dmix4_iso.h:                dTdr(i,j,k2)=cff*((t(i,j,k+1,nrhs,itrc)-                &
+t3dmix4_iso.h:     &                            (t(i,j,k  ,nrhs,itrc)-                &
+t3dmix4_iso.h:                dTdr(i,j,k2)=cff*(t(i,j,k+1,nrhs,itrc)-                 &
+t3dmix4_iso.h:     &                            t(i,j,k  ,nrhs,itrc))
+t3dmix4_s.h:     &                   nrhs(ng), nstp(ng), nnew(ng),                  &
+t3dmix4_s.h:     &                         nrhs, nstp, nnew,                        &
+t3dmix4_s.h:      integer, intent(in) :: nrhs, nstp, nnew
+t3dmix4_s.h:!  as: 3/4 t(:,:,:,nrhs,:) + 1/4 t(:,:,:,nstp,:).
+t3dmix4_s.h:     &                (0.75_r8*(t(i  ,j,k,nrhs,itrc)-                   &
+t3dmix4_s.h:     &                          t(i-1,j,k,nrhs,itrc))+                  &
+t3dmix4_s.h:     &                ((t(i  ,j,k,nrhs,itrc)-tclm(i  ,j,k,itrc))-       &
+t3dmix4_s.h:     &                 (t(i-1,j,k,nrhs,itrc)-tclm(i-1,j,k,itrc)))
+t3dmix4_s.h:     &                (t(i  ,j,k,nrhs,itrc)-                            &
+t3dmix4_s.h:     &                 t(i-1,j,k,nrhs,itrc))
+t3dmix4_s.h:     &                (0.75_r8*(t(i,j  ,k,nrhs,itrc)-                   &
+t3dmix4_s.h:     &                          t(i,j-1,k,nrhs,itrc))+                  &
+t3dmix4_s.h:     &                ((t(i,j  ,k,nrhs,itrc)-tclm(i,j  ,k,itrc))-       &
+t3dmix4_s.h:     &                 (t(i,j-1,k,nrhs,itrc)-tclm(i,j-1,k,itrc)))
+t3dmix4_s.h:     &                (t(i,j  ,k,nrhs,itrc)-                            &
+t3dmix4_s.h:     &                 t(i,j-1,k,nrhs,itrc))
+uv3dmix2_geo.h:     &                    nrhs(ng), nnew(ng),                           &
+uv3dmix2_geo.h:     &                          nrhs, nnew,                             &
+uv3dmix2_geo.h:      integer, intent(in) :: nrhs, nnew
+uv3dmix2_geo.h:     &                           u(i+1,j,k+1,nrhs)-                     &
+uv3dmix2_geo.h:     &                           u(i  ,j,k+1,nrhs))
+uv3dmix2_geo.h:     &                           u(i,j  ,k+1,nrhs)-                     &
+uv3dmix2_geo.h:     &                           u(i,j-1,k+1,nrhs))
+uv3dmix2_geo.h:     &                           v(i  ,j,k+1,nrhs)-                     &
+uv3dmix2_geo.h:     &                           v(i-1,j,k+1,nrhs))
+uv3dmix2_geo.h:     &                           v(i,j+1,k+1,nrhs)-                     &
+uv3dmix2_geo.h:     &                           v(i,j  ,k+1,nrhs))
+uv3dmix2_geo.h:              dUdz(i,j,k2)=cff*(u(i,j,k+1,nrhs)-                        &
+uv3dmix2_geo.h:     &                          u(i,j,k  ,nrhs))
+uv3dmix2_geo.h:              dVdz(i,j,k2)=cff*(v(i,j,k+1,nrhs)-                        &
+uv3dmix2_geo.h:     &                          v(i,j,k  ,nrhs))
+uv3dmix2_s.h:     &                    nrhs(ng), nnew(ng),                           &
+uv3dmix2_s.h:     &                          nrhs, nnew,                             &
+uv3dmix2_s.h:      integer, intent(in) :: nrhs, nnew
+uv3dmix2_s.h:     &           ((pn(i  ,j)+pn(i+1,j))*u(i+1,j,k,nrhs)-                &
+uv3dmix2_s.h:     &            (pn(i-1,j)+pn(i  ,j))*u(i  ,j,k,nrhs))-               &
+uv3dmix2_s.h:     &           ((pm(i,j  )+pm(i,j+1))*v(i,j+1,k,nrhs)-                &
+uv3dmix2_s.h:     &            (pm(i,j-1)+pm(i,j  ))*v(i,j  ,k,nrhs)))
+uv3dmix2_s.h:     &           ((pn(i  ,j-1)+pn(i  ,j))*v(i  ,j,k,nrhs)-              &
+uv3dmix2_s.h:     &            (pn(i-1,j-1)+pn(i-1,j))*v(i-1,j,k,nrhs))+             &
+uv3dmix2_s.h:     &           ((pm(i-1,j  )+pm(i,j  ))*u(i,j  ,k,nrhs)-              &
+uv3dmix2_s.h:     &            (pm(i-1,j-1)+pm(i,j-1))*u(i,j-1,k,nrhs)))
+uv3dmix4_geo.h:     &                    nrhs(ng), nnew(ng),                           &
+uv3dmix4_geo.h:     &                          nrhs, nnew,                             &
+uv3dmix4_geo.h:      integer, intent(in) :: nrhs, nnew
+uv3dmix4_geo.h:     &                           u(i+1,j,k+1,nrhs)-                     &
+uv3dmix4_geo.h:     &                           u(i  ,j,k+1,nrhs))
+uv3dmix4_geo.h:     &                           u(i,j  ,k+1,nrhs)-                     &
+uv3dmix4_geo.h:     &                           u(i,j-1,k+1,nrhs))
+uv3dmix4_geo.h:     &                           v(i  ,j,k+1,nrhs)-                     &
+uv3dmix4_geo.h:     &                           v(i-1,j,k+1,nrhs))
+uv3dmix4_geo.h:     &                           v(i,j+1,k+1,nrhs)-                     &
+uv3dmix4_geo.h:     &                           v(i,j  ,k+1,nrhs))
+uv3dmix4_geo.h:              dUdz(i,j,k2)=cff*(u(i,j,k+1,nrhs)-                        &
+uv3dmix4_geo.h:     &                          u(i,j,k  ,nrhs))
+uv3dmix4_geo.h:              dVdz(i,j,k2)=cff*(v(i,j,k+1,nrhs)-                        &
+uv3dmix4_geo.h:     &                          v(i,j,k  ,nrhs))
+uv3dmix4_s.h:     &                    nrhs(ng), nnew(ng),                           &
+uv3dmix4_s.h:     &                          nrhs, nnew,                             &
+uv3dmix4_s.h:      integer, intent(in) :: nrhs, nnew
+uv3dmix4_s.h:     &           ((pn(i  ,j)+pn(i+1,j))*u(i+1,j,k,nrhs)-                &
+uv3dmix4_s.h:     &            (pn(i-1,j)+pn(i  ,j))*u(i  ,j,k,nrhs))-               &
+uv3dmix4_s.h:     &           ((pm(i,j  )+pm(i,j+1))*v(i,j+1,k,nrhs)-                &
+uv3dmix4_s.h:     &            (pm(i,j-1)+pm(i,j  ))*v(i,j  ,k,nrhs)))
+uv3dmix4_s.h:     &           ((pn(i  ,j-1)+pn(i  ,j))*v(i  ,j,k,nrhs)-              &
+uv3dmix4_s.h:     &            (pn(i-1,j-1)+pn(i-1,j))*v(i-1,j,k,nrhs))+             &
+uv3dmix4_s.h:     &           ((pm(i-1,j  )+pm(i,j  ))*u(i,j  ,k,nrhs)-              &
+uv3dmix4_s.h:     &            (pm(i-1,j-1)+pm(i,j-1))*u(i,j-1,k,nrhs)))

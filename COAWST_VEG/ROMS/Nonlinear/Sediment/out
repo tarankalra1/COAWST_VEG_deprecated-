@@ -1,0 +1,283 @@
+sed_bed2.F:     &                   nstp(ng), nnew(ng),                            &
+sed_bed2.F:     &                         nstp, nnew,                              &
+sed_bed2.F:      integer, intent(in) :: nstp, nnew
+sed_bed2.F:      real(r8), intent(inout) :: ero_flux(LBi:UBi,LBj:UBj,NST)
+sed_bed2.F:      real(r8), intent(inout) :: settling_flux(LBi:UBi,LBj:UBj,NST)
+sed_bed2.F:      real(r8), intent(inout) :: bed_frac(LBi:UBi,LBj:UBj,Nbed,NST)
+sed_bed2.F:      real(r8), intent(inout) :: bed_mass(LBi:UBi,LBj:UBj,Nbed,1:2,NST)
+sed_bed2.F:      real(r8), dimension(NST) :: nlysm
+sed_bed2.F:      real(r8), dimension(IminS:ImaxS,NST) :: dep_mass
+sed_bed2.F:      bnew=nstp
+sed_bed2.F:         SED_LOOP: DO ised=1,NST  
+sed_bed2.F:               bed_mass(i,j,k,nnew,ised)=bed_mass(i,j,k,nstp,ised)
+sed_bed2.F:         DO ised=1,NST
+sed_bed2.F:         DO ised=1,NST
+sed_bed2.F:           DO ised=1,NST
+sed_bed2.F:                    ! Instead of pushing down all layers, just combine top 2 layers
+sed_bed2.F:                       DO ised=1,NST
+sed_bed2.F:                       DO ised=1,NST
+sed_bed2.F:                       DO ised=1,NST
+sed_bed2.F:                       DO ised=1,NST
+sed_bed2.F:                          DO ised =1,NST
+sed_bed2.F:                       DO ised=1,NST
+sed_bed2.F:                    DO ised=1,NST
+sed_bed2.F:                    DO ised=1,NST
+sed_bed2.F:                    DO ised=1,NST
+sed_bed2.F:              DO ised=1,NST
+sed_bed2.F:              DO ised=1,NST
+sed_bed2.F:              DO ised=1,NST
+sed_bed2.F:              DO ised=1,NST
+sed_bed2.F:              DO ised=1,NST
+sed_bed2.F:                DO ised=1,NST
+sed_bed2.F:              DO ised=1,NST
+sed_bed2.F:              IF (nnn.eq.NST) THEN
+sed_bed2.F:                  DO ised=1,NST
+sed_bed2.F:                     DO ised=1,NST
+sed_bed2.F:                     DO ised=1,NST
+sed_bed2.F:      DO ised=1,NST
+sed_bed2.F:     &                    LBi, UBi, LBj, UBj, 1, Nbed, 1, NST,          &
+sed_bed_cohesive.F:     &                   nstp(ng), nnew(ng),                            &
+sed_bed_cohesive.F:     &                         nstp, nnew,                              &
+sed_bed_cohesive.F:      integer, intent(in) :: nstp, nnew
+sed_bed_cohesive.F:      real(r8), intent(inout) :: ero_flux(LBi:UBi,LBj:UBj,NST)
+sed_bed_cohesive.F:      real(r8), intent(inout) :: settling_flux(LBi:UBi,LBj:UBj,NST)
+sed_bed_cohesive.F:      real(r8), intent(inout) :: bed_frac(LBi:UBi,LBj:UBj,Nbed,NST)
+sed_bed_cohesive.F:      real(r8), intent(inout) :: bed_mass(LBi:UBi,LBj:UBj,Nbed,1:2,NST)
+sed_bed_cohesive.F:      real(r8), dimension(NST) :: nlysm
+sed_bed_cohesive.F:      real(r8), dimension(IminS:ImaxS,NST) :: dep_mass
+sed_bed_cohesive.F:      bnew=nstp
+sed_bed_cohesive.F:         SED_LOOP: DO ised=1,NST  
+sed_bed_cohesive.F:               bed_mass(i,j,k,nnew,ised)=bed_mass(i,j,k,nstp,ised)
+sed_bed_cohesive.F:         DO ised=1,NST
+sed_bed_cohesive.F:         DO ised=1,NST
+sed_bed_cohesive.F:          DO ised=NCS+1,NST
+sed_bed_cohesive.F:             DO ised=NCS+1,NST
+sed_bed_cohesive.F:!ALA   Instead of adding entire 2nd layer, add just what is needed
+sed_bed_cohesive.F:                DO ised=NCS+1,NST
+sed_bed_cohesive.F:           DO ised=1,NST
+sed_bed_cohesive.F:             DO ised=1,NST
+sed_bed_cohesive.F:                    ! Instead of pushing down all layers, just combine top 2 layers
+sed_bed_cohesive.F:                       DO ised=1,NST
+sed_bed_cohesive.F:                       DO ised=1,NST
+sed_bed_cohesive.F:                       DO ised=1,NST
+sed_bed_cohesive.F:                       DO ised=1,NST
+sed_bed_cohesive.F:                          DO ised =1,NST
+sed_bed_cohesive.F:                       DO ised=1,NST
+sed_bed_cohesive.F:                       DO ised=1,NST
+sed_bed_cohesive.F:                    DO ised=1,NST
+sed_bed_cohesive.F:                    DO ised=1,NST
+sed_bed_cohesive.F:                    DO ised=1,NST
+sed_bed_cohesive.F:              DO ised=1,NST
+sed_bed_cohesive.F:                    DO ised=1,NST
+sed_bed_cohesive.F:              DO ised=1,NST
+sed_bed_cohesive.F:              DO ised=1,NST
+sed_bed_cohesive.F:              DO ised=1,NST
+sed_bed_cohesive.F:              DO ised=1,NST
+sed_bed_cohesive.F:              DO ised=1,NST
+sed_bed_cohesive.F:                DO ised=1,NST
+sed_bed_cohesive.F:          DO ised=1,NST
+sed_bed_cohesive.F:             DO ised=1,NST
+sed_bed_cohesive.F:              DO ised=1,NST
+sed_bed_cohesive.F:              IF (nnn.eq.NST) THEN
+sed_bed_cohesive.F:                  DO ised=1,NST
+sed_bed_cohesive.F:                     DO ised=1,NST
+sed_bed_cohesive.F:                     DO ised=1,NST
+sed_bed_cohesive.F:              DO ised=1,NST
+sed_bed_cohesive.F:          DO ised=1,NST
+sed_bed_cohesive.F:             DO ised=1,NST
+sed_bed_cohesive.F:      DO ised=1,NST
+sed_bed_cohesive.F:     &                    LBi, UBi, LBj, UBj, 1, Nbed, 1, NST,          &
+sed_bed.F:     &                   nstp(ng), nnew(ng),                            &
+sed_bed.F:     &                         nstp, nnew,                              &
+sed_bed.F:      integer, intent(in) :: nstp, nnew
+sed_bed.F:      real(r8), intent(inout) :: ero_flux(LBi:UBi,LBj:UBj,NST)
+sed_bed.F:      real(r8), intent(inout) :: settling_flux(LBi:UBi,LBj:UBj,NST)
+sed_bed.F:      real(r8), intent(inout) :: bed_frac(LBi:UBi,LBj:UBj,Nbed,NST)
+sed_bed.F:      real(r8), intent(inout) :: bed_mass(LBi:UBi,LBj:UBj,Nbed,1:2,NST)
+sed_bed.F:      real(r8), dimension(IminS:ImaxS,NST) :: dep_mass
+sed_bed.F:      bnew=nstp
+sed_bed.F:        SED_LOOP: DO ised=1,NST
+sed_bed.F:              bed_mass(i,j,k,nnew,ised)=bed_mass(i,j,k,nstp,ised)
+sed_bed.F:            DO ised=1,NST
+sed_bed.F:              DO ised=1,NST
+sed_bed.F:                DO ised =1,NST
+sed_bed.F:              DO ised=1,NST
+sed_bed.F:            DO ised=1,NST
+sed_bed.F:            DO ised=1,NST
+sed_bed.F:              DO ised=1,NST
+sed_bed.F:              DO ised=1,NST
+sed_bed.F:              DO ised=1,NST
+sed_bed.F:                DO ised=1,NST
+sed_bed.F:                DO ised=1,NST
+sed_bed.F:      DO ised=1,NST
+sed_bed.F:     &                    LBi, UBi, LBj, UBj, 1, Nbed, 1, NST,          &
+sed_bedload.F:     &                       nstp(ng), nnew(ng),                        &
+sed_bedload.F:     &                             nstp, nnew,                          &
+sed_bedload.F:      integer, intent(in) :: nstp, nnew
+sed_bedload.F:      real(r8), intent(inout) :: bedldu(LBi:UBi,LBj:UBj,NST)
+sed_bedload.F:      real(r8), intent(inout) :: bedldv(LBi:UBi,LBj:UBj,NST)
+sed_bedload.F:      real(r8), intent(inout) :: bed_frac(LBi:UBi,LBj:UBj,Nbed,NST)
+sed_bedload.F:      real(r8), intent(inout) :: bed_mass(LBi:UBi,LBj:UBj,Nbed,1:2,NST)
+sed_bedload.F:! Compute some constant bed slope parameters.
+sed_bedload.F:      DO ised=NCS+1,NST
+sed_bedload.F:     &                    bed_mass(i,j,1,nstp,ised)*                    &
+sed_bedload.F:     &                    bed_mass(i,j,1,nstp,ised)*                    &
+sed_bedload.F:            bed_mass(i,j,1,nnew,ised)=MAX(bed_mass(i,j,1,nstp,ised)-    &
+sed_bedload.F:              bed_mass(i,j,k,nnew,ised)=bed_mass(i,j,k,nstp,ised)
+sed_bedload.F:            bed_mass(i,j,1,nnew,ised)=bed_mass(i,j,1,nstp,ised)
+sed_bedload.F:              bed_mass(i,j,k,nnew,ised)=bed_mass(i,j,k,nstp,ised)
+sed_bedload.F:          DO ised=1,NST
+sed_bedload.F:          DO ised=1,NST
+sed_bedload.F:          DO ised=1,NST
+sed_bedload.F:      DO ised=1,NST
+sed_bedload.F:     &                    LBi, UBi, LBj, UBj, 1, Nbed, 1, NST,          &
+sed_bedload.F:     &                      LBi, UBi, LBj, UBj, 1, NST,                 &
+sedbed_mod.h:!  bed_thick      Instantaneous total bed thickness (m).               !
+sedbed_mod.h:        allocate ( SEDBED(ng) % avgbedldu(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:        allocate ( SEDBED(ng) % avgbedldv(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % bed_frac(LBi:UBi,LBj:UBj,Nbed,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % bed_mass(LBi:UBi,LBj:UBj,Nbed,2,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % bedldu(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % bedldv(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % ero_flux(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % settling_flux(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % tl_bed_frac(LBi:UBi,LBj:UBj,Nbed,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % tl_bed_mass(LBi:UBi,LBj:UBj,Nbed,2,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % tl_bedldu(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % tl_bedldv(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % tl_ero_flux(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % tl_settling_flux(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % ad_bed_frac(LBi:UBi,LBj:UBj,Nbed,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % ad_bed_mass(LBi:UBi,LBj:UBj,Nbed,2,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % ad_bedldu(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % ad_bedldv(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % ad_ero_flux(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:      allocate ( SEDBED(ng) % ad_settling_flux(LBi:UBi,LBj:UBj,NST) )
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sedbed_mod.h:          DO itrc=1,NST
+sed_biodiff.F:     &                   nstp(ng), nnew(ng),                            &
+sed_biodiff.F:     &                         nstp, nnew,                              &
+sed_biodiff.F:      integer, intent(in) :: nstp, nnew
+sed_biodiff.F:      real(r8), intent(inout) :: bed_frac(LBi:UBi,LBj:UBj,Nbed,NST)
+sed_biodiff.F:      real(r8), intent(inout) :: bed_mass(LBi:UBi,LBj:UBj,Nbed,1:2,NST)
+sed_biodiff.F:      real(r8), dimension(IminS:ImaxS,NST) :: dep_mass
+sed_biodiff.F:            DO ised=1,NST
+sed_biodiff.F:!             write(*,*) i,j,k,(bed_frac(i,j,k,ised),ised=1,NST)
+sed_biodiff.F:              DO ised=1,NST
+sed_biodiff.F:              DO ised=1,NST
+sed_biodiff.F:              DO ised=1,NST
+sed_biodiff.F:      DO ised=1,NST
+sed_biodiff.F:     &                    LBi, UBi, LBj, UBj, 1, Nbed, 1, NST,          &
+sed_biomass.F:     &                      nstp(ng), nnew(ng),                         &
+sed_biomass.F:     &                            nstp, nnew,                           &
+sed_biomass.F:      integer, intent(in) :: nstp, nnew
+sed_biomass.F:      real(r8), intent(inout) :: settling_flux(LBi:UBi,LBj:UBj,NST)
+sed_biomass.F:!  Save instantaneous depth at this instance and recompute max daily depth.
+sed_flocs.F:     &                        nstp(ng), nnew(ng),                       &
+sed_flocs.F:     &                              nstp, nnew, Hz,                     &
+sed_flocs.F:      integer, intent(in) :: nstp, nnew
+sed_flocs.F:!                susmud(i,k,ised)=MAX(t(i,j,k,nstp,indx),0.0_r8)
+sed_fluxes.F:     &                      nstp(ng), nnew(ng),                         &
+sed_fluxes.F:     &                            nstp, nnew,                           &
+sed_fluxes.F:      integer, intent(in) :: nstp, nnew
+sed_fluxes.F:      real(r8), intent(inout) :: ero_flux(LBi:UBi,LBj:UBj,NST)
+sed_fluxes.F:      real(r8), intent(inout) :: settling_flux(LBi:UBi,LBj:UBj,NST)
+sed_fluxes.F:      real(r8), intent(inout) :: bed_frac(LBi:UBi,LBj:UBj,Nbed,NST)
+sed_fluxes.F:      real(r8), intent(inout) :: bed_mass(LBi:UBi,LBj:UBj,Nbed,1:2,NST)
+sed_fluxes.F:      bnew=nstp
+sed_fluxes.F:        SED_LOOP: DO ised=1,NST
+sed_fluxes.F:# if defined SED_TAU_CD_CONST || defined SED_TAU_CD_LIN
+sed_fluxes.F:# if defined SED_TAU_CD_CONST || defined SED_TAU_CD_LIN
+sediment_inp.h:      iTrcEnd=NST                        ! last  LBC tracer to process
+sediment_inp.h:              IF (itracer.lt.NST) THEN
+sediment_inp.h:              IF (itracer.lt.NST) THEN
+sediment_inp.h:              IF (.not.allocated(Sd50)) allocate (Sd50(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Csed)) allocate (Csed(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Srho)) allocate (Srho(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Wsed)) allocate (Wsed(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Erate)) allocate (Erate(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(tau_ce)) allocate (tau_ce(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(tau_cd)) allocate (tau_cd(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(poros)) allocate (poros(NST,Ngrids))
+sediment_inp.h:                allocate (morph_fac(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Sd50)) allocate (Sd50(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Csed)) allocate (Csed(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Srho)) allocate (Srho(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Wsed)) allocate (Wsed(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(Erate)) allocate (Erate(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(tau_ce)) allocate (tau_ce(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(tau_cd)) allocate (tau_cd(NST,Ngrids))
+sediment_inp.h:              IF (.not.allocated(poros)) allocate (poros(NST,Ngrids))
+sediment_inp.h:                allocate (morph_fac(NST,Ngrids))
+sediment_inp.h:                DO itrc=NCS+1,NST
+sediment_inp.h:                DO itrc=NCS+1,NST
+sediment_inp.h:                allocate (mud_frac_eq(NST,Ngrids))
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO itrc=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:            DO i=1,NST
+sediment_inp.h:        DO i=1,NST
+sediment_mod.h:        allocate ( idsed(MAX(1,NST)) )
+sediment_mod.h:        allocate ( idBmas(NST) )
+sediment_mod.h:        allocate ( idfrac(NST) )
+sediment_mod.h:        allocate ( idUbld(NST) )
+sediment_mod.h:        allocate ( idVbld(NST) )
+sediment_wrt.h:     &                      Sd50(:,ng), (/1/), (/NST/),                 &
+sediment_wrt.h:     &                      Srho(:,ng), (/1/), (/NST/),                 &
+sediment_wrt.h:     &                      Csed(:,ng), (/1/), (/NST/),                 &
+sediment_wrt.h:     &                      Wsed(:,ng), (/1/), (/NST/),                 &
+sediment_wrt.h:     &                      Erate(:,ng), (/1/), (/NST/),                &
+sediment_wrt.h:     &                      tau_ce(:,ng), (/1/), (/NST/),               &
+sediment_wrt.h:     &                      tau_cd(:,ng), (/1/), (/NST/),               &
+sediment_wrt.h:     &                      poros(:,ng), (/1/), (/NST/),                &
+sed_settling.F:!  parabolic,  vertical reconstructuion of the suspended  sediment in  !
+sed_settling.F:!  the water column with PPT/WENO constraints to avoid oscillations.   !
+sed_settling.F:     &                        nstp(ng), nnew(ng),                       &
+sed_settling.F:     &                              nstp, nnew,                         &
+sed_settling.F:      integer, intent(in) :: nstp, nnew
+sed_settling.F:      real(r8), intent(inout) :: settling_flux(LBi:UBi,LBj:UBj,NST(ng))
+sed_settling.F:        SED_LOOP: DO ised=1,NST
+sed_settling.F:              qc(i,k)=t(i,j,k,nstp,indx)
+sed_settling.F:!  Reconstruct vertical profile of suspended sediment "qc" in terms
+sed_settling.F:!  Apply PPM monotonicity constraint to prevent oscillations within the
+sed_settling.F:            qL(i,1)=qc(i,1)                 ! piecewise constant.
+sed_settling.F:!  Apply monotonicity constraint again, since the reconciled interfacial
+sed_settling.F:!  After this moment reconstruction is considered complete. The next
+sed_surface.F:     &                       nstp(ng), nnew(ng),                        &
+sed_surface.F:     &                             nstp, nnew,                          &
+sed_surface.F:      integer, intent(in) :: nstp, nnew
+sed_surface.F:      real(r8), intent(inout) :: bed_frac(LBi:UBi,LBj:UBj,Nbed,NST)
+sed_surface.F:          DO ised=1,NST

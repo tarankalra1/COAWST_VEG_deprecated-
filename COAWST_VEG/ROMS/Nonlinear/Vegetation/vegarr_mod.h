@@ -1,0 +1,255 @@
+!                                                                      !
+!svn $Id: vegarr_mod.h 429 2009-12-20 17:30:26Z arango $               !
+!================================================== Hernan G. Arango ==!
+!  Copyright (c) 2002-2014 The ROMS/TOMS Group                         !
+!    Licensed under a MIT/X style license                              !
+!    See License_ROMS.txt                                              !
+!================================================== John C. Warner ====!
+!==================================================== Neil K. Ganju  ==! 
+!==================================================== Alexis Beudin  ==! 
+!==================================================Tarandeep S. Kalra==!
+!                                                                      !
+!  Vegetation Model Kernel Variables:                                  !
+!  plant         Vegetation variable properties:                       !
+!                   plant(:,:,:,phght) => height                       !
+!                   plant(:,:,:,pdens) => density                      !
+!                   plant(:,:,:,pthck) => thickness                    !
+!                   plant(:,:,:,pdiam) => diameter                     !
+!                   plant(:,:,:,pupbm) => above ground biomass         !
+!                   plant(:,:,:,pdnbm) => below ground biomass         !
+!  ru_veg         Momentum term for x direction(takes account for all  !
+!                 vegetation types)                                    !
+!  rv_veg         Momentum term for x direction(takes account for all  !
+!                 vegetation types)                                    !
+!  ru_veg_loc     Momentum term for x direction(takes account for only !
+!                 local vegetation type)                               !
+!  rv_veg_loc     Momentum term for x direction(takes account for all  !
+!                 local vegetation types)                              !
+!  bend           Bending for each vegetation                          !
+!  tke_veg        Turbulent kinetic energy from vegetation             !
+!  gls_veg        Length scale change from vegetation                  !
+!  mask_thrust    Tonellis masking for wave thrust on marshes          !
+!  Thrust_max     Maximum thrust from wave to marshes                  !
+!  Thrust_tonelli Reduced thrust from tonelli's masking                !
+!                                                                      !
+!======================================================================!
+!
+      USE mod_kinds
+!
+      implicit none
+       
+      TYPE T_VEG
+!
+!  Nonlinear model state.
+!
+        real(r8), pointer :: plant(:,:,:,:)
+
+!  Momentum terms go back to act as sink in rhs
+        real(r8), pointer :: ru_veg(:,:,:)
+        real(r8), pointer :: rv_veg(:,:,:)
+
+!  Momentum terms feed to the turbulence model 
+        real(r8), pointer :: ru_loc_veg(:,:,:,:)
+        real(r8), pointer :: rv_loc_veg(:,:,:,:)
+# ifdef VEG_FLEX 
+        real(r8), pointer :: bend(:,:,:)
+# endif         
+# if defined VEGETATION || defined VEG_TURB
+        real(r8), pointer :: tke_veg(:,:,:)
+        real(r8), pointer :: gls_veg(:,:,:)
+# endif 
+# if defined VEGETATION || defined WAVE_THRUST_MARSH
+        real(r8), pointer :: mask_thrust(:,:)
+        real(r8), pointer :: Thrust_max(:,:)
+        real(r8), pointer :: Thrust_tonelli(:,:) 
+# endif
+
+      END TYPE T_VEG
+
+      TYPE (T_VEG), allocatable :: VEG(:)
+
+      CONTAINS
+
+      SUBROUTINE allocate_vegarr (ng, LBi, UBi, LBj, UBj)
+!
+!=======================================================================
+!                                                                      !
+!  This routine allocates all variables in the module for all nested   !
+!  grids.                                                              !
+!                                                                      !
+!=======================================================================
+!
+      USE mod_param
+      USE mod_ncparam
+      USE mod_vegetation 
+
+      implicit none 
+!                       
+!  Imported variable declarations.
+!
+      integer, intent(in) :: ng, LBi, UBi, LBj, UBj
+
+!
+!-----------------------------------------------------------------------
+!  Allocate structure variables.
+!-----------------------------------------------------------------------
+!
+      IF (ng.eq.1) allocate ( VEG(Ngrids) )
+!
+!  Nonlinear model state.
+!
+
+      allocate ( VEG(ng) % plant(LBi:UBi,LBj:UBj,NVEG,NVEGP) )
+      allocate ( VEG(ng) % ru_veg(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( VEG(ng) % rv_veg(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( VEG(ng) % ru_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG) )
+      allocate ( VEG(ng) % rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG) )
+# ifdef VEG_FLEX
+      allocate ( VEG(ng) % bend(LBi:UBi,LBj:UBj,NVEG) )
+# endif
+# if defined VEGETATION || defined VEG_TURB
+      allocate ( VEG(ng) % tke_veg(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( VEG(ng) % gls_veg(LBi:UBi,LBj:UBj,N(ng)) )
+# endif
+
+# if defined VEGETATION || defined WAVE_THRUST_MARSH
+      allocate ( VEG(ng) % mask_thrust(LBi:UBi,LBj:UBj) )
+      allocate ( VEG(ng) % Thrust_max(LBi:UBi,LBj:UBj) )
+      allocate ( VEG(ng) % Thrust_tonelli(LBi:UBi,LBj:UBj) )
+# endif
+
+!
+!-----------------------------------------------------------------------
+!  Allocate various input variables for vegetation module.
+!-----------------------------------------------------------------------
+!
+
+      RETURN
+      END SUBROUTINE allocate_vegarr
+
+      SUBROUTINE initialize_vegarr (ng, tile, model)
+!
+!=======================================================================
+!                                                                      !
+!  This routine initialize structure variables in the module using     !
+!  first touch distribution policy. In shared-memory configuration,    !
+!  this operation actually performs the propagation of the "shared     !
+!  arrays" across the cluster,  unless another policy is specified     !
+!  to  override the default.                                           !
+!                                                                      !
+!=======================================================================
+!
+      USE mod_param
+      USE mod_ncparam
+      USE mod_vegetation 
+!
+!  Imported variable declarations.
+!
+      integer, intent(in) :: ng, tile, model
+!
+!  Local variable declarations.
+!
+      integer :: Imin, Imax, Jmin, Jmax
+      integer :: i, j, k, iveg, ivpr
+!
+      real(r8), parameter :: IniVal = 0.0_r8
+!
+#include "set_bounds.h"
+!
+!  Set array initialization range.
+!
+#ifdef _OPENMP
+      IF (DOMAIN(ng)%Western_Edge(tile)) THEN
+        Imin=BOUNDS(ng)%LBi(tile)
+      ELSE
+        Imin=Istr
+      END IF
+      IF (DOMAIN(ng)%Eastern_Edge(tile)) THEN
+       Imax=BOUNDS(ng)%UBi(tile)
+      ELSE
+        Imax=Iend
+      END IF
+      IF (DOMAIN(ng)%Southern_Edge(tile)) THEN
+        Jmin=BOUNDS(ng)%LBj(tile)
+      ELSE
+        Jmin=Jstr
+      END IF
+      IF (DOMAIN(ng)%Northern_Edge(tile)) THEN
+        Jmax=BOUNDS(ng)%UBj(tile)
+      ELSE
+        Jmax=Jend
+      END IF
+#else
+      Imin=BOUNDS(ng)%LBi(tile)
+      Imax=BOUNDS(ng)%UBi(tile)
+      Jmin=BOUNDS(ng)%LBj(tile)
+      Jmax=BOUNDS(ng)%UBj(tile)
+#endif
+!
+!-----------------------------------------------------------------------
+!  Initialize vegetation structure variables.
+!-----------------------------------------------------------------------
+!
+!
+      IF ((model.eq.0).or.(model.eq.iNLM)) THEN
+        DO ivpr=1,NVEGP
+          DO iveg=1,NVEG
+            DO j=Jmin,Jmax
+              DO i=Imin,Imax
+                VEG(ng) % plant(i,j,iveg,ivpr) = IniVal
+              END DO
+            END DO
+          END DO 
+        END DO
+        DO k=1,N(ng)
+          DO j=Jmin,Jmax
+            DO i=Imin,Imax
+              VEG(ng) % ru_veg(i,j,k) = IniVal
+              VEG(ng) % rv_veg(i,j,k) = IniVal
+            END DO 
+          END DO 
+        END DO 
+        DO iveg=1,NVEG
+          DO k=1,N(ng)
+            DO j=Jmin,Jmax
+              DO i=Imin,Imax
+                VEG(ng) % ru_loc_veg(i,j,k,iveg) = IniVal
+                VEG(ng) % rv_loc_veg(i,j,k,iveg) = IniVal
+              END DO 
+            END DO 
+          END DO 
+        END DO 
+# ifdef VEG_FLEX 
+        DO iveg=1,NVEG
+          DO j=Jmin,Jmax
+            DO i=Imin,Imax
+              VEG(ng) % bend(i,j,iveg) = IniVal
+            END DO 
+          END DO 
+        END DO 
+# endif 
+# if defined VEGETATION || defined VEG_TURB 
+        DO k=1,N(ng)
+          DO j=Jmin,Jmax
+            DO i=Imin,Imax
+              VEG(ng) % tke_veg(i,j,k) = IniVal
+              VEG(ng) % gls_veg(i,j,k) = IniVal
+            END DO 
+          END DO
+        END DO 
+# endif
+!
+# if defined VEGETATION || defined WAVE_THRUST_MARSH
+        DO j=Jmin,Jmax
+          DO i=Imin,Imax
+            VEG(ng) % mask_thrust(i,j) = IniVal
+            VEG(ng) % Thrust_max(i,j) = IniVal
+            VEG(ng) % Thrust_tonelli(i,j) = IniVal
+          END DO 
+        END DO
+# endif
+!
+      END IF
+! 
+      RETURN   
+      END SUBROUTINE initialize_vegarr
