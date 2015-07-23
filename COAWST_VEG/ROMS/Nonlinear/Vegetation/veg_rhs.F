@@ -139,7 +139,7 @@
       real(r8), parameter :: one_third  = 1.0_r8/3.0_r8
       real(r8) ::  Lveg, sma, buoy, cff1 , cff2, cff3 
       real(r8) :: theta, Uds, Ca, cflex, fveg, fac 
-      real(r8), dimension(0:N(ng)) :: dab  
+      real(r8), dimension(LBi:UBi,LBj:UBj,0:N(ng)) :: dab  
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: vegu
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: vegv
 !
@@ -152,7 +152,7 @@
 !
 !  Compute distance above bed - initialising dab 
 
-      dab(0)=0.0_r8 
+      dab(0,0,0)=0.0_r8 
       VEG_LOOP: DO iveg=1,NVEG
         K_LOOP: DO k=1,N(ng)
           DO j=JstrV-1,Jend
@@ -160,8 +160,8 @@
 !
 !  Select the grid cell (full or part) within the canopy layer
 !
-              dab(k)=dab(k-1)+Hz(i,j,k)
-              cff1=MIN((dab(k)-plant(i,j,iveg,phght))/Hz(i,j,k),1.0_r8)
+              dab(i,j,k)=dab(i,j,k-1)+Hz(i,j,k)
+              cff1=MIN((dab(i,j,k)-plant(i,j,iveg,phght))/Hz(i,j,k),1.0_r8)
               Lveg=MIN(1.0_r8-cff1,1.0_r8)
 # ifdef VEG_FLEX 
               sma=(plant(i,j,iveg,pdiam)*                               &
