@@ -42,7 +42,7 @@
 # endif
 # if defined VEGETATION && VEG_STREAMING 
       USE mod_vegarr
-      USE mod_veg_stream
+      USE vegetation_stream_mod, ONLY : vegetation_stream_cal
 # endif 
 !
       integer, intent(in) :: ng, tile

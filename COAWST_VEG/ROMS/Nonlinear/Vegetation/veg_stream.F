@@ -1,6 +1,6 @@
 #include "cppdefs.h"
  
-       MODULE veg_stream_mod
+       MODULE vegetation_stream_mod
 #if defined VEGETATION && defined VEG_STREAM 
 !
 !svn $Id: wave_thrust_marsh.F 429 2015-04-20 17:30:26Z arango $
@@ -21,20 +21,18 @@
       implicit none
 
       PRIVATE
-      PUBLIC  :: veg_stream
+      PUBLIC  :: vegetation_stream_cal
 
       CONTAINS
 !
 !***********************************************************************
-      SUBROUTINE veg_stream_cal (ng, tile)
+      SUBROUTINE vegetation_stream_cal (ng, tile)
 !***********************************************************************
 !
       USE mod_param
       USE mod_forces
       USE mod_grid
       USE mod_vegarr
-      USE wec_streaming_mod
-
 !
 !  Imported variable declarations.
 !
@@ -48,34 +46,52 @@
 # ifdef PROFILE
       CALL wclock_on (ng, iNLM, 16)
 # endif
-      CALL veg_stream_tile  (ng, tile,                                  &
+      CALL vegetation_stream_tile  (ng, tile,                           &
      &                        LBi, UBi, LBj, UBj,                       &
      &                        IminS, ImaxS, JminS, JmaxS,               &
      &                         GRID(ng) % angler,                       &
 # ifdef SOLVE3D
      &                         GRID(ng) % z_w,                          &
 # endif
+!# ifdef WAVES_HEIGHT
      &                         FORCES(ng) % Hwave,                      &
+!# endif
+!# ifdef WAVES_DIR
      &                         FORCES(ng) % Dwave,                      &
+!# endif
+!# ifdef WAVES_LENGTH
      &                         FORCES(ng) % Lwave,                      &
+!# endif
      &                         VEG(ng) % dissip_veg,                    &
-     &                         VEG(ng) % EWD_veg) 
+     &                         VEG(ng) % Lveg,                          &
+     &                         VEG(ng) % BWDXL_veg,                     &
+     &                         VEG(ng) % BWDYL_veg)
               
 # ifdef PROFILE
       CALL wclock_off (ng, iNLM, 16)
 # endif
       RETURN
-      END SUBROUTINE veg_stream_cal 
+      END SUBROUTINE vegetation_stream_cal 
 
 !***********************************************************************
-      SUBROUTINE veg_stream_tile  (ng, tile,                            &
+      SUBROUTINE vegetation_stream_tile  (ng, tile,                     &
      &                              LBi, UBi, LBj, UBj,                 &
+     &                        IminS, ImaxS, JminS, JmaxS,               &
      &                              angler,                             &
 # ifdef SOLVE3D
      &                              z_w,                                &
 # endif
-     &                              Hwave, Dwave, Lwave,                &
-     &                              dissip_veg, EWD_veg)           
+!# ifdef WAVES_HEIGHT
+     &                              Hwave,                              &
+!# endif
+!# ifdef WAVES_DIR
+     &                              Dwave,                              &
+!# endif
+!# ifdef WAVES_LENGTH
+     &                              Lwave,                              &
+!# endif
+     &                              dissip_veg, Lveg,                   &
+     &                              BWDXL_veg, BWDYL_veg)  
 !***********************************************************************
 !
       USE mod_param
@@ -83,7 +99,7 @@
       USE mod_scalars
       USE mod_vegetation
       USE mod_vegarr
-
+!
 !  Imported variable declarations.
 !
       integer, intent(in) :: ng, tile
@@ -95,25 +111,44 @@
 #  ifdef SOLVE3D
       real(r8), intent(in) :: z_w(LBi:,LBj:,0:)
 #  endif
+!#  ifdef WAVES_HEIGHT
       real(r8), intent(in) :: Hwave(LBi:,LBj:)
+!#  endif
+!#  ifdef WAVES_LENGTH
       real(r8), intent(in) :: Lwave(LBi:,LBj:)
+!#  endif
+!#  ifdef WAVES_DIR
       real(r8), intent(in) :: Dwave(LBi:,LBj:)
-      real(r8), intent(inout) :: EWD_veg(LBi:,LBj:,NVEG)
+!#  endif
+      real(r8), intent(in) :: dissip_veg(LBi:,LBj:,:)
+      real(r8), intent(in) :: Lveg(LBi:,LBj:,:)
+      real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:)
+      real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:)
 # else
       real(r8), intent(in)  :: angler(LBi:UBi,LBj:UBj)
 #  ifdef SOLVE3D
       real(r8), intent(in) :: z_w(LBi:UBi,LBj:UBj,UBk)
 #  endif
+!#  ifdef WAVES_HEIGHT
       real(r8), intent(in)  :: Hwave(LBi:UBi,LBj:UBj)
+!#  endif
+!#  ifdef WAVES_LENGTH
       real(r8), intent(in)  :: Lwave(LBi:UBi,LBj:UBj)
+!#  endif
+!#  ifdef WAVES_DIR
       real(r8), intent(in)  :: Dwave(LBi:UBi,LBj:UBj)
-      real(r8), intent(inout) :: EWD_veg(LBi:UBi,LBj:UBj,NVEG)
+!#  endif
+      real(r8), intent(in) :: dissip_veg(LBi:UBi,LBj:UBj,NVEG)
+      real(r8), intent(in) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
+      real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj)
+      real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj)
 # endif
 
 !  Local variable declarations.
 !
-      integer :: i,j
+      integer :: i, j, k, iveg
       real(r8) :: cff, cff3
+      real(r8) :: EWD_veg, EWD_loc_veg
       real(r8), parameter :: sqrt2=SQRT(2.0_r8)
       real(r8), parameter :: ks=0.03_r8
       real(r8), parameter :: awd=1.0_r8
@@ -122,14 +157,13 @@
       real(r8), parameter :: kDmax = 5.0_r8
       real(r8), parameter :: Lwave_min = 1.0_r8
 
+      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: Dstp
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: kD
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: waven
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wavenx
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: waveny
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: KWD
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: owd
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: EWD
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: sigma
+      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: osigma
 
 # include "set_bounds.h"
 !----------------------------------------------------------------------
@@ -146,6 +180,7 @@
           wavenx(i,j)=waven(i,j)*COS(cff)
           waveny(i,j)=waven(i,j)*SIN(cff)
           sigma(i,j)=MIN(SQRT(g*waven(i,j)*TANH(waven(i,j)*Dstp(i,j))),2.0_r8)
+          osigma(i,j)=1.0_r8/sigma(i,j)
 !----------------------------------------------------------------------
 !  Compute wave celerity and nonlinear water depth 
 !----------------------------------------------------------------------
@@ -171,22 +206,23 @@
 #  ifdef WAVES_OCEAN
 !----------------------------------------------------------------------
 !   Note: Alexis - check if we need a local dissip_veg here 
+!   Also Lveg is for 1 veg type only 
+!   
 !----------------------------------------------------------------------
-            EWD_loc_veg=Dissip_veg(i,j)
+            EWD_loc_veg=Dissip_veg(i,j,iveg)
 #  else
             EWD_loc_veg=(0.5_r8/sqrt(pi))*cff3*(cff**3.0_r8)
 #  endif
+            EWD_veg=EWD_loc_veg+EWD_veg
+
+            cff3=EWD_veg*osigma(i,j)*Lveg(i,j,k)
+            BWDXL_veg(i,j)=cff3*wavenx(i,j)
+            BWDYL_veg(i,j)=cff3*waveny(i,j)
+
           END DO
         END DO
+      END DO VEG_LOOP   
 
-        DO j=Jstr-1,Jend+1
-          DO i=Istr-1,Iend+1
-            EWD_veg(i,j,iveg)=EWD_loc_veg+EWD_veg(i,j,iveg)
-          END DO 
-        END DO 
-
-      END DO     
-
-      END SUBROUTINE wave_thrust_marsh_tile
+      END SUBROUTINE vegetation_stream_tile
 #endif
-      END MODULE wave_thrust_marsh_mod
+      END MODULE vegetation_stream_mod
