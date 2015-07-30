@@ -44,9 +44,7 @@
       USE mod_ocean
       USE mod_stepping
 # if defined VEGETATION && defined VEG_TURB
-!      USE mod_vegetation
       USE mod_vegarr
-      USE vegetation_rhs_mod, ONLY : vegetation_rhs_cal
       USE vegetation_gls_corstep, ONLY : vegetation_turb_cal
 # endif
 
