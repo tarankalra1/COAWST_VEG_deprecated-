@@ -11,6 +11,8 @@ This repository contains the COAWST version to compute the effects of vegetation
 *  #ifdef veg_rhs 
 *  #ifdef veg_turb 
 *  #ifdef veg_flex
+*  #ifdef veg_stream
+*  #ifdef veg_swan_coupling 
 *  #ifdef wave_thrust_marsh
 * #endif 
 
