@@ -1059,7 +1059,7 @@
       integer :: NUMTRANSFER, NNEIGH, HALOSIZE, NUMSENT, INB
       integer :: WHICHWAY, GDEST, GSRC, TAGT, TAGB, TAGR, TAGL
       integer :: TREQUEST,BREQUEST,RREQUEST,LREQUEST,MSIZE
-      integer :: iddep, idwlv, idvlx, idvly
+      integer :: iddep, idwlv, idvlx, idvly, idveg
       integer :: idruf, idice, idu10, idv10
       integer, dimension(MPI_STATUS_SIZE,4) :: status
 !     integer, pointer :: points(:)
@@ -1176,6 +1176,11 @@
         IP=IP+1
         idruf=IP
 !
+#  if defined VEGETATION && defined VEG_SWAN_COUPLING
+        IP=IP+1
+        idveg=IP
+#  endif
+!
 #  ifdef ICE_MODEL
         IP=IP+1
         idice=IP
@@ -1251,6 +1256,23 @@
             TEMPMCT(INDXG,idruf)=avdata(IP)
           END DO
         END DO
+
+#  if defined VEGETATION && defined VEG_SWAN_COUPLING
+!
+!  Vegetation density.
+!
+        CALL AttrVect_exportRAttr(AttrVect_G(ng)%ocn2wav_AV,           &
+     &                            "VEGDENS",avdata,gsmsize)
+        IP=0
+        DO IY=Jstr,Jend
+          DO IX=Istr,Iend
+            IP=IP+1
+            INDXG=(IY-1)*MXC+IX
+            TEMPMCT(INDXG,idveg)=avdata(IP)                     
+          END DO
+        END DO
+#  endif
+
 #  ifdef ICE_MODEL
 !
 !  sea ice fraction.
@@ -1535,6 +1557,9 @@
                   COMPDA(INDX,JWLV2)=TEMPMCT(IP,idwlv)
                   COMPDA(INDX,JVX2)=TEMPMCT(IP,idvlx)
                   COMPDA(INDX,JVY2)=TEMPMCT(IP,idvly)
+#  if defined VEGETATION && defined VEG_SWAN_COUPLING 
+                  COMPDA(INDX,JNPLA2)=TEMPMCT(IP,idveg)
+#  endif
                 ELSE
 #  ifdef SED_MORPH
                   COMPDA(INDX,JBOTLV)=COMPDA(INDX,JBOTLV)+              &
@@ -1544,6 +1569,11 @@
      &                               TEMPMCT(IP,idwlv)
                   COMPDA(INDX,JVX2)=COMPDA(INDX,JVX2)+TEMPMCT(IP,idvlx)
                   COMPDA(INDX,JVY2)=COMPDA(INDX,JVY2)+TEMPMCT(IP,idvly)
+#  if defined VEGETATION && defined VEG_SWAN_COUPLING
+                  COMPDA(INDX,JNPLA2)=COMPDA(INDX,JNPLA2)+              &
+     &                                TEMPMCT(IP,idveg)
+#  endif
+
                 END IF
 !             END IF
 # endif
