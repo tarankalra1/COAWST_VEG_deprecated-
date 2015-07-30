@@ -30,6 +30,10 @@
 #ifdef MCT_INTERP_OC2WV
       USE mod_coupler_iounits
 #endif
+#ifdef VEGETATION && defined VEG_SWAN_COUPLING 
+      USE mod_vegetation
+      USE mod_vegarr 
+#endif
 !
 !  Imported variable definitions.
 !
@@ -405,6 +409,13 @@
       cad=LEN_TRIM(to_add)
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
+#if defined VEGETATION && defined VEG_SWAN_COUPLING 
+!
+      to_add=':VEGDENS'
+      cad=LEN_TRIM(to_add)
+      write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
+      cid=cid+cad
+#endif
 #ifdef ICE_MODEL
 !
       to_add=':SEAICE'
@@ -813,6 +824,20 @@
       END DO
       CALL AttrVect_importRAttr (AttrVect_G(ng)%ocn2wav_AV, "ZO",       &
      &                           A, Asize)
+#if defined VEGETATION && defined VEG_SWAN_COUPLING 
+!
+!  Plant density.
+!
+      ij=0
+      DO j=JstrR,JendR
+        DO i=IstrR,IendR
+          ij=ij+1
+          A(ij)=VEG(ng)%plant(i,j,1,pdens)
+        END DO
+      END DO
+      CALL AttrVect_importRAttr (AttrVect_G(ng)%ocn2wav_AV, "VEGDENS",  &
+     &                           A, Asize)
+#endif
 #ifdef ICE_MODEL
 !
 !  sea ice.
