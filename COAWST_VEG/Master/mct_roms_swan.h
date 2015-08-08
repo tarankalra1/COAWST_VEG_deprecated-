@@ -30,7 +30,7 @@
 #ifdef MCT_INTERP_OC2WV
       USE mod_coupler_iounits
 #endif
-#ifdef VEGETATION && defined VEG_SWAN_COUPLING 
+#ifdef VEGETATION && defined VEG_STREAMING && defined VEG_SWAN_COUPLING 
       USE mod_vegetation
       USE mod_vegarr 
 #endif
@@ -359,6 +359,14 @@
       cad=LEN_TRIM(to_add)
       write(wostring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
+!
+#if defined VEGETATION && defined VEG_STREAMING
+      to_add=':DISVEG'
+      cad=LEN_TRIM(to_add)
+      write(wostring(cid:cid+cad-1),'(a)') to_add(1:cad)
+      cid=cid+cad
+#endif
+
 !
 !  Finalize and remove trailing spaces from the wostring
 !  for the rlist.
@@ -826,13 +834,13 @@
      &                           A, Asize)
 #if defined VEGETATION && defined VEG_SWAN_COUPLING 
 !
-!  Plant density.
+!  Equivalent Plant density.
 !
       ij=0
       DO j=JstrR,JendR
         DO i=IstrR,IendR
           ij=ij+1
-          A(ij)=VEG(ng)%plant(i,j,1,pdens)
+          A(ij)=VEG(ng)%equiv_plantdens(i,j)
         END DO
       END DO
       CALL AttrVect_importRAttr (AttrVect_G(ng)%ocn2wav_AV, "VEGDENS",  &
@@ -1296,7 +1304,30 @@
           END IF
         END DO
       END DO
+!
+#if defined WAVES_OCEAN && defined WEC_VF && \
+    defined BOTTOM_STREAMING && defined VEGETATION &&  \
+    defined VEG_STREAMING
+!
+!  Wave dissipation due to vegetation.
+!
+      CALL AttrVect_exportRAttr (AttrVect_G(ng)%wav2ocn_AV, "DISVEG",   &
+     &                           A, Asize)
+      ij=0 
+      cff=1.0_r8/rho0
+      DO j=JstrR,JendR
+        DO i=IstrR,IendR
+          ij=ij+1
+          IF (iw.eq.1) THEN 
+            VEG(ng)%Dissip_veg(i,j)=MAX(0.0_r8,A(ij)*ramp)*cff
+          ELSE
+            VEG(ng)%Dissip_veg(i,j)=VEG(ng)%Dissip_veg(i,j)+            &    
+     &                                  MAX(0.0_r8,A(ij)*ramp)*cff
+          END IF
+        END DO
+      END DO
 #endif
+!
       IF (EWperiodic(ng).or.NSperiodic(ng)) THEN
 !
 !-----------------------------------------------------------------------
