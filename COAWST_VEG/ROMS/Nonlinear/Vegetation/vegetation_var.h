@@ -32,6 +32,10 @@
             CASE ('idvprp(pdwbm)')
                 idvprp(pdwbm)=varid
 #endif 
+#if defined VEG_STREAMING 
+            CASE ('idWdve')
+              idWdve=varid
+#endif 
 #if defined WAVE_THRUST_MARSH
             CASE ('idTmsk')
               idTmsk=varid

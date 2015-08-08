@@ -70,7 +70,8 @@
      &                        VEG(ng) % ru_loc_veg,                     &
      &                        VEG(ng) % rv_loc_veg,                     &
      &                        VEG(ng) % ru_veg,                         &
-     &                        VEG(ng) % rv_veg)                      
+     &                        VEG(ng) % rv_veg,                         & 
+     &                        VEG(ng) % Lveg)                      
 
 # ifdef PROFILE
       CALL wclock_off (ng, iNLM, 16)
@@ -90,7 +91,8 @@
      &                              bend,                               &
 # endif 
      &                              ru_loc_veg, rv_loc_veg,             &
-     &                              ru_veg, rv_veg)
+     &                              ru_veg, rv_veg,                     &
+     &                              Lveg)
 !***********************************************************************
 !
       USE mod_param
@@ -117,11 +119,12 @@
       real(r8), intent(inout) :: rv_loc_veg(LBi:,LBj:,:,:)
       real(r8), intent(inout) :: ru_veg(LBi:,LBj:,:)
       real(r8), intent(inout) :: rv_veg(LBi:,LBj:,:)
+      real(r8), intent(inout) :: Lveg(LBi:,LBj:,:)
 # else
       real(r8), intent(in) :: Hz(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(in) :: u(LBi:UBi,LBj:UBj,N(ng),2)
       real(r8), intent(in) :: v(LBi:UBi,LBj:UBj,N(ng),2)
-      real(r9), intent(in) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
+      real(r8), intent(in) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
 #  ifdef VEG_FLEX 
       real(r8), intent(inout) :: bend(LBi:UBi,LBj:UBj,N(ng),NVEG)
 #  endif 
@@ -130,6 +133,7 @@
     &               rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG)
       real(r8), intent(inout) :: ru_veg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(inout) :: rv_veg(LBi:UBi,LBj:UBj,N(ng))
+      real(r8), intent(inout) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
 # endif
 !
 !  Local variable declarations.
@@ -137,7 +141,7 @@
       integer :: i, j, k, iveg
 ! 
       real(r8), parameter :: one_third  = 1.0_r8/3.0_r8
-      real(r8) ::  Lveg, sma, buoy, cff1 , cff2, cff3 
+      real(r8) :: sma, buoy, cff1 , cff2, cff3 
       real(r8) :: theta, Uds, Ca, cflex, fveg, fac 
       real(r8), dimension(0:N(ng)) :: dab  
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: vegu
@@ -162,7 +166,8 @@
 !
               dab(k)=dab(k-1)+Hz(i,j,k)
               cff1=MIN((dab(k)-plant(i,j,iveg,phght))/Hz(i,j,k),1.0_r8)
-              Lveg=MIN(1.0_r8-cff1,1.0_r8)
+              Lveg(i,j,k)=MIN(1.0_r8-cff1,1.0_r8)
+               
 # ifdef VEG_FLEX 
               sma=(plant(i,j,iveg,pdiam)*                               &
      &             plant(i,j,iveg,pthck)**3.0_r8)/12.0_r8
@@ -196,11 +201,11 @@
 !
 ! Effective blade length takes into account: 
 !
-              Lveg=cflex*Lveg
+              Lveg(i,j,k)=cflex*Lveg(i,j,k)
 
 !   Compute friction force *at ask Alexis:*    
               fveg=0.5_r8*cd_veg(iveg,ng)*plant(i,j,iveg,pdiam)*        &
-     &                             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg
+     &             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg(i,j,k)
               cff2=Uds*COS(theta)
               cff3=Uds*SIN(theta)
               vegu(i,j)=fveg*cff2*ABS(cff2)
@@ -219,7 +224,7 @@
 !   Compute friction force at rho points          
 !       
               fveg=0.5_r8*cd_veg(iveg,ng)*plant(i,j,iveg,pdiam)*        &
-     &                             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg
+     &             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg(i,j,k)
               cff2=0.5_r8*(u(i,j,k,nrhs)+u(i+1,j,k,nrhs))
               cff3=0.5_r8*(v(i,j,k,nrhs)+v(i,j+1,k,nrhs))
               vegu(i,j)=fveg*cff2*ABS(cff2)
@@ -242,12 +247,12 @@
           END DO
           DO j=JstrV,Jend
             DO i=Istr,Iend
-             rv_loc_veg(i,j,k,iveg)=0.5_r8*(vegv(i,j-1)+vegv(i,j))
+              rv_loc_veg(i,j,k,iveg)=0.5_r8*(vegv(i,j-1)+vegv(i,j))
 !
 !   Add the rv_iveg from this veg type to another veg type
 !   which can be there at the same point (i,j,k) 
 !
-             rv_veg(i,j,k)=rv_loc_veg(i,j,k,iveg)+rv_veg(i,j,k)
+              rv_veg(i,j,k)=rv_loc_veg(i,j,k,iveg)+rv_veg(i,j,k)
             END DO
           END DO
         END DO K_LOOP

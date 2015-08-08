@@ -65,8 +65,9 @@
         real(r8), pointer :: tke_veg(:,:,:)
         real(r8), pointer :: gls_veg(:,:,:)
 # endif 
-# if defined VEG_SWAN_COUPLING || defined VEG_STREAM
-        real(r8), pointer :: dissip_veg(:,:,:)
+# if defined VEG_SWAN_COUPLING || defined VEG_STREAMING
+        real(r8), pointer :: equiv_plantdens(:,:)
+        real(r8), pointer :: dissip_veg(:,:)
         real(r8), pointer :: BWDXL_veg(:,:)
         real(r8), pointer :: BWDYL_veg(:,:)
 # endif 
@@ -120,11 +121,12 @@
 # ifdef VEG_FLEX
       allocate ( VEG(ng) % bend(LBi:UBi,LBj:UBj,NVEG) )
 # endif
-# if defined VEGETATION || defined VEG_TURB
+# ifdef VEG_TURB
       allocate ( VEG(ng) % tke_veg(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( VEG(ng) % gls_veg(LBi:UBi,LBj:UBj,N(ng)) )
 # endif
-# if defined VEG_SWAN_COUPLING || defined VEG_STREAM
+# if defined VEG_SWAN_COUPLING || defined VEG_STREAMING
+      allocate ( VEG(ng) % equiv_plantdens(LBi:UBi,LBj:UBj) )
       allocate ( VEG(ng) % dissip_veg(LBi:UBi,LBj:UBj) )
       allocate ( VEG(ng) % BWDXL_veg(LBi:UBi,LBj:UBj) )
       allocate ( VEG(ng) % BWDYL_veg(LBi:UBi,LBj:UBj) )
@@ -264,12 +266,10 @@
         END DO 
 # endif
 # if defined VEG_SWAN_COUPLING || defined VEG_STREAMING 
-        DO iveg=1,NVEG 
-          DO j=Jmin,Jmax
-            DO i=Imin,Imax
-              VEG(ng) % dissip_veg(i,j) = IniVal
-            END DO 
-          END DO
+        DO j=Jmin,Jmax
+          DO i=Imin,Imax
+            VEG(ng) % dissip_veg(i,j) = IniVal
+          END DO 
         END DO 
         DO j=Jmin,Jmax
           DO i=Imin,Imax

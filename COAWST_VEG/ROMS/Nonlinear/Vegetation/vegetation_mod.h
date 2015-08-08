@@ -39,6 +39,7 @@
 !  ipthck         Id to output plant thickness                         !
 !  ipupbm         Id to output above ground biomass                    !
 !  ipdwbm         Id to output below ground biomass                    !
+!  idWdve         Id to output wave dissipation from vegetation        !
 !                                                                      !
 !  Wave Thrust on Marsh Output:                                        !
 !  ==========================                                          !
@@ -60,6 +61,9 @@
       integer :: pupbm, pdwbm   
       integer :: ipupbm, ipdwbm   
 #endif 
+#ifdef VEG_STREAMING 
+      integer :: idWdve
+#endif 
       integer, allocatable :: idvprp(:)    
 #ifdef WAVE_THRUST_MARSH 
       integer ::  idTmsk, idTmax, idTton 
@@ -68,7 +72,7 @@
       real(r8), allocatable :: E_VEG(:,:)
       real(r8), allocatable :: CD_VEG(:,:)
       real(r8), allocatable :: VEG_MASSDENS(:,:)
-
+!
       CONTAINS 
 ! 
       SUBROUTINE initialize_vegetation

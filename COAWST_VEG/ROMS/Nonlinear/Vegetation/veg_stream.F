@@ -1,7 +1,7 @@
 #include "cppdefs.h"
  
        MODULE vegetation_stream_mod
-#if defined VEGETATION && defined VEG_STREAM 
+#if defined VEGETATION && defined VEG_STREAMING 
 !
 !svn $Id: wave_thrust_marsh.F 429 2015-04-20 17:30:26Z arango $
 !=======================================================================
@@ -62,6 +62,7 @@
 !# ifdef WAVES_LENGTH
      &                         FORCES(ng) % Lwave,                      &
 !# endif
+     &                         VEG(ng) % plant,                         &
      &                         VEG(ng) % equiv_plantdens,               &
      &                         VEG(ng) % dissip_veg,                    &
      &                         VEG(ng) % Lveg,                          &
@@ -91,6 +92,7 @@
 !# ifdef WAVES_LENGTH
      &                              Lwave,                              &
 !# endif
+     &                              plant,                              &
      &                              equiv_plantdens,                    &
      &                              dissip_veg, Lveg,                   &
      &                              BWDXL_veg, BWDYL_veg)  
@@ -122,8 +124,10 @@
 !#  ifdef WAVES_DIR
       real(r8), intent(in) :: Dwave(LBi:,LBj:)
 !#  endif
+      real(r8), intent(in) :: plant(LBi:,LBj:,:,:)
       real(r8), intent(in) :: dissip_veg(LBi:,LBj:)
       real(r8), intent(in) :: Lveg(LBi:,LBj:,:)
+      real(r8), intent(inout) :: equiv_plantdens(LBi:,LBj:)
       real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:)
       real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:)
 # else
@@ -140,8 +144,10 @@
 !#  ifdef WAVES_DIR
       real(r8), intent(in)  :: Dwave(LBi:UBi,LBj:UBj)
 !#  endif
+      real(r8), intent(in) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
       real(r8), intent(in) :: dissip_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
+      real(r8), intent(inout) :: equiv_plantdens(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj)
 # endif
@@ -150,7 +156,7 @@
 !
       integer :: i, j, k, iveg
       real(r8) :: cff1, cff2, cff3, cff4, cff5
-      real(r8) :: EWD_veg, EWD_loc_veg
+      real(r8) :: EWD_veg
       real(r8), parameter :: sqrt2=SQRT(2.0_r8)
       real(r8), parameter :: ks=0.03_r8
       real(r8), parameter :: awd=1.0_r8
@@ -193,8 +199,8 @@
 !----------------------------------------------------------------------
           waven(i,j)=2.0_r8*pi/MAX(Lwave(i,j),Lwave_min)
           cff2=1.5_r8*pi-Dwave(i,j)-angler(i,j)
-          wavenx(i,j)=waven(i,j)*COS(cff)
-          waveny(i,j)=waven(i,j)*SIN(cff)
+          wavenx(i,j)=waven(i,j)*COS(cff2)
+          waveny(i,j)=waven(i,j)*SIN(cff2)
           sigma(i,j)=MIN(SQRT(g*waven(i,j)*TANH(waven(i,j)*             &
      &                                  Dstp(i,j))),2.0_r8)
           osigma(i,j)=1.0_r8/sigma(i,j)
@@ -205,7 +211,7 @@
         END DO 
       END DO 
 !
-      VEG_LOOP: DO iveg=1,NVEG 
+      DO k=1,N(ng)
         DO j=Jstr-1,Jend+1
           DO i=Istr-1,Iend+1
 !----------------------------------------------------------------------
@@ -225,19 +231,17 @@
 !   Note: Alexis - check if we need a local dissip_veg here 
 !   Also Lveg is for 1 veg type only 
 !----------------------------------------------------------------------
-            EWD_loc_veg=dissip_veg(i,j)
+            EWD_veg=dissip_veg(i,j)
 #  else
-            EWD_loc_veg=(0.5_r8/sqrt(pi))*cff4*(cff3**3.0_r8)
+            EWD_veg=(0.5_r8/sqrt(pi))*cff4*(cff3**3.0_r8)
 #  endif
-            EWD_veg=EWD_loc_veg+EWD_veg
-
             cff5=EWD_veg*osigma(i,j)*Lveg(i,j,k)
             BWDXL_veg(i,j)=cff5*wavenx(i,j)
             BWDYL_veg(i,j)=cff5*waveny(i,j)
 !
           END DO
         END DO
-      END DO VEG_LOOP   
+      END DO    
 !
       END SUBROUTINE vegetation_stream_tile
 #endif
