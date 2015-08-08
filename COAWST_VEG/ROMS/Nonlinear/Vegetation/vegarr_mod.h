@@ -26,8 +26,14 @@
 !  rv_veg_loc     Momentum term for x direction(takes account for all  !
 !                 local vegetation types)                              !
 !  bend           Bending for each vegetation                          !
+!  Lveg           Effective blade length                               ! 
 !  tke_veg        Turbulent kinetic energy from vegetation             !
 !  gls_veg        Length scale change from vegetation                  !
+!  equiv_plantdens                                                     !
+!                 Equivalent plant density due to vegetation           !
+!  dissip_veg     Dissipation from the SWAN model due to vegetation    !
+!  BWDXL_veg      Wave streaming effect due to vegetation              !
+!  BWDYL_veg      Wave streaming effect due to vegetation              !
 !  mask_thrust    Tonellis masking for wave thrust on marshes          !
 !  Thrust_max     Maximum thrust from wave to marshes                  !
 !  Thrust_tonelli Reduced thrust from tonelli's masking                !
@@ -51,12 +57,18 @@
 !  Momentum terms feed to the turbulence model 
         real(r8), pointer :: ru_loc_veg(:,:,:,:)
         real(r8), pointer :: rv_loc_veg(:,:,:,:)
+        real(r8), pointer :: Lveg(:,:,:)
 # ifdef VEG_FLEX 
         real(r8), pointer :: bend(:,:,:)
 # endif         
-# if defined VEGETATION || defined VEG_TURB
+# ifdef VEG_TURB
         real(r8), pointer :: tke_veg(:,:,:)
         real(r8), pointer :: gls_veg(:,:,:)
+# endif 
+# if defined VEG_SWAN_COUPLING || defined VEG_STREAM
+        real(r8), pointer :: dissip_veg(:,:,:)
+        real(r8), pointer :: BWDXL_veg(:,:)
+        real(r8), pointer :: BWDYL_veg(:,:)
 # endif 
 # if defined VEGETATION || defined WAVE_THRUST_MARSH
         real(r8), pointer :: mask_thrust(:,:)
@@ -104,12 +116,18 @@
       allocate ( VEG(ng) % rv_veg(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( VEG(ng) % ru_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG) )
       allocate ( VEG(ng) % rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG) )
+      allocate ( VEG(ng) % Lveg(LBi:UBi,LBj:UBj,N(ng)) )
 # ifdef VEG_FLEX
       allocate ( VEG(ng) % bend(LBi:UBi,LBj:UBj,NVEG) )
 # endif
 # if defined VEGETATION || defined VEG_TURB
       allocate ( VEG(ng) % tke_veg(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( VEG(ng) % gls_veg(LBi:UBi,LBj:UBj,N(ng)) )
+# endif
+# if defined VEG_SWAN_COUPLING || defined VEG_STREAM
+      allocate ( VEG(ng) % dissip_veg(LBi:UBi,LBj:UBj) )
+      allocate ( VEG(ng) % BWDXL_veg(LBi:UBi,LBj:UBj) )
+      allocate ( VEG(ng) % BWDYL_veg(LBi:UBi,LBj:UBj) )
 # endif
 
 # if defined VEGETATION || defined WAVE_THRUST_MARSH
@@ -209,6 +227,13 @@
             END DO 
           END DO 
         END DO 
+        DO k=1,N(ng)
+          DO j=Jmin,Jmax
+            DO i=Imin,Imax
+              VEG(ng) % Lveg(i,j,k) = IniVal
+            END DO 
+          END DO 
+        END DO 
         DO iveg=1,NVEG
           DO k=1,N(ng)
             DO j=Jmin,Jmax
@@ -228,13 +253,33 @@
           END DO 
         END DO 
 # endif 
-# if defined VEGETATION || defined VEG_TURB 
+# ifdef VEG_TURB 
         DO k=1,N(ng)
           DO j=Jmin,Jmax
             DO i=Imin,Imax
               VEG(ng) % tke_veg(i,j,k) = IniVal
               VEG(ng) % gls_veg(i,j,k) = IniVal
             END DO 
+          END DO
+        END DO 
+# endif
+# if defined VEG_SWAN_COUPLING || defined VEG_STREAMING 
+        DO iveg=1,NVEG 
+          DO j=Jmin,Jmax
+            DO i=Imin,Imax
+              VEG(ng) % dissip_veg(i,j) = IniVal
+            END DO 
+          END DO
+        END DO 
+        DO j=Jmin,Jmax
+          DO i=Imin,Imax
+            VEG(ng) % BWDXL_veg(i,j) = IniVal
+            VEG(ng) % BWDYL_veg(i,j) = IniVal
+          END DO
+        END DO 
+        DO j=Jmin,Jmax
+          DO i=Imin,Imax
+            VEG(ng) % equiv_plantdens(i,j) = IniVal
           END DO
         END DO 
 # endif

@@ -62,6 +62,7 @@
 !# ifdef WAVES_LENGTH
      &                         FORCES(ng) % Lwave,                      &
 !# endif
+     &                         VEG(ng) % equiv_plantdens,               &
      &                         VEG(ng) % dissip_veg,                    &
      &                         VEG(ng) % Lveg,                          &
      &                         VEG(ng) % BWDXL_veg,                     &
@@ -90,6 +91,7 @@
 !# ifdef WAVES_LENGTH
      &                              Lwave,                              &
 !# endif
+     &                              equiv_plantdens,                    &
      &                              dissip_veg, Lveg,                   &
      &                              BWDXL_veg, BWDYL_veg)  
 !***********************************************************************
@@ -120,7 +122,7 @@
 !#  ifdef WAVES_DIR
       real(r8), intent(in) :: Dwave(LBi:,LBj:)
 !#  endif
-      real(r8), intent(in) :: dissip_veg(LBi:,LBj:,:)
+      real(r8), intent(in) :: dissip_veg(LBi:,LBj:)
       real(r8), intent(in) :: Lveg(LBi:,LBj:,:)
       real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:)
       real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:)
@@ -138,7 +140,7 @@
 !#  ifdef WAVES_DIR
       real(r8), intent(in)  :: Dwave(LBi:UBi,LBj:UBj)
 !#  endif
-      real(r8), intent(in) :: dissip_veg(LBi:UBi,LBj:UBj,NVEG)
+      real(r8), intent(in) :: dissip_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj)
@@ -147,7 +149,7 @@
 !  Local variable declarations.
 !
       integer :: i, j, k, iveg
-      real(r8) :: cff, cff3
+      real(r8) :: cff1, cff2, cff3, cff4, cff5
       real(r8) :: EWD_veg, EWD_loc_veg
       real(r8), parameter :: sqrt2=SQRT(2.0_r8)
       real(r8), parameter :: ks=0.03_r8
@@ -169,6 +171,20 @@
 !----------------------------------------------------------------------
 !----------Executing the code------------------------------------------
 !----------------------------------------------------------------------
+!
+!----------------------------------------------------------------------
+!  Equivalent plant density that feeds to SWAN coupling.
+!----------------------------------------------------------------------
+      DO j=Jstr,Jend
+          DO i=Istr,Iend
+            cff1=0.0
+            DO iveg=1,NVEG
+              cff1=plant(i,j,iveg,ipdens)+cff1
+            END DO
+            equiv_plantdens(i,j)=cff1/NVEG
+        END DO 
+      END DO 
+!     
       DO j=Jstr-1,Jend+1
         DO i=Istr-1,Iend+1
           Dstp(i,j)=z_w(i,j,N(ng))-z_w(i,j,0)
@@ -176,10 +192,11 @@
 !  Compute wave amplitude (0.5*Hrms), wave number, intrinsic frequency.
 !----------------------------------------------------------------------
           waven(i,j)=2.0_r8*pi/MAX(Lwave(i,j),Lwave_min)
-          cff=1.5_r8*pi-Dwave(i,j)-angler(i,j)
+          cff2=1.5_r8*pi-Dwave(i,j)-angler(i,j)
           wavenx(i,j)=waven(i,j)*COS(cff)
           waveny(i,j)=waven(i,j)*SIN(cff)
-          sigma(i,j)=MIN(SQRT(g*waven(i,j)*TANH(waven(i,j)*Dstp(i,j))),2.0_r8)
+          sigma(i,j)=MIN(SQRT(g*waven(i,j)*TANH(waven(i,j)*             &
+     &                                  Dstp(i,j))),2.0_r8)
           osigma(i,j)=1.0_r8/sigma(i,j)
 !----------------------------------------------------------------------
 !  Compute wave celerity and nonlinear water depth 
@@ -187,42 +204,41 @@
           kD(i,j)=MIN(waven(i,j)*Dstp(i,j)+eps,kDmax)
         END DO 
       END DO 
-
+!
       VEG_LOOP: DO iveg=1,NVEG 
         DO j=Jstr-1,Jend+1
           DO i=Istr-1,Iend+1
 !----------------------------------------------------------------------
 !  Metric for vertical bottom streaming distribution     
 !----------------------------------------------------------------------
-            cff=0.25_r8*sqrt2*sigma(i,j)*Hwave(i,j)/                    &
+            cff3=0.25_r8*sqrt2*sigma(i,j)*Hwave(i,j)/                   &
      &           (SINH(kD(i,j))+eps)
 
 !----------------------------------------------------------------------
 !  Wave friction factor (based on Soulsby, 1997).
 !----------------------------------------------------------------------
-            cff3=MIN(1.39_r8*(sigma(i,j)*(ks/30.0_r8)/                  &
-     &               cff)**0.52_r8,0.2_r8)
- 
+            cff4=MIN(1.39_r8*(sigma(i,j)*(ks/30.0_r8)/                  &
+     &               cff3)**0.52_r8,0.2_r8)
+! 
 #  ifdef WAVES_OCEAN
 !----------------------------------------------------------------------
 !   Note: Alexis - check if we need a local dissip_veg here 
 !   Also Lveg is for 1 veg type only 
-!   
 !----------------------------------------------------------------------
-            EWD_loc_veg=Dissip_veg(i,j,iveg)
+            EWD_loc_veg=dissip_veg(i,j)
 #  else
-            EWD_loc_veg=(0.5_r8/sqrt(pi))*cff3*(cff**3.0_r8)
+            EWD_loc_veg=(0.5_r8/sqrt(pi))*cff4*(cff3**3.0_r8)
 #  endif
             EWD_veg=EWD_loc_veg+EWD_veg
 
-            cff3=EWD_veg*osigma(i,j)*Lveg(i,j,k)
-            BWDXL_veg(i,j)=cff3*wavenx(i,j)
-            BWDYL_veg(i,j)=cff3*waveny(i,j)
-
+            cff5=EWD_veg*osigma(i,j)*Lveg(i,j,k)
+            BWDXL_veg(i,j)=cff5*wavenx(i,j)
+            BWDYL_veg(i,j)=cff5*waveny(i,j)
+!
           END DO
         END DO
       END DO VEG_LOOP   
-
+!
       END SUBROUTINE vegetation_stream_tile
 #endif
       END MODULE vegetation_stream_mod
