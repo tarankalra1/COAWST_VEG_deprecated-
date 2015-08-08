@@ -489,6 +489,13 @@
       write(wostring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
 !
+#if defined VEGETATION && defined VEG_STREAMING
+      to_add=':DISVEG'
+      cad=LEN_TRIM(to_add)
+      write(wostring(cid:cid+cad-1),'(a)') to_add(1:cad)
+      cid=cid+cad
+#endif  
+!
 !  Finalize and remove trailing spaces from the wostring
 !  for the rlist.
 !
@@ -797,6 +804,13 @@
         CALL AttrVect_importRAttr (AttrVect_G(ng)%wav2ocn_AV,           &
      &                             "WQP",avdata)
       END IF
+!
+#ifdef VEG_STREAMING     
+      ELSE IF (IVTYPE.eq.57) THEN
+        CALL AttrVect_importRAttr (AttrVect_G(ng)%wav2ocn_AV,           &
+     &                             "DISVEG",avdata)
+#endif   
+!
 !
       IF (IRQ.eq.Numcouple) THEN
 !
