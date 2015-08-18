@@ -43,6 +43,7 @@
 !                                                                      !
 !  Wave Thrust on Marsh Output:                                        !
 !  ==========================                                          !
+!  idTims        Initial masking for the marsh                         ! 
 !  idTmsk        Masking for getting thrust due to waves at rho pts.   ! 
 !  idTmax        Maximum thrust due to waves                           !
 !  idTton        Tonelli masking based thrust due to waves             !
@@ -66,7 +67,7 @@
 #endif 
       integer, allocatable :: idvprp(:)    
 #ifdef WAVE_THRUST_MARSH 
-      integer ::  idTmsk, idTmax, idTton 
+      integer ::  idTims, idTmsk, idTmax, idTton 
 #endif 
 !
       real(r8), allocatable :: E_VEG(:,:)

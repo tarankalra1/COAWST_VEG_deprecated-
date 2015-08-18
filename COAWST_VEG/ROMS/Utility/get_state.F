@@ -50,9 +50,11 @@
       USE mod_sedbed
       USE mod_sediment
 #endif
-#if defined VEGETATION && defined VEG_RHS 
+#if defined VEGETATION 
+# if defined VEG_RHS || defined WAVE_THRUST_MARSH 
       USE mod_vegarr
       USE mod_vegetation
+# endif 
 #endif 
 #ifdef ICE_MODEL
       USE mod_ice
@@ -1732,6 +1734,36 @@
             END IF
           END IF
         END DO 
+#   endif 
+#   ifdef WAVE_THRUST_MARSH 
+!
+!  Read in masking for determining marsh interface 
+!
+        foundit=find_string(var_name, n_var, TRIM(Vname(1,idTims)),     & 
+     &                        varid)
+        gtype=var_flag(varid)*r2dvar
+        status=nf_fread2d(ng, IDmod, ncname, ncINPid,                   &
+     &                Vname(1,idTims), varid, InpRec, gtype,            &
+     &                Vsize, LBi, UBi, LBj, UBj,                        &
+     &                Fscl, Fmin, Fmax,                                 &
+#   ifdef MASKING
+     &                GRID(ng) % rmask,                                 &
+#   endif
+     &                 VEG(ng) % marsh_mask)
+        IF (status.ne.nf90_noerr) THEN 
+          IF (Master) THEN 
+            WRITE (stdout,60) string, TRIM(Vname(1,idTims )),           &
+     &                        InpRec, TRIM(ncname)
+          END IF
+          exit_flag=2
+          ioerror=status
+          RETURN
+        ELSE
+          IF (Master) THEN 
+            WRITE (stdout,70) TRIM(Vname(2,idTims)), Fmin, Fmax 
+          END IF
+        END IF
+!
 #   endif 
 #  endif 
 !

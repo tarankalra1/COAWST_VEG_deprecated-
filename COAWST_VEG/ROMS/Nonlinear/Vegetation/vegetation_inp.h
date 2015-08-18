@@ -128,6 +128,13 @@
               Npts=load_l(Nval, Cval, Ngrids, Hout(idvprp(pdwbm),:))
 #endif 
 #ifdef WAVE_THRUST_MARSH
+            CASE ('Hout(idTims)')
+              IF (idTims.eq.0) THEN 
+                IF (Master) WRITE (out,30) 'idTims'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idTims,1:Ngrids))
             CASE ('Hout(idTmsk)')
               IF (idTmsk.eq.0) THEN 
                 IF (Master) WRITE (out,30) 'idTmsk'
@@ -197,6 +204,9 @@
 !     &  'Write out below ground plant biomass.'
 #endif 
 #ifdef WAVE_THRUST_MARSH
+          IF (Hout(idTims,ng)) WRITE (out,90) Hout(idTims,ng),          &
+     &       'Hout(idTims)',                                            &
+     &       'Write out initial masking for marshes.'
           IF (Hout(idTmsk,ng)) WRITE (out,90) Hout(idTmsk,ng),          &
      &       'Hout(idTmsk)',                                            &
      &       'Write out masking for getting thrust due to waves.'

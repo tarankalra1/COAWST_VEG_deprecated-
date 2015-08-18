@@ -37,6 +37,8 @@
               idWdve=varid
 #endif 
 #if defined WAVE_THRUST_MARSH
+            CASE ('idTims')
+              idTims=varid
             CASE ('idTmsk')
               idTmsk=varid
             CASE ('idTmax')
