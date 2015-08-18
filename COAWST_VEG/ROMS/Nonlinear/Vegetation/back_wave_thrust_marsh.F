@@ -71,6 +71,12 @@
      &                        GRID(ng) % angler,                        &
      &                        GRID(ng) % om_r,                          &
      &                        GRID(ng) % on_r,                          &
+# if defined MASKING   
+     &                        GRID(ng) % rmask,                         &
+# endif 
+# if defined WET_DRY 
+     &                        GRID(ng) % rmask_wet,                     &
+# endif 
 # if defined WAVES_HEIGHT 
      &                        FORCES(ng) % Hwave,                       &
 # endif 
@@ -99,6 +105,12 @@
      &                              nstp,                               &
      &                              h,angler,                           &
      &                              om_r, on_r ,                        &
+# if defined MASKING   
+     &                              rmask,                              &
+# endif 
+# if defined WET_DRY  
+     &                              rmask_wet,                          &
+# endif 
 # if defined WAVES_HEIGHT  
      &                              Hwave,                              &
 # endif 
@@ -138,6 +150,12 @@
       real(r8), intent(in)  :: on_r(LBi:,LBj:)
       real(r8), intent(in)  :: h(LBi:,LBj:)
       real(r8), intent(in)  :: angler(LBi:,LBj:)
+#  ifdef MASKING 
+      real(r8), intent(in)  :: rmask(LBi:,LBj:)
+#  endif 
+#  ifdef WET_DRY  
+      real(r8), intent(in)  :: rmask_wet(LBi:,LBj:)
+#  endif 
 #  ifdef WAVES_HEIGHT  
       real(r8), intent(in)  :: Hwave(LBi:,LBj:)
 #  endif 
@@ -147,7 +165,7 @@
 #  ifdef WAVES_DIR
       real(r8), intent(in)  :: Dwave(LBi:,LBj:)
 #  endif 
-      real(r8), intent(in)    :: marsh_mask(LBi:,LBj:)
+      real(r8), intent(in)    ::  marsh_mask(LBi:,LBj:)
       real(r8), intent(inout) :: mask_thrust(LBi:,LBj:)
       real(r8), intent(inout) :: Thrust_max(LBi:,LBj:)
       real(r8), intent(inout) :: Thrust_tonelli(LBi:,LBj:) 
@@ -158,6 +176,12 @@
       real(r8), intent(in)  :: on_r(LBi:UBi,LBj:UBj)
       real(r8), intent(in)  :: h(LBi:UBi,LBj:UBj)
       real(r8), intent(in)  :: angler(LBi:UBi,LBj:UBj)
+#  ifdef MASKING  
+      real(r8), intent(in)  :: rmask(LBi:UBi,LBj:UBj) 
+#  endif 
+#  ifdef WET_DRY  
+      real(r8), intent(in)  :: rmask_wet(LBi:UBi,LBj:UBj) 
+#  endif 
 #  ifdef WAVES_HEIGHT  
       real(r8), intent(in)  :: Hwave(LBi:UBi,LBj:UBj)
 #  endif 
@@ -211,7 +235,13 @@
 !----------------------------------------------------------------------
       DO j=Jstr-1,Jend+1
         DO i=Istr-1,Iend+1
-          mask_wd(i,j)     = marsh_mask(i,j) 
+#  ifdef MASKING 
+!          mask_wd(i,j)   = rmask(i,j) 
+          mask_wd(i,j)   = marsh_mask(i,j) 
+#  endif 
+#  ifdef WET_DRY 
+          mask_wd(i,j)   = rmask_wet(i,j) 
+#  endif 
           bound_wdv(i,j)   = zero          
           bound_wdh(i,j)   = zero
           bound_wd(i,j)    = zero   

@@ -34,6 +34,7 @@
 !  dissip_veg     Dissipation from the SWAN model due to vegetation    !
 !  BWDXL_veg      Wave streaming effect due to vegetation              !
 !  BWDYL_veg      Wave streaming effect due to vegetation              !
+!  marsh_mask     User input of marsh masking at MSL                   ! 
 !  mask_thrust    Tonellis masking for wave thrust on marshes          !
 !  Thrust_max     Maximum thrust from wave to marshes                  !
 !  Thrust_tonelli Reduced thrust from tonelli's masking                !
@@ -71,7 +72,8 @@
         real(r8), pointer :: BWDXL_veg(:,:)
         real(r8), pointer :: BWDYL_veg(:,:)
 # endif 
-# if defined VEGETATION || defined WAVE_THRUST_MARSH
+# ifdef WAVE_THRUST_MARSH
+        real(r8), pointer :: marsh_mask(:,:)
         real(r8), pointer :: mask_thrust(:,:)
         real(r8), pointer :: Thrust_max(:,:)
         real(r8), pointer :: Thrust_tonelli(:,:) 
@@ -132,7 +134,8 @@
       allocate ( VEG(ng) % BWDYL_veg(LBi:UBi,LBj:UBj) )
 # endif
 
-# if defined VEGETATION || defined WAVE_THRUST_MARSH
+# ifdef WAVE_THRUST_MARSH
+      allocate ( VEG(ng) % marsh_mask(LBi:UBi,LBj:UBj) )
       allocate ( VEG(ng) % mask_thrust(LBi:UBi,LBj:UBj) )
       allocate ( VEG(ng) % Thrust_max(LBi:UBi,LBj:UBj) )
       allocate ( VEG(ng) % Thrust_tonelli(LBi:UBi,LBj:UBj) )
@@ -284,9 +287,10 @@
         END DO 
 # endif
 !
-# if defined VEGETATION || defined WAVE_THRUST_MARSH
+# ifdef WAVE_THRUST_MARSH
         DO j=Jmin,Jmax
           DO i=Imin,Imax
+            VEG(ng) % marsh_mask(i,j) = IniVal
             VEG(ng) % mask_thrust(i,j) = IniVal
             VEG(ng) % Thrust_max(i,j) = IniVal
             VEG(ng) % Thrust_tonelli(i,j) = IniVal
