@@ -12,10 +12,10 @@ and also wave thrust calculation on marsh routine
 *  #ifdef ana_vegetation 
 *  #ifdef veg_rhs 
 *  #ifdef veg_turb 
-*  #ifdef veg_flex
+ *  #ifdef veg_flex
 *  #ifdef veg_stream
 *  #ifdef veg_swan_coupling 
 *  #ifdef wave_thrust_marsh
-*   #ifdef ana_marsh_mask 
+ *  #ifdef ana_marsh_mask 
 * #endif 
 
