@@ -14,8 +14,8 @@
 !==================================================== Alexis Beudin  ===
 !==================================================Tarandeep S. Kalra===
 !                                                                      !
-!  This routine computes the effect of vegetation on the momentum      !
-!  equation as the vegetation acts as a sink                           !
+!  This routine computes the effect of flexible vegetation as a sink   !
+!  in the 3D momentume equations.                                      !
 !                                                                      !  
 !  References:                                                         !
 !                                                                      !
