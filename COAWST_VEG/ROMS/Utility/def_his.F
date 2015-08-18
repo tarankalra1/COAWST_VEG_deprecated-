@@ -401,7 +401,7 @@
 ! 
 !  Define dimensions for the plant array variables
 ! 
-# ifdef VEGETATION 
+# if defined VEGETATION && defined VEG_RHS
         v3pgrd(1)=DimIDs( 1)
         v3pgrd(2)=DimIDs( 5)
         v3pgrd(3)=DimIDs(35)
