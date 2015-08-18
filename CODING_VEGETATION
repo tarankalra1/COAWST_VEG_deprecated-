@@ -85,6 +85,7 @@ a) Include the call for wave_thrust_marsh.F (search for WAVE_THRUST_MARSH)
        READING FROM VEGETATION.IN INPUT 
 -----------------------------------------------
 12) Added NVEG, CL_VEG, Hout(idTmsk) Currently only outputting Wave thrust marsh outputs
+idTims-> Initial masking for marsh face 
 idTmsk-> Tonelli's masking 
 idTmax-> Maximum thrust at the marsh face
 idTton-> Reduced thrust at Tonelli's masking 
@@ -134,7 +135,8 @@ and wave thrust stuff)
   #ana_vegetation 
   #ifdef veg_rhs 
   #ifdef veg_turb 
-   #ifdef veg_flex
+  #ifdef veg_flex
   #ifdef wave_thrust_marsh
+   #ifdef ana_marsh_mask 
 ************************************************
 
