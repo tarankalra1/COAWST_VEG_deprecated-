@@ -36,6 +36,9 @@
 #define ANA_SMFLUX
 #define ANA_FSOBC
 #define ANA_M2OBC
+#define WAVES_HEIGHT
+#define WAVES_LENGTH
+#define WAVES_DIR
 
 /* define only one of the following 5 */
 #undef  UV_LOGDRAG
@@ -50,7 +53,11 @@
 #define VEGETATION 
 # ifdef VEGETATION 
 #  undef ANA_VEGETATION 
-#  define VEG_RHS 
+#  undef VEG_RHS
+#  undef VEG_SWAN_COUPLING 
+#  undef VEG_STREAMING 
+#  define WAVE_THRUST_MARSH 
+#   define ANA_MARSH_MASK
 # endif 
 
 #ifdef SOLVE3D

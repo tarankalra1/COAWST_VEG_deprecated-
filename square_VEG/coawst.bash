@@ -101,7 +101,7 @@ export     NestedGrids=1
 # Set a local environmental variable to define the path to the directories
 # where all this project's files are kept.
 
-export     MY_ROOT_DIR=/scylla-a/home/tkalra/VEG_v1
+export     MY_ROOT_DIR=/home/gadar/Documents/Development/VEGETATION/clone/COAWST_VEG
 export     MY_PROJECT_DIR=${MY_ROOT_DIR}/square_VEG
 
 # The path to the user's local current ROMS source code.
@@ -141,10 +141,11 @@ export         COMPILERS=${MY_ROMS_SRC}/Compilers
 # out. Any string value (including off) will evaluate to TRUE in
 # conditional if-stamentents.
 
- export           USE_MPI=on
- export        USE_MPIF90=on
- export              FORT=ifort
+ export           USE_MPI=off
+ export        USE_MPIF90=off
+#export              FORT=ifort
 #export              FORT=pgi
+ export              FORT=gfortran 
 
 #export        USE_OpenMP=on
 
