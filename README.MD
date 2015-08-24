@@ -20,8 +20,9 @@ This repository contains the COAWST version to compute the effects of
 *  #ifdef veg_stream
 *  #ifdef veg_swan_coupling 
 *  #ifdef wave_thrust_marsh
- *  #ifdef ana_marsh_mask 
+*  #ifdef ana_marsh_mask 
 * #endif 
+
 ------------------------------------------------
 Turning on SAV model (Executable file ./coawstS) 
 * #ifdef BIO_FENNEL
