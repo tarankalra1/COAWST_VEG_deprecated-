@@ -1,12 +1,16 @@
 # COAWST_VEG
-This repository contains the COAWST version to compute the effects of vegetation (along with two test cases)
-and also wave thrust calculation on marsh routine
+This repository contains the COAWST version to compute the effects of
+* Vegetation in ROMS/Nonlinear/Vegetation 
+* Wave thrust calculation on marsh routine in ROMS/Nonlinear/Vegetation
+* Submerged Aquatic Vegetation (SAV model) in ROMS/Nonlinear/Biology
+
+--------------------------------------------------
 * 1) Analytical inputs to plant properties 
 * 2) NETCDF based inputs to plant properties
 * 3) NETCDF and Analytical input to initial marsh boundary
 
 -------------------------------------------------
- TURNING ON VEGETATION  
+ Turning on vegetation or wave thrust (Executable file ./coawstM)  
 * #define vegetation 
 * #ifdef vegetation
 *  #ifdef ana_vegetation 
@@ -18,4 +22,15 @@ and also wave thrust calculation on marsh routine
 *  #ifdef wave_thrust_marsh
  *  #ifdef ana_marsh_mask 
 * #endif 
+------------------------------------------------
+Turning on SAV model (Executable file ./coawstS) 
+* #ifdef BIO_FENNEL
+* # define SPECTRAL_LIGHT 
+* # define CARBON
+* # define OXYGEN
+* # define DENITRIFICATION
+* # define BIO_SEDIMENT
+*  # define SAV_MODEL 
+* # define DIAGNOSTICS_BIO
+* #endif
 
