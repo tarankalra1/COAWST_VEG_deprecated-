@@ -147,6 +147,50 @@
             CASE ('BB2B')
               Npts=load_r(Nval, Rval, Ngrids, BB2B)
 #endif
+#if defined SAV_MODEL 
+            CASE ('GMODopt')
+              Npts=load_i(Nval, Rval, Ngrids, GMODopt)
+            CASE ('KNSED')
+              Npts=load_r(Nval, Rval, Ngrids, KNSED)
+            CASE ('KNWC')
+              Npts=load_r(Nval, Rval, Ngrids, KNWC)
+            CASE ('TOPT')
+              Npts=load_r(Nval, Rval, Ngrids, TOPT)
+            CASE ('THTA')
+              Npts=load_r(Nval, Rval, Ngrids, THTA)
+            CASE ('THTA2')
+              Npts=load_r(Nval, Rval, Ngrids, THTA2)
+            CASE ('SCL')
+              Npts=load_r(Nval, Rval, Ngrids, SCL)
+            CASE ('SCL2')
+              Npts=load_r(Nval, Rval, Ngrids, SCL2)
+            CASE ('KI')
+              Npts=load_r(Nval, Rval, Ngrids, SR)
+            CASE ('SR')
+              Npts=load_r(Nval, Rval, Ngrids, SR)
+            CASE ('LMBAMX')
+              Npts=load_r(Nval, Rval, Ngrids, LMBAMX)
+            CASE ('KMAG')
+              Npts=load_r(Nval, Rval, Ngrids, KMAG)
+            CASE ('ARSC')
+              Npts=load_r(Nval, Rval, Ngrids, ARSC)
+            CASE ('ARC')
+              Npts=load_r(Nval, Rval, Ngrids, ARC)
+            CASE ('BSRC')
+              Npts=load_r(Nval, Rval, Ngrids, BSRC)
+            CASE ('RC')
+              Npts=load_r(Nval, Rval, Ngrids, RC)
+            CASE ('RtStTL')
+              Npts=load_r(Nval, Rval, Ngrids, RtStTL)
+            CASE ('DOWNt')
+              Npts=load_r(Nval, Rval, Ngrids, DOWNt)
+            CASE ('TRNS')
+              Npts=load_r(Nval, Rval, Ngrids, TRNS)
+            CASE ('TCRIT')
+              Npts=load_r(Nval, Rval, Ngrids, TCRIT)
+            CASE ('KM')
+              Npts=load_r(Nval, Rval, Ngrids, KM)
+#endif 
             CASE ('TNU2')
               Npts=load_r(Nval, Rval, NBT*Ngrids, Rbio)
               DO ng=1,Ngrids
@@ -535,6 +579,36 @@
               END IF
               Npts=load_l(Nval, Cval, Ngrids, Hout(idsgrn,1:Ngrids))
 #endif
+#if defined SAV_MODEL
+            CASE ('Hout(iddins)')
+              IF (iddins.eq.0) THEN
+                IF (Master) WRITE (out,40) 'iddins'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(iddins,1:Ngrids))
+            CASE ('Hout(iddinw)')
+              IF (iddinw.eq.0) THEN
+                IF (Master) WRITE (out,40) 'iddinw'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(iddins,1:Ngrids))
+            CASE ('Hout(idsagb)')
+              IF (idsagb.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsagb'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsagb,1:Ngrids))
+            CASE ('Hout(idsbgb)')
+              IF (idsbgb.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsbgb'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsbgb,1:Ngrids))
+#endif
           END SELECT
         END IF
       END DO
@@ -640,6 +714,50 @@
             WRITE (out,80) BB2B(ng), 'BB2B',                            &
      &            'Particulate backscattering ratio.'
 #endif
+#ifdef SAV_MODEL 
+            WRITE (out,70) GMODopt(ng), 'GMODopt',                      &
+     &            'SAV growth rate options.'
+            WRITE (out,80) KNSED(ng), 'KNSED',                          &
+     &            'Half saturation coeff.-sediment N uptake (mu-M).'
+            WRITE (out,80) KNWC(ng), 'KNWC',                            &
+     &            'Half saturation coeff.-water-column N uptake (mu-M).'
+            WRITE (out,80) TOPT(ng), 'TOPT',                            &
+     &            'Optimum temperature for SAV growth (deg C).'
+            WRITE (out,80) THTA(ng), 'THTA',                            &
+     &            'Temp. growth theta for growth Model #1 (unitless).'
+            WRITE (out,80) THTA2(ng), 'THTA2',                          &
+     &            'Temp. growth theta for growth Model #2 (unitless).'
+            WRITE (out,80) SCL(ng), 'SCL',                              &
+     &            'SAV growth fraction for growth Model #1 (unitless).'
+            WRITE (out,80) SCL2(ng), 'SCL2',                            &
+     &            'SAV growth fraction for growth Model #2 (unitless).'
+            WRITE (out,80) KI(ng), 'KI',                                &
+     &            'Half saturation for light (muE m-2 s-1).'
+            WRITE (out,80) SR(ng), 'SR',                                &
+     &            'Surface reflectance of light.'
+            WRITE (out,80) LMBAMX(ng), 'LMBAMX',                        &
+     &            'Maximum AGB in self-shading formulation (g C m-2). '
+            WRITE (out,80) KMAG(ng), 'KMAG',                            &
+     &            'Above biomass ground mortality rate (1/d).'
+            WRITE (out,80) ARSC(ng), 'ARSC',                            &
+     &            'Maximum fraction of PP respired.'
+            WRITE (out,80) ARC(ng), 'ARC',                              &
+     &            'Active respiration coefficient.'
+            WRITE (out,80) BSRC(ng), 'BSRC',                            &
+     &            'Maximum fraction of biomass respired.'
+            WRITE (out,80) RC(ng), 'RC',                                &
+     &            'Basal respiration coefficient (1/d).'
+            WRITE (out,80) RtStTL(ng), 'RtStTL',                        &
+     &            'Seasonal root storage coefficient (1/d).'
+            WRITE (out,80) DOWNt(ng), 'DOWNt',                          &
+     &            'Downward translocation coefficient (1/d).'
+            WRITE (out,80) TRNS(ng), 'TRNS',                            &
+     &            'Upward translocation coefficient (1/d).'
+            WRITE (out,80) TCRIT(ng), 'TCRIT',                          &
+     &            'Crit. temp. development of abovegrd. biomass (deg C).'
+            WRITE (out,80) KM(ng), 'KM',                                &
+     &            'Below ground biomass mortality (1/d).'
+#endif 
 #ifdef TS_DIF2
             DO itrc=1,NBT
               i=idbio(itrc)
@@ -904,7 +1022,7 @@
      &            'Write out diagnostics for', TRIM(Vname(1,i))
             END DO
 #endif
-# if defined SPECTRAL_LIGHT
+#ifdef SPECTRAL_LIGHT
           IF (Hout(idPARo,ng)) WRITE (out,120) Hout(idPARo,ng),         &
      &       'Hout(idPARo)',                                            &
      &       'Write out Photosynthetical Available Radiation PAR.'
@@ -915,7 +1033,7 @@
      &       'Hout(idSpKd)',                                            &
      &       'Write out Spectral Kd (light attenuation).'
 # endif
-# if defined SEAGRASS_SINK 
+# ifdef SEAGRASS_SINK 
           IF (Hout(idsgrn,ng)) WRITE (out,120) Hout(idsgrn,ng),         &
      &       'Hout(idsgrn)',                                            &
      &       'Write out Seagrass in units of N.'
@@ -923,6 +1041,14 @@
             WRITE (out,70) Ndom, 'Ndom',                      &
      &            'Number of DOM constituents.'
 #  endif
+# endif
+# ifdef SAV_MODEL 
+          IF (Hout(iddins,ng)) WRITE (out,120) Hout(iddins,ng),         &
+     &       'Hout(iddins)',                                            &
+     &       'Write out sediment dissolved inorganic N in units (mu-M).'
+          IF (Hout(iddinw,ng)) WRITE (out,120) Hout(iddinw,ng),         &
+     &       'Hout(iddinw)',                                            &
+     &       'Write out water column inorganic N in units (mu-M).'
 # endif
           END IF
         END DO

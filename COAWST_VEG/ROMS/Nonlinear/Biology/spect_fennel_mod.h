@@ -101,6 +101,12 @@
 #ifdef SEAGRASS_SINK
       integer :: idsgrn                 ! SgrN            Seagrass in mols of N
 #endif
+#ifdef SAV_MODEL
+      integer :: iddinw                 ! DINwcr  Dissolved Inorganic Nitrogen (water column)
+      integer :: iddins                 ! DINsed  Dissolved Inorganic Nitrogen (sediment column) 
+      integer :: idsagb                 ! AGB     Above ground biomass 
+      integer :: idsbgb                 ! BGB     Below ground biomass 
+#endif
 #if defined DIAGNOSTICS && defined DIAGNOSTICS_BIO
 !
 !  Biological 2D diagnostic variable IDs.
@@ -174,6 +180,29 @@
       integer, parameter :: irct=2    ! relict index for DOC.
       character (len=11), dimension(Ndom) :: DomName
 # endif
+#ifdef SAV_MODEL 
+      integer,  allocatable :: GMODopt(:)
+      real(r8), allocatable :: KNSED(:)             
+      real(r8), allocatable :: KNWC(:)             
+      real(r8), allocatable :: TOPT(:)             
+      real(r8), allocatable :: THTA(:)             
+      real(r8), allocatable :: THTA2(:)             
+      real(r8), allocatable :: SCL(:)             
+      real(r8), allocatable :: SCL2(:)             
+      real(r8), allocatable :: KI(:)             
+      real(r8), allocatable :: SR(:)             
+      real(r8), allocatable :: LMBAMX(:)             
+      real(r8), allocatable :: KMAG(:)             
+      real(r8), allocatable :: ARSC(:)             
+      real(r8), allocatable :: ARC(:)             
+      real(r8), allocatable :: BSRC(:)             
+      real(r8), allocatable :: RC(:)             
+      real(r8), allocatable :: RTStTL(:)             
+      real(r8), allocatable :: DOWNt(:)             
+      real(r8), allocatable :: TRNS(:)             
+      real(r8), allocatable :: TCRIT(:)             
+      real(r8), allocatable :: KM(:)             
+#endif 
       real(r8), allocatable :: SIGATRB(:)             
       real(r8), allocatable :: STRB(:)                
       real(r8), allocatable :: BLTRB(:)             
@@ -388,6 +417,71 @@
       END IF
       IF (.not.allocated(BB2B)) THEN
         allocate ( BB2B(Ngrids) )
+      END IF
+#endif
+#ifdef SAV_MODEL
+      IF (.not.allocated(GMODopt)) THEN
+        allocate ( GMODopt(Ngrids) )
+      END IF
+      IF (.not.allocated(KNSED)) THEN
+        allocate ( KNSED(Ngrids) )
+      END IF
+      IF (.not.allocated(KNWC)) THEN
+        allocate ( KNWC(Ngrids) )
+      END IF
+      IF (.not.allocated(TOPT)) THEN
+        allocate ( TOPT(Ngrids) )
+      END IF
+      IF (.not.allocated(THTA)) THEN
+        allocate ( THTA(Ngrids) )
+      END IF
+      IF (.not.allocated(THTA2)) THEN
+        allocate ( THTA2(Ngrids) )
+      END IF
+      IF (.not.allocated(SCL)) THEN
+        allocate ( SCL(Ngrids) )
+      END IF
+      IF (.not.allocated(SCL2)) THEN
+        allocate ( SCL2(Ngrids) )
+      END IF
+      IF (.not.allocated(KI)) THEN
+        allocate ( KI(Ngrids) )
+      END IF
+      IF (.not.allocated(SR)) THEN
+        allocate ( SR(Ngrids) )
+      END IF
+      IF (.not.allocated(LMBAMX)) THEN
+        allocate ( LMBAMX(Ngrids) )
+      END IF
+      IF (.not.allocated(KMAG)) THEN
+        allocate ( KMAG(Ngrids) )
+      END IF
+      IF (.not.allocated(ARSC)) THEN
+        allocate ( ARSC(Ngrids) )
+      END IF
+      IF (.not.allocated(ARC)) THEN
+        allocate ( ARC(Ngrids) )
+      END IF
+      IF (.not.allocated(BSRC)) THEN
+        allocate ( BSRC(Ngrids) )
+      END IF
+      IF (.not.allocated(RC)) THEN
+        allocate ( RC(Ngrids) )
+      END IF
+      IF (.not.allocated(RtStTL)) THEN
+        allocate (RtStTL(Ngrids) )
+      END IF
+      IF (.not.allocated(DOWNt)) THEN
+        allocate ( DOWNt(Ngrids) )
+      END IF
+      IF (.not.allocated(TRNS)) THEN
+        allocate ( TRNS(Ngrids) )
+      END IF
+      IF (.not.allocated(TCRIT)) THEN
+        allocate ( TCRIT(Ngrids) )
+      END IF
+      IF (.not.allocated(KM)) THEN
+        allocate ( KM(Ngrids) )
       END IF
 #endif
 !

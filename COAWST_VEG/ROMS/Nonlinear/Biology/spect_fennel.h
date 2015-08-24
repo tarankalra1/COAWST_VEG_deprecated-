@@ -141,6 +141,12 @@
 #ifdef SEAGRASS_SINK
      &                   OCEAN(ng) % SgrN,                              &
 #endif
+#ifdef SAV_MODEL
+     &                   OCEAN(ng) % DINwcr,                            &
+     &                   OCEAN(ng) % DINsed,                            &
+     &                   OCEAN(ng) % AGB,                               &
+     &                   OCEAN(ng) % BGB,                               &
+#endif
      &                   OCEAN(ng) % t)
 
 #ifdef PROFILE
@@ -181,6 +187,12 @@
 #endif
 #ifdef SEAGRASS_SINK
      &                         SgrN,                                    &
+#endif
+#ifdef SAV_MODEL
+     &                         DINwcr,                                  &
+     &                         DINsed,                                  &
+     &                         AGB,                                     &
+     &                         BGB,                                     &
 #endif
      &                         t)
 !-----------------------------------------------------------------------
@@ -238,6 +250,12 @@
 # ifdef SEAGRASS_SINK
       real(r8), intent(out) :: SgrN(LBi:,LBj:)
 # endif
+# ifdef SAV_MODEL
+      real(r8), intent(out) :: DINwcr(LBi:,LBj:,:)
+      real(r8), intent(out) :: DINsed(LBi:,LBj:,:)
+      real(r8), intent(out) :: AGB(LBi:,LBj:)
+      real(r8), intent(out) :: BGB(LBi:,LBj:)
+# endif
       real(r8), intent(inout) :: t(LBi:,LBj:,:,:,:)
 #else
 # ifdef MASKING
@@ -275,6 +293,12 @@
 # endif
 # ifdef SEAGRASS_SINK
       real(r8), intent(out) :: SgrN(LBi:UBi,LBj:UBj)
+# endif
+# ifdef SAV_MODEL
+      real(r8), intent(out) :: DINwcr(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: DINsed(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: AGB(LBi:UBi,LBj:UBj)
+      real(r8), intent(out) :: BGB(LBi:UBi,LBj:UBj)
 # endif
       real(r8), intent(inout) :: t(LBi:UBi,LBj:UBj,UBk,3,UBt)
 #endif
@@ -377,6 +401,8 @@
       real(r8) :: N_Flux_Pmortal, N_Flux_Zmortal
       real(r8) :: N_Flux_RemineL, N_Flux_RemineS
       real(r8) :: N_Flux_Zexcret, N_Flux_Zmetabo
+
+      real(r8) :: br20, brthta, N_Flux_BaseResp
 
       real(r8), dimension(Nsink) :: Wbio
 
@@ -891,6 +917,37 @@
                 Bio(i,k,iTAlk)=Bio(i,k,iTAlk)+N_Flux_NewProd
 # endif
 #endif
+
+! Basal respiration of phytoplankton 
+! Basal Respiration is a function of phytoplankton biomass and temperature
+!
+! Parameters and computation
+!
+                br20   = 0.025_r8               ! Basal respiration at 20 degress
+                brthta = 1.047_r8               ! Basal respiration temperature coefficient
+                cff1=br20*brthta**(itemp)       ! Respiration coefficient at temperature (/d) 
+                cff2=dtdays*cff1
+!
+                N_Flux_BaseResp=cff2*max(Bio(i,k,iPhyt)-PhyMin(ng),0.0_r8)
+!
+! Update other model systems (In future, consider if basal resp goes to iSDeN and iSDeC)
+!
+                Bio(i,k,iPhyt)=Bio(i,k,iPhyt)-N_Flux_BaseResp
+                Bio(i,k,iNH4_)=Bio(i,k,iNH4_)+N_Flux_BaseResp
+
+#ifdef OXYGEN
+                Bio(i,k,iOxyg)=Bio(i,k,iOxyg)-                            &
+     &                       rOxNH4*(N_Flux_BaseResp)
+#endif
+
+#ifdef CARBON
+!
+!  Total inorganic carbon (CO2) released during phytoplankton basal respiration.
+!
+                cff1=PhyCN(ng)*(N_Flux_BaseResp)
+                Bio(i,k,iTIC_)=Bio(i,k,iTIC_)-cff1
+#endif
+
 !
 ! The Nitrification of NH4 ==> NO3 is thought to occur only in dark and
 ! only in aerobic water (see Olson, R. J., 1981, JMR: (39), 227-238.).
@@ -1466,7 +1523,7 @@
 
 #ifdef BIO_SEDIMENT
 !
-!  Particulate flux reaching the seafloor is remineralized and returned
+!  Particulate flux reaching the seafl0oor is remineralized and returned
 !  to the dissolved nitrate pool. Without this conversion, particulate
 !  material falls out of the system. This is a temporary fix to restore
 !  total nitrogen conservation. It will be replaced later by a
@@ -1478,43 +1535,46 @@
             cff3=115.0_r8/16.0_r8
             cff4=106.0_r8/16.0_r8
 # endif
+#ifdef SAV_MODEL 
+!  
+!  Calling the SAV MODEL developed by Dr. Jeremy Testa 
+!  Need sediment biogechemical equations to get DINsed and DINwcr
+!
+!
+! Remember you know that you are in iterative and J loop 
+!
+!
+! Calculation of DINwcr for SAV MODEL 
+!
+
+            DO k=1,N(ng)
+              DO i=Istr,Iend
+                DINwcr(i,j,k)=Bio(i,k,iNH4_)+Bio(i,k,iNO3_)
+              END DO
+            END DO
+
+            DO i=Istr,Iend
+              DINwcr(i,j,k)=Bio(i,k,iNH4_)+Bio(i,k,iNO3_)
+            END DO
+            DO k = 1,N(ng) 
+              CALL SAV_MODEL_SUB(ng, Istr, Iend, LBi, UBi, LBj, UBj,    &
+     &                     IminS, ImaxS, pmonth, t(:,j,1,nstp,itemp),   &
+     &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
+     &                     AGB(:,j),BGB(:,j)) 
+            END DO 
+#endif 
+
             IF ((ibio.eq.iPhyt).or.                                     &
      &          (ibio.eq.iSDeN).or.                                     &
      &          (ibio.eq.iLDeN)) THEN
-              DO i=Istr,Iend
+              DO i=Istr,Iend                        
                 cff1=FC(i,0)*Hz_inv(i,1)
-#ifdef SEAGRASS_SINK
-! ALA ! ADD bottom sink of N due to benthic "seagrass" 
-# ifdef SEAGRASS_LIGHT_CONST
-! ALA ! as a function of light constant (50%) when exceeding 600 W/m2
-                IF (PARout(i,j,1).gt.600.0_r8) THEN
-                    cff5=0.5_r8
-                    cff1=cff1*(1.0_r8-cff5)
-                END IF
-# elif defined SEAGRASS_LIGHT
-! ALA ! as a function of light linear between 500 (0) and 1200 W/m2 (80%)
-! ALA the equation is cff5=y1 + [(y2 - y1) / (x2 - x1)]·(x - x1)
-                cff5=min(max((0.8_r8*(PARout(i,j,1)-500.0_r8)/          &
-     &                        700.0_r8),0.0_r8),0.8_r8)
-                cff1=cff1*(1.0_r8-cff5)
-# else
-! ALA ! as a function of bottom depth
-! ALA First option! make it 20% removal to seagrass at 1m bottom depth
-! ALA First option! make it 0% removal to seagrass at 5m bottom depth
-                cff5=min(max(0.5_r8/ABS(z_r(i,j,1))-                    &
-     &                        0.1_r8,0.0_r8),1.0_r8)
-                cff1=cff1*(1.0_r8-cff5)
-# endif
-! ALA The nitrogen sequestered in the "seagrass" is
-                SgrN(i,j)=SgrN(i,j)+cff1*cff5
-!ALA ! END of bottom sink of N due to benthic "seagrass" 
-#endif
 # ifdef DENITRIFICATION
                 Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+cff1*cff2
 #  ifdef DIAGNOSTICS_BIO
                 DiaBio2d(i,j,iDNIT)=DiaBio2d(i,j,iDNIT)+                &
 #   ifdef WET_DRY
-     &                              rmask_io(i,j)*                         &
+     &                              rmask_io(i,j)*                      &
 #   endif
      &                              (1.0_r8-cff2)*cff1*Hz(i,j,1)
 #  endif
@@ -1584,7 +1644,11 @@
 
       RETURN
       END SUBROUTINE biology_tile
-
+!
+# ifdef SAV_MODEL   
+#  include "sav_model.h"
+# endif  
+!
 #ifdef CARBON
 # ifdef pCO2_RZ
       SUBROUTINE pCO2_water_RZ (Istr, Iend,                             &

@@ -71,6 +71,16 @@
               CASE ('idsgrn')
                 idsgrn=varid
 # endif
+# ifdef SAV_MODEL
+              CASE ('iddins')
+                iddins=varid
+              CASE ('iddinw')
+                iddinw=varid
+              CASE ('idsagb')
+                idsagb=varid
+              CASE ('idsbgb')
+                idsbgb=varid
+# endif
 # ifdef CARBON
               CASE ('idTvar(iTIC_)')
                 idTvar(iTIC_)=varid

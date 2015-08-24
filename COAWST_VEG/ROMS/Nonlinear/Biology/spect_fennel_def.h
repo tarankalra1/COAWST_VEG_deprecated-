@@ -329,3 +329,166 @@
      &               SetParAccess = .FALSE.)
       IF (exit_flag.ne.NoError) RETURN
 #endif
+#ifdef SAV_MODEL
+      Vinfo( 1)='GMODopt'
+      Vinfo( 2)='SAV growth rate options'
+      status=def_var(ng, model, ncid, varid, nf90_int,                  &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='KNSED'
+      Vinfo( 2)='Half saturation coeff. for sediment N uptake'
+      Vinfo( 3)='mu-M'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='KNWC'
+      Vinfo( 2)='Half saturation coeff. for water-column N uptake'
+      Vinfo( 3)='mu-M'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='TOPT'
+      Vinfo( 2)='Optimum temperature for SAV growth'
+      Vinfo( 3)='deg C'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='THTA'
+      Vinfo( 2)='Temperature growth theta for growth model#1'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='THTA2'
+      Vinfo( 2)='Temperature growth theta for growth model#2'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='SCL'
+      Vinfo( 2)='SAV growth fraction for growth model#1'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='SCL2'
+      Vinfo( 2)='SAV growth fraction for growth model#2'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='KI'
+      Vinfo( 2)='Half saturation for light'
+      Vinfo( 3)='mu-E m-2 s-1'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='SR'
+      Vinfo( 2)='Surface reflectance of light'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='LMBAMX'
+      Vinfo( 2)='Maximum AGB in self-shading formulation'
+      Vinfo( 3)='g C m-2'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='KMAG'
+      Vinfo( 2)='Above biomass ground mortality rate'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='ARSC'
+      Vinfo( 2)='Maximum fraction of PP respired'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='ARC'
+      Vinfo( 2)='Active respiration coefficient'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='BSRC'
+      Vinfo( 2)='Maximum fraction of biomass required'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+
+      Vinfo( 1)='RC'
+      Vinfo( 2)='Basal respiration coefficient'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+
+      Vinfo( 1)='RtStTL'
+      Vinfo( 2)='Seasonal root storage coefficient'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+      IF (exit_flag.ne.NoError) RETURN
+
+      Vinfo( 1)='DOWNt'
+      Vinfo( 2)='Downward translocation coefficient'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+
+      Vinfo( 1)='TRNS'
+      Vinfo( 2)='Upward translocation coefficient'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+
+      Vinfo( 1)='TCRIT'
+      Vinfo( 2)='Critical temp. for development of abovegrd. biomass'
+      Vinfo( 3)='deg C'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+
+      Vinfo( 1)='KM'
+      Vinfo( 2)='Below ground biomass mortality'
+      Vinfo( 3)='unitless'
+      status=def_var(ng, model, ncid, varid, NF_TYPE,                   &
+     &               1, (/0/), Aval, Vinfo, ncname,                     &
+     &               SetParAccess = .FALSE.)
+#endif
+      
