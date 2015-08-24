@@ -8647,6 +8647,15 @@
 !  WAVE Thrust model for marshes variables.
 !------------------------------------------------------------------------------
 !
+'marsh_mask'                                      ! Input/Output
+  'Input masking for getting thrust due to waves at rho pts.'
+  'nondimensional'     
+  'marsh_mask, scalar, series'
+  'ocean_time'
+  'idTims'
+  'r2dvar' 
+  1.0d0
+
 'mask_thrust'                                      ! Output
   'Masking for getting thrust due to waves at rho pts.'
   'nondimensional'     
@@ -8687,27 +8696,27 @@
   'v3pgrd'
    1.0d0
 
-'plant_height'                                    ! Input/Output
+'plant_height'                                     ! Input/Output
   'plant height'
-  'meter'                                         ! [m]
+  'meter'                                          ! [m]
   'plant_height, scalar, series'
   'ocean_time'
   'idvprp(phght)'
   'v3pgrd'
    1.0d0
 
-'plant_diameter'                                 ! Input/Output
+'plant_diameter'                                  ! Input/Output
   'plant diameter'
-  'meter'                                        ! [m]
+  'meter'                                         ! [m]
   'plant_diameter, scalar, series'
   'ocean_time'
   'idvprp(pdiam)'
   'v3pgrd'
    1.0d0
 
-'plant_thickness'                                ! Input/Output
-  'plant thickness'
-  'meter'                                        ! [m]
+'plant_thickness'                                 ! Input/Output
+  'plant thickness' 
+  'meter'                                         ! [m]
   'plant_thickness, scalar, series'
   'ocean_time'
   'idvprp(pthck)'
