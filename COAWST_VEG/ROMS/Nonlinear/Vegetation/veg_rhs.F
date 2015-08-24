@@ -142,7 +142,7 @@
 ! 
       real(r8), parameter :: one_third  = 1.0_r8/3.0_r8
       real(r8) :: cff1 , cff2, cff3 
-      real(r8) :: sma, bouy, Umag, Ca, cflex 
+      real(r8) :: sma, buoy, Umag, Uds, Ca, cflex 
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: dab  
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wrk
 !
@@ -165,7 +165,7 @@
 !
               dab(i,j,k)=dab(i,j,k-1)+Hz(i,j,k)
               cff1=MIN((dab(i,j,k)-plant(i,j,iveg,phght))/              &
-                                         Hz(i,j,k),1.0_r8)
+                                          Hz(i,j,k),1.0_r8)
               Lveg(i,j,k)=MIN(1.0_r8-cff1,1.0_r8)
                
 # ifdef VEG_FLEX 
