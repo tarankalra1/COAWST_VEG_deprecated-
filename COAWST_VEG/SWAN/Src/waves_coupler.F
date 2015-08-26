@@ -489,7 +489,8 @@
       write(wostring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
 !
-#if defined VEGETATION && defined VEG_STREAMING
+#if defined VEGETATION && defined VEG_SWAN_COUPLING \
+      defined VEG_STREAMING
       to_add=':DISVEG'
       cad=LEN_TRIM(to_add)
       write(wostring(cid:cid+cad-1),'(a)') to_add(1:cad)

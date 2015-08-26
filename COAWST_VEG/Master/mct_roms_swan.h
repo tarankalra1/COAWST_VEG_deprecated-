@@ -1307,7 +1307,7 @@
 !
 #if defined WAVES_OCEAN && defined WEC_VF && \
     defined BOTTOM_STREAMING && defined VEGETATION &&  \
-    defined VEG_STREAMING
+    && defined VEG_SWAN_COUPLING && defined VEG_STREAMING
 !
 !  Wave dissipation due to vegetation.
 !
