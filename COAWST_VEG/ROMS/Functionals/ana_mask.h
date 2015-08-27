@@ -14,6 +14,9 @@
       USE mod_param
       USE mod_grid
       USE mod_ncparam
+#ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK            
+      USE mod_vegarr
+#endif                       
 !
 ! Imported variable declarations.
 !
@@ -27,7 +30,10 @@
      &                    GRID(ng) % pmask,                             &
      &                    GRID(ng) % rmask,                             &
      &                    GRID(ng) % umask,                             &
-     &                    GRID(ng) % vmask)
+     &                    GRID(ng) % vmask,                             & 
+#ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK            
+     &                    GRID(ng) % marsh_mask    
+#endif                       
 !
 ! Set analytical header file name used.
 !
@@ -46,7 +52,10 @@
       SUBROUTINE ana_mask_tile (ng, tile, model,                        &
      &                          LBi, UBi, LBj, UBj,                     &
      &                          IminS, ImaxS, JminS, JmaxS,             &
-     &                          pmask, rmask, umask, vmask)
+     &                          pmask, rmask, umask, vmask,             & 
+#ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK            
+     &                          marsh_mask    
+#endif                       
 !***********************************************************************
 !
       USE mod_param
@@ -68,11 +77,17 @@
       real(r8), intent(out) :: rmask(LBi:,LBj:)
       real(r8), intent(out) :: umask(LBi:,LBj:)
       real(r8), intent(out) :: vmask(LBi:,LBj:)
+# ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK            
+      real(r8), intent(out) :: marsh_mask(LBi:,LBj:)
+# endif                       
 #else
       real(r8), intent(out) :: pmask(LBi:UBi,LBj:UBj)
       real(r8), intent(out) :: rmask(LBi:UBi,LBj:UBj)
       real(r8), intent(out) :: umask(LBi:UBi,LBj:UBj)
       real(r8), intent(out) :: vmask(LBi:UBi,LBj:UBj)
+# ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK            
+      real(r8), intent(out) :: marsh_mask(LBi:UBi,LBj:UBj)
+# endif                       
 #endif
 !
 !  Local variable declarations.
@@ -185,6 +200,13 @@
           rmask(i,j)=mask(i,j)
         END DO
       END DO
+#ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK            
+      DO j=JstrT,JendT
+        DO i=IstrT,IendT
+          marsh_mask(i,j)=rmask(i,j)
+        END DO
+      END DO
+#endif                       
 !
 !-----------------------------------------------------------------------
 !  Compute Land/Sea mask of U- and V-points.
@@ -229,6 +251,11 @@
         CALL exchange_v2d_tile (ng, tile,                               &
      &                          LBi, UBi, LBj, UBj,                     &
      &                          vmask)
+#ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK    
+        CALL exchange_r2d_tile (ng, tile,                               &
+     &                          LBi, UBi, LBj, UBj,                     &
+     &                          marsh_mask)
+#endif         
       END IF
 
 #ifdef DISTRIBUTE
@@ -236,7 +263,10 @@
      &                    LBi, UBi, LBj, UBj,                           &
      &                    NghostPoints,                                 &
      &                    EWperiodic(ng), NSperiodic(ng),               &
-     &                    rmask, pmask, umask, vmask)
+     &                    rmask, pmask, umask, vmask,                   & 
+# ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK
+     &                    marsh_mask)     
+# endif 
 #endif
 
       RETURN
