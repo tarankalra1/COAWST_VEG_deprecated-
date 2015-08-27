@@ -32,7 +32,7 @@
      &                    GRID(ng) % umask,                             &
      &                    GRID(ng) % vmask,                             & 
 #ifdef VEGETATION && WAVE_THRUST_MARSH && ANA_MARSH_MASK            
-     &                    GRID(ng) % marsh_mask    
+     &                    VEG(ng) % marsh_mask    
 #endif                       
 !
 ! Set analytical header file name used.
