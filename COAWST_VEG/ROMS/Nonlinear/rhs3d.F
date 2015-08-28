@@ -555,7 +555,7 @@
             cff=ru_veg(i,j,k)*om_u(i,j)*on_u(i,j)
             ru(i,j,k,nrhs)=ru(i,j,k,nrhs)-cff
 #  ifdef DIAGNOSTICS_UV
-            DiaRU(i,j,k,nrhs,M3fveg)=cff
+            DiaRU(i,j,k,nrhs,M3fveg)=-cff
 #  endif
           END DO
         END DO
@@ -564,7 +564,7 @@
             cff=rv_veg(i,j,k)*om_v(i,j)*on_v(i,j)
             rv(i,j,k,nrhs)=rv(i,j,k,nrhs)-cff
 #  ifdef DIAGNOSTICS_UV
-            DiaRV(i,j,k,nrhs,M3fveg)=cff
+            DiaRV(i,j,k,nrhs,M3fveg)=-cff
 #  endif
           END DO
         END DO
