@@ -95,12 +95,12 @@
      &                         MIXING(ng) % russt2d,                    &
      &                         MIXING(ng) % rvsst2d,                    &
 # endif
-     &                         MIXING(ng) % rustr3d,                    &
-     &                         MIXING(ng) % rvstr3d,                    & 
 # if defined VEGETATION && defined VEG_STREAMING
-     &                         VEG(ng) % BWDXL_veg                      &
-     &                         VEG(ng) % BWDXL_veg)                     
+     &                         VEG(ng) % BWDXL_veg,                     &
+     &                         VEG(ng) % BWDXL_veg,                     &                  
 # endif
+     &                         MIXING(ng) % rustr3d,                    &
+     &                         MIXING(ng) % rvstr3d) 
 # ifdef PROFILE
       CALL wclock_off (ng, iNLM, 21)
 # endif
@@ -138,10 +138,10 @@
 # ifdef SURFACE_STREAMING
      &                               russt2d, rvsst2d,                  &
 # endif
-     &                               rustr3d,  rvstr3d,                 & 
 # if defined VEGETATION && defined VEG_STREAMING 
-     &                               BWDXL_veg, BWDYL_veg)                        
+     &                               BWDXL_veg, BWDYL_veg,              &                         
 # endif
+     &                               rustr3d,  rvstr3d) 
 !***********************************************************************
 !
       USE mod_param
