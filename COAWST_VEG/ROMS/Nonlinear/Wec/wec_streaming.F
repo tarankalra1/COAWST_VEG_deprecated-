@@ -99,7 +99,7 @@
      &                         MIXING(ng) % rvstr3d,                    & 
 # if defined VEGETATION && defined VEG_STREAMING
      &                         VEG(ng) % BWDXL_veg                      &
-     &                         VEG(ng) % BWDXL_veg                      &
+     &                         VEG(ng) % BWDXL_veg)                     
 # endif
 # ifdef PROFILE
       CALL wclock_off (ng, iNLM, 21)
