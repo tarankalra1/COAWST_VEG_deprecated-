@@ -132,6 +132,7 @@
 !
       real(r8), parameter :: one_half=1.0_r8/2.0_r8 
       real(r8), parameter :: one_third=1.0_r8/3.0_r8 
+      real(r8), parameter :: Inival=0.0_r8
       real(r8), parameter :: cl_veg=1.0_r8 
       real(r8) :: wku1, wku2, wku3, wku4, wku
       real(r8) :: wkv1, wkv2, wkv3, wkv4, wkv
@@ -145,6 +146,15 @@
 
 # include "set_bounds.h"
 !
+      DO k=1,N(ng)-1
+        DO j=Jstr,Jend
+          DO i=Istr,Iend
+            tke_veg(i,j,k)=Inival
+            gls_veg(i,j,k)=Inival
+          END DO 
+        END DO 
+      END DO 
+
       VEG_LOOP: DO iveg=1,NVEG
         DO k=1,N(ng)-1
           DO j=Jstr,Jend

@@ -141,6 +141,7 @@
       integer :: i, j, k, iveg
 ! 
       real(r8), parameter :: one_third  = 1.0_r8/3.0_r8
+      real(r8), parameter :: Inival = 0.0_r8 
       real(r8) :: cff1 , cff2, cff3 
       real(r8) :: sma, buoy, Umag, Uds, Ca, cflex 
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: dab  
@@ -153,8 +154,19 @@
 !  or emergent (marsh) vegetation.
 !-----------------------------------------------------------------------
 !
+!  Important to initialize momentum terms to zero as array gets added 
+! 
+      K_LOOP: DO k=1,N(ng)
+        DO j=JstrV-1,Jend
+          DO i=IstrU-1,Iend
+            ru_veg(i,j,k)=Inival
+            rv_veg(i,j,k)=Inival
+          END DO 
+        END DO 
+      END DO 
+!
 !  Compute distance above bed - initialising dab 
-
+!
       dab(0,0,0)=0.0_r8 
       VEG_LOOP: DO iveg=1,NVEG
         K_LOOP: DO k=1,N(ng)

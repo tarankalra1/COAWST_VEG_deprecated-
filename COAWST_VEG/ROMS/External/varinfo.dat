@@ -8644,46 +8644,6 @@
   1.0d0
 !
 !------------------------------------------------------------------------------
-!  WAVE Thrust model for marshes variables.
-!------------------------------------------------------------------------------
-!
-'marsh_mask'                                      ! Input/Output
-  'Input masking for getting thrust due to waves at rho pts.'
-  'nondimensional'     
-  'marsh_mask, scalar, series'
-  'ocean_time'
-  'idTims'
-  'r2dvar' 
-  1.0d0
-
-'mask_thrust'                                      ! Output
-  'Masking for getting thrust due to waves at rho pts.'
-  'nondimensional'     
-  'mask_thrust, scalar, series'
-  'ocean_time'
-  'idTmsk'
-  'r2dvar' 
-  1.0d0
-
-'Thrust_max'                                       ! Output
-  'Maximum thrust due to waves'
-  'kilonewtons/m '                                 ! [kN/m]
-  'Thrust_w_wet, scalar, series'
-  'ocean_time'
-  'idTmax'
-  'r2dvar'
-  1.0d0
-
-'Thrust_tonelli'                                   ! Output
-  'Tonelli masking based thrust due to waves'
-  'kilonewtons/m'                                  ! [kN/m]
-  'Thrust_tonelli, scalar, series'
-  'ocean_time'
-  'idTton'
-  'r2dvar'
-  1.0d0
-!
-!------------------------------------------------------------------------------
 !  Vegetation - Plant array declaration.
 !------------------------------------------------------------------------------
 !
@@ -8722,4 +8682,83 @@
   'idvprp(pthck)'
   'v3pgrd'
    1.0d0
+!
+!------------------------------------------------------------------------------
+!  Diaganostics for momentum terms.
+!------------------------------------------------------------------------------
+!
+'u_fveg'                                          ! Input/Output
+  '3D u-momentum, vegetation drag force term'
+  'meter second-2'                                 ! [m/s2]
+  'u_fveg, scalar, series'
+  'ocean_time'
+  'idDu3d(M3fveg)'
+  'u3dvar'
+  1.0d0
 
+'v_fveg'                                          ! Input/Output
+  '3D v-momentum, vegetation drag force term'
+  'meter second-2'                                 ! [m/s2]
+  'v_fveg, scalar, series'
+  'ocean_time'
+  'idDv3d(M3fveg)'
+  'v3dvar'
+  1.0d0
+
+'ubar_fveg'                                        ! Input/Output
+  '2D u-momentum, vegetation drag force term'
+  'meter second-2'                                 ! [m/s2]
+  'ubar_fveg, scalar, series'
+  'ocean_time'
+  'idDu2d(M2fveg)'
+  'u2dvar'
+  1.0d0
+
+'vbar_fveg'                                          ! Input/Output
+  '2D v-momentum, vegetation drag force term'
+  'meter second-2'                                 ! [m/s2]
+  'vbar_fveg, scalar, series'
+  'ocean_time'
+  'idDv2d(M2fveg)'
+  'v2dvar'
+  1.0d0
+!
+!------------------------------------------------------------------------------
+!  WAVE Thrust model for marshes variables.
+!------------------------------------------------------------------------------
+!
+'marsh_mask'                                      ! Input/Output
+  'Input masking for getting thrust due to waves at rho pts.'
+  'nondimensional'     
+  'marsh_mask, scalar, series'
+  'ocean_time'
+  'idTims'
+  'r2dvar' 
+  1.0d0
+
+'mask_thrust'                                      ! Output
+  'Masking for getting thrust due to waves at rho pts.'
+  'nondimensional'     
+  'mask_thrust, scalar, series'
+  'ocean_time'
+  'idTmsk'
+  'r2dvar' 
+  1.0d0
+
+'Thrust_max'                                       ! Output
+  'Maximum thrust due to waves'
+  'kilonewtons/m '                                 ! [kN/m]
+  'Thrust_w_wet, scalar, series'
+  'ocean_time'
+  'idTmax'
+  'r2dvar'
+  1.0d0
+
+'Thrust_tonelli'                                   ! Output
+  'Tonelli masking based thrust due to waves'
+  'kilonewtons/m'                                  ! [kN/m]
+  'Thrust_tonelli, scalar, series'
+  'ocean_time'
+  'idTton'
+  'r2dvar'
+  1.0d0
