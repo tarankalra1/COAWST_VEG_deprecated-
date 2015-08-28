@@ -156,7 +156,7 @@
 !
 !  Important to initialize momentum terms to zero as array gets added 
 ! 
-      K_LOOP: DO k=1,N(ng)
+      DO k=1,N(ng)
         DO j=JstrV-1,Jend
           DO i=IstrU-1,Iend
             ru_veg(i,j,k)=Inival
