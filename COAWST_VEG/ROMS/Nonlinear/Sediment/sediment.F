@@ -93,9 +93,6 @@
 # ifdef SUSPLOAD
       USE sed_fluxes_mod, ONLY : sed_fluxes
       USE sed_settling_mod, ONLY : sed_settling
-#  if defined SED_BIOMASS
-    USE sed_biomass_mod, ONLY : sed_biomass
-#  endif
 #  if defined SED_FLOCS
     USE sed_flocs_mod, ONLY : sed_flocmod
 #  endif
@@ -137,14 +134,6 @@
 !
       CALL sed_fluxes (ng, tile)
 !
-#  ifdef SED_BIOMASS
-!-----------------------------------------------------------------------
-!  Compute sediment due to biomass.
-!-----------------------------------------------------------------------
-!
-      CALL sed_biomass (ng, tile)
-!
-#  endif
 # endif
 !
 !-----------------------------------------------------------------------
