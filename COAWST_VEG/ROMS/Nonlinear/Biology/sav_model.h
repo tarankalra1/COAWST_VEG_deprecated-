@@ -1,4 +1,4 @@
-      SUBROUTINE SAV_MODEL_SUB(ng, Istr, Iend,                            &
+      SUBROUTINE SAV_BIOMASS_SUB(ng, Istr, Iend,                          &
      &                        LBi, UBi, LBj, UBj, IminS, ImaxS, pmonth,   & 
      &                        wtemp, PARz, DINwcr_loc, DINsed_loc,        &
      &                        agb_loc, bgb_loc)
@@ -238,5 +238,5 @@
      END DO 
 
      RETURN
-     END SUBROUTINE SAV_MODEL_SUB
+     END SUBROUTINE SAV_BIOMASS_SUB
 

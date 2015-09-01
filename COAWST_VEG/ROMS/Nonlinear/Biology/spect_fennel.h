@@ -138,10 +138,7 @@
      &                   OCEAN(ng) % PARs,                              &
      &                   OCEAN(ng) % SpKd,                              &
 #endif
-#ifdef SEAGRASS_SINK
-     &                   OCEAN(ng) % SgrN,                              &
-#endif
-#ifdef SAV_MODEL
+#ifdef SAV_BIOMASS
      &                   OCEAN(ng) % DINwcr,                            &
      &                   OCEAN(ng) % DINsed,                            &
      &                   OCEAN(ng) % AGB,                               &
@@ -185,10 +182,7 @@
      &                         SpecIr, avcos,                           &
      &                         PARout, PARs, SpKd,                      &
 #endif
-#ifdef SEAGRASS_SINK
-     &                         SgrN,                                    &
-#endif
-#ifdef SAV_MODEL
+#ifdef SAV_BIOMASS
      &                         DINwcr,                                  &
      &                         DINsed,                                  &
      &                         AGB,                                     &
@@ -247,10 +241,7 @@
       real(r8), intent(out) :: PARs(LBi:,LBj:,:)
       real(r8), intent(out) :: SpKd(LBi:,LBj:,:)
 # endif
-# ifdef SEAGRASS_SINK
-      real(r8), intent(out) :: SgrN(LBi:,LBj:)
-# endif
-# ifdef SAV_MODEL
+# ifdef SAV_BIOMASS
       real(r8), intent(out) :: DINwcr(LBi:,LBj:,:)
       real(r8), intent(out) :: DINsed(LBi:,LBj:,:)
       real(r8), intent(out) :: AGB(LBi:,LBj:)
@@ -291,10 +282,7 @@
       real(r8), intent(out) :: PARs(LBi:UBi,LBj:UBj,NBAND)
       real(r8), intent(out) :: SpKd(LBi:UBi,LBj:UBj,NBAND)
 # endif
-# ifdef SEAGRASS_SINK
-      real(r8), intent(out) :: SgrN(LBi:UBi,LBj:UBj)
-# endif
-# ifdef SAV_MODEL
+# ifdef SAV_BIOMASS
       real(r8), intent(out) :: DINwcr(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(out) :: DINsed(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(out) :: AGB(LBi:UBi,LBj:UBj)
@@ -401,9 +389,9 @@
       real(r8) :: N_Flux_Pmortal, N_Flux_Zmortal
       real(r8) :: N_Flux_RemineL, N_Flux_RemineS
       real(r8) :: N_Flux_Zexcret, N_Flux_Zmetabo
-
+#ifdef ALGAL_RESP
       real(r8) :: br20, brthta, N_Flux_BaseResp
-
+#endif
       real(r8), dimension(Nsink) :: Wbio
 
       integer, dimension(IminS:ImaxS,N(ng)) :: ksource
@@ -428,7 +416,7 @@
       real(r8), dimension(IminS:ImaxS,N(ng)) :: qc
 
 #ifdef SPECTRAL_LIGHT
-! ALA    Irradiance and attenuation variables
+!     Irradiance and attenuation variables
       real(r8), dimension(N(ng),NBands) :: specir_d
       real(r8), dimension(N(ng),NBands) :: avgcos, dATT
       real(r8), dimension(NBands) :: dATT_sum
@@ -592,7 +580,7 @@
           END DO
 !
 #  ifdef MOD_SWR_SPECT
-! ALA MOD_SWR_SPECT modulates the short wave radiation PARsur 
+!  MOD_SWR_SPECT modulates the short wave radiation PARsur 
 !                      based on spectral irradiance using Gallegos
           DO iband=1,NBands
             IF (Ed_tot.gt.eps) THEN
@@ -603,7 +591,7 @@
             END IF          
           END DO
 #  elif defined MOD_SWR_HOMO
-! ALA MOD_SWR_HOMO modulates the short wave radiation PARsur 
+!  MOD_SWR_HOMO modulates the short wave radiation PARsur 
 !                                evenly through the spectrum
           DO iband=1,NBands
             specir_m(i,iband)=PARsur(i)/(NBands*DLAM)
@@ -677,7 +665,7 @@
 !                
 # ifdef SPECTRAL_LIGHT
 !############################################
-! ALA ! ADD GALLEGOS LIGHT ATTENUATION
+! ! ADD GALLEGOS LIGHT ATTENUATION
 !############################################
 ! It assumes irradiance is in W/m2 (as Gallegos)
           DO i=Istr,Iend
@@ -696,10 +684,10 @@
                      indsed=idsed(ised)
                      TOTSED=TOTSED+t(i,j,k,nstp,indsed)
                   END DO
-            !ALA CHANGE TO NTU 
+            ! CHANGE TO NTU 
               ! Define TU_alpha +TU_beta +TU_gamma
               ! TURB=TU_alpha*TOTSED**TU_beta +TU_gamma
-            !ALA Set to TURB(NTU) equal to TOTSED(mg/l) 
+            ! Set to TURB(NTU) equal to TOTSED(mg/l) 
               !TU_alpha=1.0_r8
                   TU_alpha=1.0e3_r8 !transform kg/m3 to mg/l
                   TU_beta=1.0_r8
@@ -809,7 +797,7 @@
           END DO 
 !
 !############################################
-! ALA ! END OF ATTENUATION FROM GALLEGOS
+! END OF ATTENUATION FROM GALLEGOS
 !############################################
 # endif
 !
@@ -918,34 +906,8 @@
 # endif
 #endif
 
-! Basal respiration of phytoplankton 
-! Basal Respiration is a function of phytoplankton biomass and temperature
-!
-! Parameters and computation
-!
-                br20   = 0.025_r8               ! Basal respiration at 20 degress
-                brthta = 1.047_r8               ! Basal respiration temperature coefficient
-                cff1=br20*brthta**(itemp)       ! Respiration coefficient at temperature (/d) 
-                cff2=dtdays*cff1
-!
-                N_Flux_BaseResp=cff2*max(Bio(i,k,iPhyt)-PhyMin(ng),0.0_r8)
-!
-! Update other model systems (In future, consider if basal resp goes to iSDeN and iSDeC)
-!
-                Bio(i,k,iPhyt)=Bio(i,k,iPhyt)-N_Flux_BaseResp
-                Bio(i,k,iNH4_)=Bio(i,k,iNH4_)+N_Flux_BaseResp
-
-#ifdef OXYGEN
-                Bio(i,k,iOxyg)=Bio(i,k,iOxyg)-                            &
-     &                       rOxNH4*(N_Flux_BaseResp)
-#endif
-
-#ifdef CARBON
-!
-!  Total inorganic carbon (CO2) released during phytoplankton basal respiration.
-!
-                cff1=PhyCN(ng)*(N_Flux_BaseResp)
-                Bio(i,k,iTIC_)=Bio(i,k,iTIC_)-cff1
+#ifdef ALGAL_RESP
+#  include "algal_resp.h"
 #endif
 
 !
@@ -1535,7 +1497,7 @@
             cff3=115.0_r8/16.0_r8
             cff4=106.0_r8/16.0_r8
 # endif
-#ifdef SAV_MODEL 
+#ifdef SAV_BIOMASS 
 !  
 !  Calling the SAV MODEL developed by Dr. Jeremy Testa 
 !  Need sediment biogechemical equations to get DINsed and DINwcr
@@ -1557,7 +1519,7 @@
               DINwcr(i,j,k)=Bio(i,k,iNH4_)+Bio(i,k,iNO3_)
             END DO
             DO k = 1,N(ng) 
-              CALL SAV_MODEL_SUB(ng, Istr, Iend, LBi, UBi, LBj, UBj,    &
+              CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi, LBj, UBj,  &
      &                     IminS, ImaxS, pmonth, t(:,j,1,nstp,itemp),   &
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
      &                     AGB(:,j),BGB(:,j)) 
@@ -1645,7 +1607,7 @@
       RETURN
       END SUBROUTINE biology_tile
 !
-# ifdef SAV_MODEL   
+# ifdef SAV_BIOMASS   
 #  include "sav_model.h"
 # endif  
 !
