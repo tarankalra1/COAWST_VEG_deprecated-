@@ -1857,26 +1857,6 @@
 #include "vegetation_def_his.h"
 #endif
 !
-# if defined SAV && defined SEAGRASS_SINK && defined SPECTRAL_LIGHT
-!
-!  Define Seagrass
-!
-        IF (Hout(idsgrn,ng)) THEN
-          Vinfo( 1)=Vname(1,idsgrn)
-          Vinfo( 2)=Vname(2,idsgrn)
-          Vinfo( 3)=Vname(3,idsgrn)
-          Vinfo(14)=Vname(4,idsgrn)
-          Vinfo(16)=Vname(1,idtime)
-#  if defined WRITE_WATER && defined MASKING
-          Vinfo(20)='mask_rho'
-#  endif
-          Vinfo(22)='coordinates'
-          Aval(5)=REAL(Iinfo(1,idsgrn,ng),r8)
-          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsgrn),   &
-     &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
-        END IF
-# endif
-!
 !  Define surface U-momentum stress.
 !
         IF (Hout(idUsms,ng)) THEN

@@ -815,36 +815,6 @@
       is=LEN_TRIM(Coptions)+1
       Coptions(is:is+19)=' WAVE_THRUST_MARSH,'
 #endif
-#if defined SAV 
-      IF (Master) WRITE (stdout,20) 'SAV',                              &
-     &   'submerged aquatic vegetation (e.g., seagrass).'
-      is=LEN_TRIM(Coptions)+1
-      Coptions(is:is+5)=' SAV,'
-#endif
-#if defined EMERGENT_VEG 
-      IF (Master) WRITE (stdout,20) 'EMERGENT_VEG',                     &
-     &   'emergent vegetation (e.g., marsh).'
-      is=LEN_TRIM(Coptions)+1
-      Coptions(is:is+14)=' EMERGENT_VEG,'
-#endif
-#if defined SAV && defined SEAGRASS_SINK
-      IF (Master) WRITE (stdout,20) 'SEAGRASS_SINK',                    &
-     &   'bottom sink of N due to benthic seagrass proxy.'
-      is=LEN_TRIM(Coptions)+1
-      Coptions(is:is+15)=' SEAGRASS_SINK,'
-#endif
-#if defined SEAGRASS_SINK && defined SEAGRASS_LIGHT_CONST
-      IF (Master) WRITE (stdout,20) 'SEAGRASS_LIGHT_CONST',             &
-     &   'N sink (seagrass proxy) constant % if light more than limit.'
-      is=LEN_TRIM(Coptions)+1
-      Coptions(is:is+22)=' SEAGRASS_LIGHT_CONST,'
-#endif
-#if defined SEAGRASS_SINK && defined SEAGRASS_LIGHT
-      IF (Master) WRITE (stdout,20) 'SEAGRASS_LIGHT',                   &
-     &   'N sink (seagrass proxy) as a function of light.'
-      is=LEN_TRIM(Coptions)+1
-      Coptions(is:is+16)=' SEAGRASS_LIGHT,'
-#endif
 #ifdef DIAGNOSTICS_TS
       IF (Master) WRITE (stdout,20) 'DIAGNOSTICS_TS',                   &
      &   'Computing and writing tracer diagnostic terms.'
