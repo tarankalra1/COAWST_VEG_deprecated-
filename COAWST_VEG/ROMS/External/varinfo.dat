@@ -2650,23 +2650,23 @@
   1.0d0
 
 !--------------------------UMAINE variables
-'river_NO3_'                                        ! Input
-  'river runoff NO3'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_NO3, scalar, series'
-  'river_time'
-  'idRtrc(iNO3_)'
-  'nulvar'
-  1.0d0
+!'river_NO3_'                                        ! Input
+!  'river runoff NO3'
+!  'millimole_nitrogen meter-3'                     ! [millimole/m3]
+!  'river_NO3, scalar, series'
+!  'river_time'
+!  'idRtrc(iNO3_)'
+!  'nulvar'
+!  1.0d0
 
-'river_Nh4_'                                        ! Input
-  'river runoff NH4'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_NH4, scalar, series'
-  'river_time'
-  'idRtrc(iNH4_)'
-  'nulvar'
-  1.0d0
+!'river_Nh4_'                                        ! Input
+!  'river runoff NH4'
+!  'millimole_nitrogen meter-3'                     ! [millimole/m3]
+!  'river_NH4, scalar, series'
+!  'river_time'
+!  'idRtrc(iNH4_)'
+!  'nulvar'
+!  1.0d0
 
 'river_SiOH'                                        ! Input
   'river runoff SiOH'
@@ -4166,15 +4166,6 @@
   'ocean_time'
   'idSpKd'
   's3dvar'
-  1.0d0
-
-'SgrN'                                             ! Input/Output
-  'Seagrass concentration'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'SgrN, scalar, series'
-  'ocean_time'
-  'idsgrn'
-  'r2dvar'
   1.0d0
 
 'phytoplankton'                                    ! Input/Output
