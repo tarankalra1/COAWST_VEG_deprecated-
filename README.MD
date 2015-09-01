@@ -31,7 +31,8 @@ Turning on SAV model (Executable file ./coawstS)
 * # define OXYGEN
 * # define DENITRIFICATION
 * # define BIO_SEDIMENT
-*  # define SAV_MODEL 
+* # define SAV_BIOMASS(new flags)
+* # define ALGAL_RESP (new flags) 
 * # define DIAGNOSTICS_BIO
 * #endif
 
