@@ -30,7 +30,7 @@
 #ifdef MCT_INTERP_OC2WV
       USE mod_coupler_iounits
 #endif
-#ifdef VEGETATION && defined VEG_STREAMING && defined VEG_SWAN_COUPLING 
+#if defined VEGETATION && defined VEG_SWAN_COUPLING
       USE mod_vegetation
       USE mod_vegarr 
 #endif
@@ -360,7 +360,7 @@
       write(wostring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
 !
-#if defined VEGETATION && defined VEG_STREAMING
+#if defined VEGETATION && defined VEG_SWAN_COUPLING && defined VEG_STREAMING
       to_add=':DISVEG'
       cad=LEN_TRIM(to_add)
       write(wostring(cid:cid+cad-1),'(a)') to_add(1:cad)
@@ -573,6 +573,10 @@
 #ifdef UV_KIRBY
       USE mod_coupling
 #endif
+#if defined VEGETATION && defined VEG_SWAN_COUPLING
+      USE mod_vegetation
+      USE mod_vegarr 
+#endif
 !
       USE exchange_2d_mod, ONLY : exchange_r2d_tile
       USE exchange_2d_mod, ONLY : exchange_u2d_tile
@@ -593,6 +597,9 @@
 !
       integer :: Asize, MyError, Tag
       integer :: gtype, i, id, ifield, ij, j, k, status
+#if defined VEGETATION && defined VEG_SWAN_COUPLING
+      integer :: iveg
+#endif	
 
       real(r8), parameter ::  Lwave_min = 1.0_r8
       real(r8), parameter ::  Lwave_max = 500.0_r8
@@ -840,7 +847,12 @@
       DO j=JstrR,JendR
         DO i=IstrR,IendR
           ij=ij+1
-          A(ij)=VEG(ng)%equiv_plantdens(i,j)
+          cff=0.0
+          DO iveg=1,NVEG
+            cff=VEG(ng)%plant(i,j,iveg,ipdens)+cff
+          END DO
+          A(ij)=cff/NVEG	  
+
         END DO
       END DO
       CALL AttrVect_importRAttr (AttrVect_G(ng)%ocn2wav_AV, "VEGDENS",  &

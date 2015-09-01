@@ -540,6 +540,13 @@
       cad=LEN_TRIM(to_add)
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
+#if defined VEGETATION && defined VEG_SWAN_COUPLING
+!
+      to_add=':VEGDENS'
+      cad=LEN_TRIM(to_add)
+      write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
+      cid=cid+cad
+#endif
 #  ifdef ICE_MODEL
 !
       to_add=':SEAICE'
@@ -806,7 +813,8 @@
      &                             "WQP",avdata)
       END IF
 !
-#ifdef VEG_STREAMING     
+#if defined VEGETATION && defined VEG_SWAN_COUPLING \
+      && defined VEG_STREAMING      
       ELSE IF (IVTYPE.eq.57) THEN
         CALL AttrVect_importRAttr (AttrVect_G(ng)%wav2ocn_AV,           &
      &                             "DISVEG",avdata)
@@ -1526,6 +1534,9 @@
             COMPDA(INDX,JVX1) =COMPDA(INDX,JVX2)
             COMPDA(INDX,JVY1) =COMPDA(INDX,JVY2)
             COMPDA(INDX,JFRC3)=COMPDA(INDX,JFRC2)
+#  if defined VEGETATION && defined VEG_SWAN_COUPLING
+            COMPDA(INDX,JNPLA3)=COMPDA(INDX,JNPLA2)
+#  endif
           END DO
         END IF
 # endif
@@ -1649,7 +1660,7 @@
       integer :: NUMTRANSFER, NNEIGH, HALOSIZE, NUMSENT, INB
       integer :: WHICHWAY, GDEST, GSRC, TAGT, TAGB, TAGR, TAGL
       integer :: TREQUEST,BREQUEST,RREQUEST,LREQUEST,MSIZE
-      integer :: iddep, idwlv, idvlx, idvly
+      integer :: iddep, idwlv, idvlx, idvly, idveg
       integer :: idruf, idice, idu10, idv10
       integer, dimension(MPI_STATUS_SIZE,4) :: status
 !     integer, pointer :: points(:)

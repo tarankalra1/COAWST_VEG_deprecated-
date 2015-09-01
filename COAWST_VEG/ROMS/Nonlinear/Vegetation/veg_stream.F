@@ -63,7 +63,6 @@
      &                         FORCES(ng) % Lwave,                      &
 !# endif
      &                         VEG(ng) % plant,                         &
-     &                         VEG(ng) % equiv_plantdens,               &
      &                         VEG(ng) % dissip_veg,                    &
      &                         VEG(ng) % Lveg,                          &
      &                         VEG(ng) % BWDXL_veg,                     &
@@ -93,7 +92,6 @@
      &                              Lwave,                              &
 !# endif
      &                              plant,                              &
-     &                              equiv_plantdens,                    &
      &                              dissip_veg, Lveg,                   &
      &                              BWDXL_veg, BWDYL_veg)  
 !***********************************************************************
@@ -127,7 +125,6 @@
       real(r8), intent(in) :: plant(LBi:,LBj:,:,:)
       real(r8), intent(in) :: dissip_veg(LBi:,LBj:)
       real(r8), intent(in) :: Lveg(LBi:,LBj:,:)
-      real(r8), intent(inout) :: equiv_plantdens(LBi:,LBj:)
       real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:)
       real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:)
 # else
@@ -147,7 +144,6 @@
       real(r8), intent(in) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
       real(r8), intent(in) :: dissip_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
-      real(r8), intent(inout) :: equiv_plantdens(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj)
 # endif
@@ -177,19 +173,6 @@
 !----------------------------------------------------------------------
 !----------Executing the code------------------------------------------
 !----------------------------------------------------------------------
-!
-!----------------------------------------------------------------------
-!  Equivalent plant density that feeds to SWAN coupling.
-!----------------------------------------------------------------------
-      DO j=Jstr,Jend
-          DO i=Istr,Iend
-            cff1=0.0
-            DO iveg=1,NVEG
-              cff1=plant(i,j,iveg,ipdens)+cff1
-            END DO
-            equiv_plantdens(i,j)=cff1/NVEG
-        END DO 
-      END DO 
 !     
       DO j=Jstr-1,Jend+1
         DO i=Istr-1,Iend+1

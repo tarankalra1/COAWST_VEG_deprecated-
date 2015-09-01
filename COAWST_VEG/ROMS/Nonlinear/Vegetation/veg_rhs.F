@@ -15,7 +15,7 @@
 !==================================================Tarandeep S. Kalra===
 !                                                                      !
 !  This routine computes the effect of flexible vegetation as a sink   !
-!  in the 3D momentume equations.                                      !
+!  in the 3D momentum equations.                                      !
 !                                                                      !  
 !  References:                                                         !
 !                                                                      !
@@ -129,8 +129,8 @@
       real(r8), intent(inout) :: bend(LBi:UBi,LBj:UBj,N(ng),NVEG)
 #  endif 
       real(r8), intent(inout) ::                                        &
-    &               ru_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG),         &
-    &               rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG)
+     &               ru_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG),            &
+     &               rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG)
       real(r8), intent(inout) :: ru_veg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(inout) :: rv_veg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(inout) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
@@ -143,37 +143,41 @@
       real(r8), parameter :: one_third  = 1.0_r8/3.0_r8
       real(r8), parameter :: Inival = 0.0_r8 
       real(r8) :: cff1 , cff2, cff3 
-      real(r8) :: sma, buoy, Umag, Uds, Ca, cflex 
+      real(r8) :: sma, buoy, Umag, Ca, cflex 
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: dab  
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wrk
 !
 # include "set_bounds.h"
 !
 !-----------------------------------------------------------------------
-!  Resistance imposed on the flow by the submerged (seagrass: veg) 
-!  or emergent (marsh) vegetation.
+! Resistance imposed on the flow by vegetation.
 !-----------------------------------------------------------------------
 !
 !  Important to initialize momentum terms to zero as array gets added 
 ! 
-      DO k=1,N(ng)
-        DO j=JstrV-1,Jend
-          DO i=IstrU-1,Iend
-            ru_veg(i,j,k)=Inival
-            rv_veg(i,j,k)=Inival
-          END DO 
-        END DO 
-      END DO 
+!      DO k=1,N(ng)
+!        DO j=JstrV-1,Jend
+!          DO i=IstrU-1,Iend
+!            ru_veg(i,j,k)=Inival
+!            rv_veg(i,j,k)=Inival
+!          END DO 
+!        END DO 
+!      END DO 
+      ru_veg=0.0_r8
+      rv_veg=0.0_r8  
 !
-!  Compute distance above bed - initialising dab 
+! Initialising dab (distance above the bed)
 !
-      dab(0,0,0)=0.0_r8 
+      dab=0.0_r8
+!	  
+! Start do loops on vegetation types, vertical layers, and rho points      
+!
       VEG_LOOP: DO iveg=1,NVEG
         K_LOOP: DO k=1,N(ng)
           DO j=JstrV-1,Jend
             DO i=IstrU-1,Iend
 !
-!  Select the grid cell (full or part) within the canopy layer
+! Select the grid cell (full or part) within the canopy layer
 !
               dab(i,j,k)=dab(i,j,k-1)+Hz(i,j,k)
               cff1=MIN((dab(i,j,k)-plant(i,j,iveg,phght))/              &
@@ -190,8 +194,7 @@
      &              plant(i,j,iveg,pthck)*plant(i,j,iveg,phght)**3.0_r8/&
      &                                    (E_VEG(iveg,ng)*sma)
 !
-! Rotate the horizontal components of flow (u and v) at rho points
-! into a downstream (Uds) component
+! Current speed (at rho points)
 !
               cff2=0.5_r8*(u(i,j,k,nrhs)+u(i+1,j,k,nrhs))
               cff3=0.5_r8*(v(i,j,k,nrhs)+v(i,j+1,k,nrhs))
@@ -200,7 +203,7 @@
 ! Cauchy number
 !
               Ca=0.5_r8*rhow*Cd_veg(iveg,ng)*plant(i,j,iveg,pdiam)*     &
-     &                   Uds**2.0_r8*plant(i,j,iveg,phght)**3.0_r8/     &
+     &                   Umag**2.0_r8*plant(i,j,iveg,phght)**3.0_r8/    &
      &                       (E_veg(iveg,ng)*sma)
 !
               cflex=1.0_r8-((1.0_r8-0.9_r8*Ca**(-one_third))/           &
@@ -210,29 +213,26 @@
 !
               cflex=MIN(cflex,1.0_r8)
 !
-! Effective blade length takes into account: 
+! Effective blade length 
 !
               Lveg(i,j,k)=cflex*Lveg(i,j,k)
 !
-!  Compute blade bending angle
+! Blade bending angle
 !
               bend(i,j,iveg)=ACOS(cflex**(-3.0_r8))
-            END DO 
-          END DO
-! 
-!   Else statement to compute for non-flexible vegetation
-!       
-# else 
 !
-!   Prepare drag term (at rho point)S          
+!   end of VEG_FLEX
+!       
+# endif
+!
+! Prepare drag term (at rho points)          
 !       
               wrk(i,j)=0.5_r8*cd_veg(iveg,ng)*plant(i,j,iveg,pdiam)*      &
      &             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg(i,j,k)
             END DO 
           END DO
-# endif 
 !
-!   Compute friction force (at cell faces)
+! Compute friction force (at cell faces)
 !
           DO j=Jstr,Jend
             DO i=IstrU,Iend
@@ -244,9 +244,9 @@
               cff3=u(i,j,k,nrhs)*cff2
               ru_loc_veg(i,j,k,iveg)=0.5_r8*(wrk(i-1,j)+wrk(i,j))*cff3
 !
-!   Add the ru_iveg from this veg type to another veg type
-!   which can be there at the same point (i,j,k)
-!   Alexis's comment: not confident in what is happening when 
+! Add the ru_iveg from this veg type to another veg type
+! which can be there at the same point (i,j,k)
+! Alexis's comment: not confident in what is happening when 
 !                     multiple vegetation types are concomitant
 !
               ru_veg(i,j,k)=ru_loc_veg(i,j,k,iveg)+ru_veg(i,j,k) 
@@ -262,8 +262,8 @@
               cff3=v(i,j,k,nrhs)*cff2
               rv_loc_veg(i,j,k,iveg)=0.5_r8*(wrk(i,j-1)+wrk(i,j))*cff3
 !
-!   Add the rv_iveg from this veg type to another veg type
-!   which can be there at the same point (i,j,k) 
+! Add the rv_iveg from this veg type to another veg type
+! which can be there at the same point (i,j,k) 
 !
               rv_veg(i,j,k)=rv_loc_veg(i,j,k,iveg)+rv_veg(i,j,k)
             END DO
