@@ -3061,7 +3061,7 @@
         exit_flag=5
       END IF
 #endif
-#if defined TS_PSOURCE && defined SOLVE3D
+#ifdef SOLVE3D
 !
 !  Stop if activating obsolete tracers point Sources/Sinks option. This
 !  capability is now activated with standard input switch "LtracerSrc".

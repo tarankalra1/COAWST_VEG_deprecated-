@@ -905,6 +905,7 @@
                 Bio(i,k,iTAlk)=Bio(i,k,iTAlk)+N_Flux_NewProd
 # endif
 #endif
+write(60,*)"hello"
 
 #ifdef ALGAL_RESP
 #  include "algal_resp.h"

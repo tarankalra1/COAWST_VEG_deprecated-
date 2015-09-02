@@ -349,9 +349,6 @@
               CASE ('idTbry(inorth,iTAlk)')
                 idTbry(inorth,iTAlk)=varid
 #endif
-
-#ifdef TS_PSOURCE
-
 !
 !  Biological tracers point Source/Sinks (river runoff).
 !
@@ -413,14 +410,13 @@
               CASE ('idRtrc(iDDCA)')
                 idRtrc(iDDCA)=varid
 
-# ifdef OXYGEN
+#ifdef OXYGEN
               CASE ('idRtrc(iOxyg)')
                 idRtrc(iOxyg)=varid
-# endif
-# ifdef CARBON
+#endif
+#ifdef CARBON
               CASE ('idRtrc(iTIC_)')
                 idRtrc(iTIC_)=varid
               CASE ('idRtrc(iTAlk)')
                 idRtrc(iTAlk)=varid
-# endif
 #endif

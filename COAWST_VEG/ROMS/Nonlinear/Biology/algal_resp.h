@@ -1,10 +1,4 @@
-! ALGAL_RESP.H 
-! Coded by: 
-!***********************************************************************
-!****************************************** John C. Warner *************
-!****************************************** Neil K. Ganju **************
-!****************************************** Jeremy Testa ***************
-!****************************************** Tarandeep S. Kalra *********
+!
 ! Basal respiration of phytoplankton 
 ! Basal Respiration is a function of phytoplankton biomass and temperature
 !

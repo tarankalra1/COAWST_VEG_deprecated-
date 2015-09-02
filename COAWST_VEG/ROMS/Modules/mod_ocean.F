@@ -39,9 +39,6 @@
 !  PARs         Spectral PAR                                           !
 !  SpKd         Spectral Attenuation                                   !
 #endif
-#ifdef SEAGRASS_SINK
-! SgrN          Seagrass in mols of N                                  !
-#endif
 #ifdef WEC
 !  Wave effect on currents variables                                   !
 !
@@ -138,9 +135,6 @@
           real(r8), pointer :: PARout(:,:,:)
           real(r8), pointer :: PARs(:,:,:)
           real(r8), pointer :: SpKd(:,:,:)
-# endif
-# if defined SEAGRASS_SINK
-          real(r8), pointer :: SgrN(:,:)
 # endif
 #endif
 
@@ -403,9 +397,6 @@
       allocate ( OCEAN(ng) % PARout(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( OCEAN(ng) % PARs(LBi:UBi,LBj:UBj,NBAND) )
       allocate ( OCEAN(ng) % SpKd(LBi:UBi,LBj:UBj,NBAND) )
-# endif
-# if defined BIO_FENNEL && defined SEAGRASS_SINK
-      allocate ( OCEAN(ng) % SgrN(LBi:UBi,LBj:UBj) )
 # endif
 #endif
 #if defined TANGENT || defined TL_IOMS
@@ -714,9 +705,6 @@
 #ifdef UV_KIRBY
             OCEAN(ng) % uwave(i,j) = IniVal
             OCEAN(ng) % vwave(i,j) = IniVal
-#endif
-#if defined BIO_FENNEL && defined SEAGRASS_SINK 
-            OCEAN(ng) % SgrN(i,j) = IniVal
 #endif
           END DO
 #ifdef SOLVE3D
