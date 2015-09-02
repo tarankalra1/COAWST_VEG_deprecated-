@@ -3061,19 +3061,6 @@
         exit_flag=5
       END IF
 #endif
-#ifdef SOLVE3D
-!
-!  Stop if activating obsolete tracers point Sources/Sinks option. This
-!  capability is now activated with standard input switch "LtracerSrc".
-!
-      IF (Master) THEN
-        WRITE (stdout,230) uppercase('ts_psource'), 'LtracerSrc'
- 230    FORMAT (/,' CHECKDEFS - cannot use obsolete option: ',a,        &
-     &          /,13x,'Use instead standard input switch: ',a,          &
-     &          /,13x,'Edit header file or build script!')
-        exit_flag=5
-      END IF
-#endif
 #ifdef UV_PSOURCE
 !
 !  Stop if activating obsolete mass point Sources/Sinks option. This
