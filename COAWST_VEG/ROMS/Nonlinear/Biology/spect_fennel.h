@@ -905,12 +905,11 @@
                 Bio(i,k,iTAlk)=Bio(i,k,iTAlk)+N_Flux_NewProd
 # endif
 #endif
-write(60,*)"hello"
-
+!
 #ifdef ALGAL_RESP
 #  include "algal_resp.h"
 #endif
-
+!
 !
 ! The Nitrification of NH4 ==> NO3 is thought to occur only in dark and
 ! only in aerobic water (see Olson, R. J., 1981, JMR: (39), 227-238.).
