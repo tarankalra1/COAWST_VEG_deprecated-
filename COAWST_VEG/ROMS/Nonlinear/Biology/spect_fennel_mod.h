@@ -98,10 +98,7 @@
       integer :: idPARs                 ! PARs            Spectral PAR
       integer :: idSpKd                 ! SpKd            Spectral Attenuation
 #endif
-#ifdef SEAGRASS_SINK
-      integer :: idsgrn                 ! SgrN            Seagrass in mols of N
-#endif
-#ifdef SAV_MODEL
+#ifdef SAV_BIOMASS
       integer :: iddinw                 ! DINwcr  Dissolved Inorganic Nitrogen (water column)
       integer :: iddins                 ! DINsed  Dissolved Inorganic Nitrogen (sediment column) 
       integer :: idsagb                 ! AGB     Above ground biomass 
@@ -180,7 +177,7 @@
       integer, parameter :: irct=2    ! relict index for DOC.
       character (len=11), dimension(Ndom) :: DomName
 # endif
-#ifdef SAV_MODEL 
+#ifdef SAV_BIOMASS
       integer,  allocatable :: GMODopt(:)
       real(r8), allocatable :: KNSED(:)             
       real(r8), allocatable :: KNWC(:)             
@@ -419,7 +416,7 @@
         allocate ( BB2B(Ngrids) )
       END IF
 #endif
-#ifdef SAV_MODEL
+#ifdef SAV_BIOMASS
       IF (.not.allocated(GMODopt)) THEN
         allocate ( GMODopt(Ngrids) )
       END IF

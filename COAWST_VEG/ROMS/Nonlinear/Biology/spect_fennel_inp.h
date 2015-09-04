@@ -147,7 +147,7 @@
             CASE ('BB2B')
               Npts=load_r(Nval, Rval, Ngrids, BB2B)
 #endif
-#if defined SAV_MODEL 
+#if defined SAV_BIOMASS
             CASE ('GMODopt')
               Npts=load_i(Nval, Rval, Ngrids, GMODopt)
             CASE ('KNSED')
@@ -570,16 +570,7 @@
               END IF
               Npts=load_l(Nval, Cval, Ngrids, Hout(idSpKd,1:Ngrids))
 #endif
-#if defined SEAGRASS_SINK 
-            CASE ('Hout(idsgrn)')
-              IF (idsgrn.eq.0) THEN
-                IF (Master) WRITE (out,40) 'idsgrn'
-                exit_flag=5
-                RETURN
-              END IF
-              Npts=load_l(Nval, Cval, Ngrids, Hout(idsgrn,1:Ngrids))
-#endif
-#if defined SAV_MODEL
+#if defined SAV_BIOMASS
             CASE ('Hout(iddins)')
               IF (iddins.eq.0) THEN
                 IF (Master) WRITE (out,40) 'iddins'
@@ -714,7 +705,7 @@
             WRITE (out,80) BB2B(ng), 'BB2B',                            &
      &            'Particulate backscattering ratio.'
 #endif
-#ifdef SAV_MODEL 
+#ifdef SAV_BIOMASS
             WRITE (out,70) GMODopt(ng), 'GMODopt',                      &
      &            'SAV growth rate options.'
             WRITE (out,80) KNSED(ng), 'KNSED',                          &
@@ -1033,16 +1024,12 @@
      &       'Hout(idSpKd)',                                            &
      &       'Write out Spectral Kd (light attenuation).'
 # endif
-# ifdef SEAGRASS_SINK 
-          IF (Hout(idsgrn,ng)) WRITE (out,120) Hout(idsgrn,ng),         &
-     &       'Hout(idsgrn)',                                            &
-     &       'Write out Seagrass in units of N.'
 #  ifdef CDOM_VARIABLE
             WRITE (out,70) Ndom, 'Ndom',                      &
      &            'Number of DOM constituents.'
 #  endif
 # endif
-# ifdef SAV_MODEL 
+# ifdef SAV_BIOMASS 
           IF (Hout(iddins,ng)) WRITE (out,120) Hout(iddins,ng),         &
      &       'Hout(iddins)',                                            &
      &       'Write out sediment dissolved inorganic N in units (mu-M).'

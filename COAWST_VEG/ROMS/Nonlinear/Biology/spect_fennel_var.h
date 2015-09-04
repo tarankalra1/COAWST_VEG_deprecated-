@@ -67,11 +67,7 @@
                 varid=varid+1
 #  endif
 # endif
-# ifdef SEAGRASS_SINK
-              CASE ('idsgrn')
-                idsgrn=varid
-# endif
-# ifdef SAV_MODEL
+# ifdef SAV_BIOMASS
               CASE ('iddins')
                 iddins=varid
               CASE ('iddinw')
