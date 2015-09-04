@@ -1023,20 +1023,19 @@
           IF (Hout(idSpKd,ng)) WRITE (out,120) Hout(idSpKd,ng),         &
      &       'Hout(idSpKd)',                                            &
      &       'Write out Spectral Kd (light attenuation).'
-# endif
-#  ifdef CDOM_VARIABLE
+#endif
+#ifdef CDOM_VARIABLE
             WRITE (out,70) Ndom, 'Ndom',                      &
      &            'Number of DOM constituents.'
-#  endif
-# endif
-# ifdef SAV_BIOMASS 
+#endif
+#ifdef SAV_BIOMASS 
           IF (Hout(iddins,ng)) WRITE (out,120) Hout(iddins,ng),         &
      &       'Hout(iddins)',                                            &
      &       'Write out sediment dissolved inorganic N in units (mu-M).'
           IF (Hout(iddinw,ng)) WRITE (out,120) Hout(iddinw,ng),         &
      &       'Hout(iddinw)',                                            &
      &       'Write out water column inorganic N in units (mu-M).'
-# endif
+#endif
           END IF
         END DO
       END IF
