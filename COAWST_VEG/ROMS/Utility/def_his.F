@@ -1852,7 +1852,79 @@
      &                   NF_FOUT, nvd4, s3dgrd, Aval, Vinfo, ncname)
         END IF
 # endif
+!
+# if defined BIO_FENNEL && defined SAV_BIOMASS
+!
+!  Define Dissolved Inorganic Nitrogen in water column
+!
+        IF (Hout(iddinw,ng)) THEN 
+          Vinfo( 1)=Vname(1,iddinw)
+          Vinfo( 2)=Vname(2,iddinw)
+          Vinfo( 3)=Vname(3,iddinw)
+          Vinfo(14)=Vname(4,iddinw)
+          Vinfo(16)=Vname(1,idtime)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,iddinw,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(iddinw),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+!  Define Dissolved Inorganic Nitrogen in sediment column
+!
+        IF (Hout(iddins,ng)) THEN 
+          Vinfo( 1)=Vname(1,iddins)
+          Vinfo( 2)=Vname(2,iddins)
+          Vinfo( 3)=Vname(3,iddins)
+          Vinfo(14)=Vname(4,iddins)
+          Vinfo(16)=Vname(1,idtime)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,iddins,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(iddins),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+!  Above ground biomass
+!
+        IF (Hout(idsagb,ng)) THEN
+          Vinfo( 1)=Vname(1,idsagb)
+          Vinfo( 2)=Vname(2,idsagb)
+          Vinfo( 3)=Vname(3,idsagb)
+          Vinfo(14)=Vname(4,idsagb)
+          Vinfo(16)=Vname(1,idsagb)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsagb,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsagb),   &
+     &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+!  Above ground biomass
+!
+        IF (Hout(idsbgb,ng)) THEN
+          Vinfo( 1)=Vname(1,idsbgb)
+          Vinfo( 2)=Vname(2,idsbgb)
+          Vinfo( 3)=Vname(3,idsbgb)
+          Vinfo(14)=Vname(4,idsbgb)
+          Vinfo(16)=Vname(1,idsbgb)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsbgb,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsbgb),   &
+     &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
+        END IF
 
+# endif
+!
 #if defined VEGETATION 
 #include "vegetation_def_his.h"
 #endif
