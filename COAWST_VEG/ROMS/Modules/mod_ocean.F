@@ -39,6 +39,12 @@
 !  PARs         Spectral PAR                                           !
 !  SpKd         Spectral Attenuation                                   !
 #endif
+#if defined BIO_FENNEL && defined SAV_BIOMASS
+! DINwcr        Dissolved Inorganic Nitrogen-water column(mu mols N)   !
+! DINsed        Dissolved Inorganic Nitrogen-sediment column(mu mols N)!
+! AGB           Above ground biomass                                   !
+! BGB           Below ground biomass                                   !
+#endif
 #ifdef WEC
 !  Wave effect on currents variables                                   !
 !
@@ -135,6 +141,12 @@
           real(r8), pointer :: PARout(:,:,:)
           real(r8), pointer :: PARs(:,:,:)
           real(r8), pointer :: SpKd(:,:,:)
+# endif
+# if defined BIO_FENNEL && defined SAV_BIOMASS
+          real(r8), pointer :: DINwcr(:,:,:)
+          real(r8), pointer :: DINsed(:,:,:)
+          real(r8), pointer :: AGB(:,:)
+          real(r8), pointer :: BGB(:,:)
 # endif
 #endif
 
@@ -397,6 +409,12 @@
       allocate ( OCEAN(ng) % PARout(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( OCEAN(ng) % PARs(LBi:UBi,LBj:UBj,NBAND) )
       allocate ( OCEAN(ng) % SpKd(LBi:UBi,LBj:UBj,NBAND) )
+# endif
+# if defined BIO_FENNEL && defined SAV_BIOMASS
+      allocate ( OCEAN(ng) % DINwcr(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % DINsed(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % AGB(LBi:UBi,LBj:UBj) )
+      allocate ( OCEAN(ng) % BGB(LBi:UBi,LBj:UBj) )
 # endif
 #endif
 #if defined TANGENT || defined TL_IOMS
@@ -719,6 +737,12 @@
               OCEAN(ng) % v(i,j,k,2) = IniVal
 # if defined BIO_FENNEL && defined SPECTRAL_LIGHT 
               OCEAN(ng) % PARout(i,j,k) = IniVal
+# endif
+# if defined BIO_FENNEL && defined SAV_BIOMASS
+            OCEAN(ng) % DINwcr(i,j,k) = IniVal
+            OCEAN(ng) % DINsed(i,j,k) = IniVal
+            OCEAN(ng) % AGB(i,j) = IniVal
+            OCEAN(ng) % BGB(i,j) = IniVal
 # endif
 # if defined WEC
 #  ifdef WEC_MELLOR
