@@ -284,7 +284,7 @@
         IF (exit_flag.ne.NoError) RETURN
 #endif
 
-#ifdef VEGETATION 
+#if defined VEGETATION && defined VEG_RHS
         status=def_dim(ng, iNLM, HIS(ng)%ncid, ncname, 'NVEGP',         &
      &                 NVEGP, DimIDs(35))
         IF (exit_flag.ne.NoError) RETURN
