@@ -329,7 +329,7 @@
      &               SetParAccess = .FALSE.)
       IF (exit_flag.ne.NoError) RETURN
 #endif
-#ifdef SAV_MODEL
+#ifdef SAV_BIOMASS
       Vinfo( 1)='GMODopt'
       Vinfo( 2)='SAV growth rate options'
       status=def_var(ng, model, ncid, varid, nf90_int,                  &
