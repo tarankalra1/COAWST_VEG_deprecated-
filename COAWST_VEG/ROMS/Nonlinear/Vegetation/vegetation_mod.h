@@ -24,8 +24,8 @@
 !  phght         Height                                                !
 !  pdiam         Diameter                                              !
 !  pthck         Thickness                                             !
-!  pupbm         Above ground biomass                                  !
-!  pdwbm         Below ground biomass                                  !
+!  pabbm         Above ground biomass                                  !
+!  pbgbm         Below ground biomass                                  !
 !                                                                      !
 !  Plant Property indices:                                             !
 !  ======================                                              !
@@ -59,8 +59,8 @@
       integer :: ipdens,iphght,ipdiam,ipthck
 
 #ifdef VEG_BIOMASS 
-      integer :: pupbm, pdwbm   
-      integer :: ipupbm, ipdwbm   
+      integer :: pabbm, pbgbm   
+      integer :: ipabbm, ipbgbm   
 #endif 
 #ifdef VEG_STREAMING 
       integer :: idWdve
@@ -94,9 +94,9 @@
        pthck   = counter
 #ifdef VEG_BIOMASS 
        counter = counter+1 
-       pupbm   = counter
+       pabbm   = counter
        counter = counter+1 
-       pdwbm   = counter 
+       pbgbm   = counter 
 #endif 
        NVEGP = counter
        IF (.not.allocated(idvprp)) THEN

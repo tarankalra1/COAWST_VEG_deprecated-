@@ -1,5 +1,5 @@
 #include "cppdefs.h"
-
+! THIS IS ALL COPIED (DTI-DONT TRUST IT) 
       MODULE sed_biomass_mod
 
 #if defined NONLINEAR && defined SEDIMENT && defined SED_BIOMASS

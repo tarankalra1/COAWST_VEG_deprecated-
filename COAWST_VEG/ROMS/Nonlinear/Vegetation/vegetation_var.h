@@ -27,10 +27,10 @@
             CASE ('idvprp(phght)')
                 idvprp(phght)=varid
 #if defined VEG_BIOMASS  
-            CASE ('idvprp(pupbm)')
-                idvprp(pupbm)=varid
-            CASE ('idvprp(pdwbm)')
-                idvprp(pdwbm)=varid
+            CASE ('idvprp(pabbm)')
+                idvprp(pabbm)=varid
+            CASE ('idvprp(pbgbm)')
+                idvprp(pbgbm)=varid
 #endif 
 #if defined VEG_STREAMING 
             CASE ('idWdve')

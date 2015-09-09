@@ -78,6 +78,10 @@
       USE mod_ncparam
       USE mod_ocean
       USE mod_stepping
+#if defined SAV_BIOMASS && defined VEG_BIOMASS
+      USE mod_vegetation 
+      USE mod_vegarr                            
+#endif
 !
 !  Imported variable declarations.
 !
@@ -144,8 +148,10 @@
      &                   OCEAN(ng) % AGB,                               &
      &                   OCEAN(ng) % BGB,                               &
 #endif
+#if defined SAV_BIOMASS && defined VEG_BIOMASS
+     &                   VEG(ng) % plant,                               &
+#endif
      &                   OCEAN(ng) % t)
-
 #ifdef PROFILE
       CALL wclock_off (ng, iNLM, 15)
 #endif
@@ -187,6 +193,9 @@
      &                         DINsed,                                  &
      &                         AGB,                                     &
      &                         BGB,                                     &
+#endif
+#if defined SAV_BIOMASS && defined VEG_BIOMASS
+     &                         plant,                                   &
 #endif
      &                         t)
 !-----------------------------------------------------------------------
@@ -247,6 +256,9 @@
       real(r8), intent(out) :: AGB(LBi:,LBj:)
       real(r8), intent(out) :: BGB(LBi:,LBj:)
 # endif
+# if defined SAV_BIOMASS && defined VEG_BIOMASS
+      real(r8), intent(inout) :: plant(LBi:,LBj:,:,:)
+# endif
       real(r8), intent(inout) :: t(LBi:,LBj:,:,:,:)
 #else
 # ifdef MASKING
@@ -287,6 +299,9 @@
       real(r8), intent(out) :: DINsed(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(out) :: AGB(LBi:UBi,LBj:UBj)
       real(r8), intent(out) :: BGB(LBi:UBi,LBj:UBj)
+# endif
+# if defined SAV_BIOMASS && defined VEG_BIOMASS
+      real(r8), intent(inout) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
 # endif
       real(r8), intent(inout) :: t(LBi:UBi,LBj:UBj,UBk,3,UBt)
 #endif
@@ -1515,14 +1530,20 @@
               END DO
             END DO
 
-            DO i=Istr,Iend
-              DINwcr(i,j,k)=Bio(i,k,iNH4_)+Bio(i,k,iNO3_)
-            END DO
             DO k = 1,N(ng) 
               CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi, LBj, UBj,  &
      &                     IminS, ImaxS, pmonth, t(:,j,1,nstp,itemp),   &
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
      &                     AGB(:,j),BGB(:,j)) 
+            END DO 
+#endif 
+!
+#if defined SAV_BIOMASS && defined VEG_BIOMASS  
+            DO k=1,NVEG
+              DO i=Istr,Iend
+                plant(i,j,iveg,pagbm)=AGB(i,j)
+                plant(i,j,iveg,pbgbm)=BGB(i,j)
+              END DO 
             END DO 
 #endif 
 

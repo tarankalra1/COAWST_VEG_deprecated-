@@ -15,8 +15,8 @@
 !                   plant(:,:,:,pdens) => density                      !
 !                   plant(:,:,:,pthck) => thickness                    !
 !                   plant(:,:,:,pdiam) => diameter                     !
-!                   plant(:,:,:,pupbm) => above ground biomass         !
-!                   plant(:,:,:,pdnbm) => below ground biomass         !
+!                   plant(:,:,:,pabbm) => above ground biomass         !
+!                   plant(:,:,:,pbgbm) => below ground biomass         !
 !  ru_veg         Momentum term for x direction(takes account for all  !
 !                 vegetation types)                                    !
 !  rv_veg         Momentum term for x direction(takes account for all  !
