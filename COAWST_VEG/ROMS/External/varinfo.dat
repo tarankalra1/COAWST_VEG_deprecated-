@@ -8635,6 +8635,46 @@
   1.0d0
 !
 !------------------------------------------------------------------------------
+!  SAV_BIOMASS properties (Module in Biology folder).
+!------------------------------------------------------------------------------
+!
+'Dinwcr'                                           ! Input/Output
+  'Dissolved inorganic N in water column'
+  'millimole'                                      ! [millimole]
+  'Dinwcr, scalar, series'
+  'ocean_time'
+  'iddinw'
+  'r2dvar'
+  1.0d0
+
+'Dinsed'                                           ! Input/Output
+  'Dissolved inorganic N in sediment column'
+  'millimole'                                      ! [millimole]
+  'Dinsed, scalar, series'
+  'ocean_time'
+  'iddins'
+  'r2dvar'
+  1.0d0
+
+'AGB'                                              ! Input/Output
+  'Above ground biomass'
+  'millimole_nitrogen meter-2'                     ! [millimole-N/m2]
+  'AGB, scalar, series'
+  'ocean_time'
+  'idsagb'
+  'r2dvar'
+  1.0d0
+
+'BGB'                                              ! Input/Output
+  'Below ground biomass'
+  'millimole_nitrogen meter-2'                     ! [millimole-N/m2]
+  'BGB, scalar, series'
+  'ocean_time'
+  'idsbgb'
+  'r2dvar'
+  1.0d0
+!
+!------------------------------------------------------------------------------
 !  Vegetation - Plant array declaration.
 !------------------------------------------------------------------------------
 !
@@ -8671,6 +8711,24 @@
   'plant_thickness, scalar, series'
   'ocean_time'
   'idvprp(pthck)'
+  'v3pgrd'
+   1.0d0
+
+'plant_agb'                                       ! Input/Output
+  'plant above ground biomass' 
+  'millimole_nitrogen meter-2'                    ! [millimole-N/m2]
+  'plant_agb, scalar, series'
+  'ocean_time'
+  'idvprp(pagbm)'
+  'v3pgrd'
+   1.0d0
+
+'plant_bgb'                                       ! Input/Output
+  'plant below ground biomass' 
+  'millimole_nitrogen meter-2'                    ! [millimole-N/m2]
+  'plant_bgb, scalar, series'
+  'ocean_time'
+  'idvprp(pbgbm)'
   'v3pgrd'
    1.0d0
 !
