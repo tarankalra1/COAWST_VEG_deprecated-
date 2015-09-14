@@ -851,8 +851,7 @@
           DO iveg=1,NVEG
             cff=VEG(ng)%plant(i,j,iveg,ipdens)+cff
           END DO
-          A(ij)=cff/NVEG	  
-
+          A(ij)=cff/NVEG
         END DO
       END DO
       CALL AttrVect_importRAttr (AttrVect_G(ng)%ocn2wav_AV, "VEGDENS",  &
@@ -977,6 +976,11 @@
       USE mod_iounits
       USE mod_sedbed
       USE mod_sediment
+#if defined VEGETATION && defined VEG_SWAN_COUPLING
+      USE mod_vegetation
+      USE mod_vegarr
+#endif
+
 #ifdef UV_KIRBY
       USE mod_coupling
 #endif

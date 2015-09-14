@@ -811,13 +811,13 @@
       ELSE IF (IVTYPE.eq.58) THEN
         CALL AttrVect_importRAttr (AttrVect_G(ng)%wav2ocn_AV,           &
      &                             "WQP",avdata)
-      END IF
 !
 #if defined VEGETATION && defined VEG_SWAN_COUPLING \
       && defined VEG_STREAMING      
       ELSE IF (IVTYPE.eq.57) THEN
         CALL AttrVect_importRAttr (AttrVect_G(ng)%wav2ocn_AV,           &
      &                             "DISVEG",avdata)
+      END IF
 #endif   
 !
 !

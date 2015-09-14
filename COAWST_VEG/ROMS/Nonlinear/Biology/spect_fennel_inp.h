@@ -584,7 +584,7 @@
                 exit_flag=5
                 RETURN
               END IF
-              Npts=load_l(Nval, Cval, Ngrids, Hout(iddins,1:Ngrids))
+              Npts=load_l(Nval, Cval, Ngrids, Hout(iddinw,1:Ngrids))
             CASE ('Hout(idsagb)')
               IF (idsagb.eq.0) THEN
                 IF (Master) WRITE (out,40) 'idsagb'
