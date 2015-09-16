@@ -379,23 +379,23 @@
       real(r8) :: Att, AttFac, ExpAtt, Itop, PAR
       real(r8) :: Epp, L_NH4, L_NO3, LTOT, Vp
       real(r8) :: Chl2C, dtdays, t_PPmax, inhNH4
-
+!
       real(r8) :: cff, cff1, cff2, cff3, cff4, cff5
       real(r8) :: fac1, fac2, fac3
       real(r8) :: cffL, cffR, cu, dltL, dltR
-
+!
       real(r8) :: total_N
-
+!
 #ifdef OXYGEN
       real(r8) :: SchmidtN_Ox, O2satu, O2_Flux
       real(r8) :: TS, AA
 #endif
-
+!
 #ifdef CARBON
       real(r8) :: C_Flux_RemineL, C_Flux_RemineS
       real(r8) :: CO2_Flux, CO2_sol, SchmidtN, TempK
 #endif
-
+!
       real(r8) :: N_Flux_Assim
       real(r8) :: N_Flux_CoagD, N_Flux_CoagP
       real(r8) :: N_Flux_Egest
@@ -407,20 +407,24 @@
 #ifdef ALGAL_RESP
       real(r8) :: br20, brthta, N_Flux_BaseResp
 #endif
+#ifdef SAV_BIOMASS
+      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: DOwcr, CO2wcr
+      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeCwcr_loc
+#endif 
       real(r8), dimension(Nsink) :: Wbio
-
+!
       integer, dimension(IminS:ImaxS,N(ng)) :: ksource
-
+!
       real(r8), dimension(IminS:ImaxS) :: PARsur
 #ifdef CARBON
       real(r8), dimension(IminS:ImaxS) :: pCO2
 #endif
-
+!
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Bio
       real(r8), dimension(IminS:ImaxS,N(ng),NT(ng)) :: Bio_old
-
+!
       real(r8), dimension(IminS:ImaxS,0:N(ng)) :: FC
-
+!
       real(r8), dimension(IminS:ImaxS,N(ng)) :: Hz_inv
       real(r8), dimension(IminS:ImaxS,N(ng)) :: Hz_inv2
       real(r8), dimension(IminS:ImaxS,N(ng)) :: Hz_inv3
@@ -429,7 +433,7 @@
       real(r8), dimension(IminS:ImaxS,N(ng)) :: bL
       real(r8), dimension(IminS:ImaxS,N(ng)) :: bR
       real(r8), dimension(IminS:ImaxS,N(ng)) :: qc
-
+!
 #ifdef SPECTRAL_LIGHT
 !     Irradiance and attenuation variables
       real(r8), dimension(N(ng),NBands) :: specir_d
@@ -1534,6 +1538,7 @@
               CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi, LBj, UBj,  &
      &                     IminS, ImaxS, pmonth, t(:,j,1,nstp,itemp),   &
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
+     &                     DOwcr(:,j,k), CO2wcr(:,j,k), LDeCwcr(:,j,k), &
      &                     AGB(:,j),BGB(:,j)) 
             END DO 
 #endif 

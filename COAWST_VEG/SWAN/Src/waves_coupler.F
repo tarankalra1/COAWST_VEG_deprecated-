@@ -817,8 +817,8 @@
       ELSE IF (IVTYPE.eq.57) THEN
         CALL AttrVect_importRAttr (AttrVect_G(ng)%wav2ocn_AV,           &
      &                             "DISVEG",avdata)
-      END IF
 #endif   
+      END IF
 !
 !
       IF (IRQ.eq.Numcouple) THEN

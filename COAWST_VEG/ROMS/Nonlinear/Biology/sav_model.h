@@ -1,6 +1,7 @@
       SUBROUTINE SAV_BIOMASS_SUB(ng, Istr, Iend,                          &
      &                        LBi, UBi, LBj, UBj, IminS, ImaxS, pmonth,   & 
      &                        wtemp, PARz, DINwcr_loc, DINsed_loc,        &
+     &                        DOwcr_loc, CO2wcr_loc, LDeCwcr_loc,         &
      &                        agb_loc, bgb_loc)
 !
 !***********************************************************************
@@ -28,7 +29,7 @@
 !     DINsed_loc Dissolved Inorganic N in sediment col. (mu M)         !
 !     DOwcr_loc  O2 interaction with bed                               ! 
 !     CO2wcr_loc CO2 interactions with bed                             ! 
-!     LdeCwcr_loc 
+!     LdeCwcr_locLabile detrital carbon in fennel 
 !     agb_loc    Vector of above ground biomass  (mmol N m-2)          !
 !     bgb_loc    Vector of below ground biomass  (mmol N m-2)          !
 !                                                                      !
@@ -242,6 +243,10 @@
 !
         DOwcr_loc(i)=DOwcr_loc(i)+(pp-agar-agbr)*gr2mmolC*pqrq*dtdays 
         CO2wcr_loc(i)=CO2wcr_loc(i)+(agar+agbr-pp)*gr2mmolC*pqrq*dtdays
+!
+!-----------------------------------------------------------------------
+!  Labile detrital carbon in fennel
+!-----------------------------------------------------------------------
 !
         LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm)*temp*dtdays  
 !

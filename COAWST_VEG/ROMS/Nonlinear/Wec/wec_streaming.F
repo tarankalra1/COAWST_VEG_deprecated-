@@ -40,7 +40,7 @@
 # if defined DIAGNOSTICS_UV
       USE mod_diags
 # endif
-# if defined VEGETATION && VEG_STREAMING 
+# if defined VEGETATION && defined VEG_STREAMING 
       USE mod_vegarr
       USE vegetation_stream_mod, ONLY : vegetation_stream_cal
 # endif 
@@ -48,7 +48,7 @@
       integer, intent(in) :: ng, tile
 # include "tile.h"
 
-# if defined VEGETATION && VEG_STREAMING 
+# if defined VEGETATION && defined VEG_STREAMING 
       CALL vegetation_stream_cal (ng, tile)
 # endif 
 
@@ -201,7 +201,8 @@
       real(r8), intent(inout) :: rustr3d(LBi:,LBj:,:)
       real(r8), intent(inout) :: rvstr3d(LBi:,LBj:,:)
 #  if defined VEGETATION && defined VEG_STREAMING 
-      real(r8), intent(inout) :: EWD(LBi:,LBj:)
+      real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:)
+      real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:)
 #  endif
 # else
       real(r8), intent(in) :: angler(LBi:UBi,LBj:UBj)
@@ -239,12 +240,12 @@
       real(r8), intent(inout) :: russt2d(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: rvsst2d(LBi:UBi,LBj:UBj)
 #  endif
-      real(r8), intent(inout) :: rustr3d(LBi:UBi,LBj:UBj,N(ng))
-      real(r8), intent(inout) :: rvstr3d(LBi:UBi,LBj:UBj,N(ng))
 #  if defined VEGETATION && defined VEG_STREAMING 
       real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj)
 #  endif
+      real(r8), intent(inout) :: rustr3d(LBi:UBi,LBj:UBj,N(ng))
+      real(r8), intent(inout) :: rvstr3d(LBi:UBi,LBj:UBj,N(ng))
 # endif
 !
 !  Local variable declarations.
