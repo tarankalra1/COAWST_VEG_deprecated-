@@ -1,5 +1,5 @@
 !
-!svn $Id: spect_fennel_mod.h 2232 2012-01-03 18:55:20Z arango $
+!svn $Id: estuarybgc_mod.h 2232 2012-01-03 18:55:20Z arango $
 !================================================== Hernan G. Arango ===
 !  Copyright (c) 2002-2012 The ROMS/TOMS Group                         !
 !    Licensed under a MIT/X style license                              !

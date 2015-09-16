@@ -26,6 +26,9 @@
 !     PArout     PAR at depth (mu E m-2 s-1).                          !
 !     DINwcr_loc Dissolved Inorganic N in water col. (mu M)            !
 !     DINsed_loc Dissolved Inorganic N in sediment col. (mu M)         !
+!     DOwcr_loc  O2 interaction with bed                               ! 
+!     CO2wcr_loc CO2 interactions with bed                             ! 
+!     LdeCwcr_loc 
 !     agb_loc    Vector of above ground biomass  (mmol N m-2)          !
 !     bgb_loc    Vector of below ground biomass  (mmol N m-2)          !
 !                                                                      !
@@ -56,13 +59,19 @@
       real(r8), intent(in) :: PARz(IminS:)
       real(r8), intent(inout) :: DINwcr_loc(IminS:)
       real(r8), intent(inout) :: DINsed_loc(IminS:)
+      real(r8), intent(inout) :: DOwcr_loc(IminS:)
+      real(r8), intent(inout) :: CO2wcr_loc(IminS:)
+      real(r8), intent(inout) :: LdeCwcr_loc(IminS:)
       real(r8), intent(inout) :: Agb_loc(IminS:)
       real(r8), intent(inout) :: Bgb_loc(IminS:)
 #  else
       real(r8), intent(in) :: wtemp(IminS:ImaxS)
       real(r8), intent(in) :: PARz(IminS:ImaxS)
-      real(r8), intent(in) :: DINwcr_loc(IminS:ImaxS)
-      real(r8), intent(in) :: DINsed_loc(IminS:ImaxS)
+      real(r8), intent(inout) :: DINwcr_loc(IminS:ImaxS)
+      real(r8), intent(inout) :: DINsed_loc(IminS:ImaxS)
+      real(r8), intent(inout) :: DOwcr_loc(IminS:Imaxs)
+      real(r8), intent(inout) :: CO2wcr_loc(IminS:Imaxs)
+      real(r8), intent(inout) :: LdeCwcr_loc(IminS:Imaxs)
       real(r8), intent(inout) :: Agb_loc(IminS:ImaxS)
       real(r8), intent(inout) :: Bgb_loc(IminS:ImaxS)
 #  endif
@@ -85,6 +94,8 @@
       real(r8), parameter :: eps=1.0e-10_r8
       real(r8), parameter :: gr2mmol=1000.0_r8/14.007_r8 
       real(r8), parameter :: C2N_ratio=30.0_r8 ! Move this to the input file 
+      real(r8), parameter :: gr2mmolC=1000.0_r8/12.011_r8 
+      real(r8), parameter :: pqrq=1.0_r8
 !
 !     Initialize local variables and arrays 
 !
@@ -97,7 +108,7 @@
       END DO
 !
 !-----------------------------------------------------------------------
-!     pmonth contains the month information calculated in spect_fennel.h
+!     pmonth contains the month information calculated in estuarybgc.h
 !-----------------------------------------------------------------------
 !
       day_year = (pmonth - 52.0_r8)*365.0_r8
@@ -160,7 +171,7 @@
 !  (temp--> converts gram Carbon units to mmol Nitrogen units)
 !-----------------------------------------------------------------------
 !
-        DINwcr_loc(i)=DINwcr_loc(i)+(agm+agar+agbr-pp)*temp*dtdays 
+        DINwcr_loc(i)=DINwcr_loc(i)+(agar+agbr-pp)*temp*dtdays 
 !
 !-----------------------------------------------------------------------
 !  Translocation of above ground biomass to below ground
@@ -225,8 +236,16 @@
 !
         shtLen=2.27_r8*agb_loc(i)
 !
+!-----------------------------------------------------------------------
+!  O2 and CO2 interactions with bed 
+!-----------------------------------------------------------------------
+!
+        DOwcr_loc(i)=DOwcr_loc(i)+(pp-agar-agbr)*gr2mmolC*pqrq*dtdays 
+        CO2wcr_loc(i)=CO2wcr_loc(i)+(agar+agbr-pp)*gr2mmolC*pqrq*dtdays
+!
+        LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm)*temp*dtdays  
+!
      END DO
- 
 !
 !-----------------------------------------------------------------------
 !  (temp--> converts gram Carbon units to mmol Nitrogen units)
