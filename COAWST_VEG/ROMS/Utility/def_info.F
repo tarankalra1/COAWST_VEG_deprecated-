@@ -2681,7 +2681,7 @@
 #if defined BIOLOGY && defined SOLVE3D
 # if defined BIO_FENNEL && !defined SPECTRAL_LIGHT
 #  include <fennel_def.h>
-# elif defined BIO_ESTUARY
+# elif defined ESTUARYBGC 
 #  include <estuarybgc_def.h>
 # elif defined ECOSIM
 #  include <ecosim_def.h>
