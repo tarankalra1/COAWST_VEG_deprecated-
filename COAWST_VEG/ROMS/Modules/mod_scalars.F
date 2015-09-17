@@ -2323,7 +2323,7 @@
       M2wbrk=ic+4
       ic=ic+4
 #  endif
-#  if defined VEGETATION && defined VEG_RHS
+#  if defined VEGETATION && defined VEG_DRAG
       M2fveg=ic+1
       ic=ic+1
 #  endif
@@ -2388,7 +2388,7 @@
       M3wbrk=ic+5
       ic=ic+5
 #   endif
-#   if defined VEGETATION && defined VEG_RHS
+#   if defined VEGETATION && defined VEG_DRAG
       M3fveg=ic+1
       ic=ic+1
 #   endif
