@@ -34,21 +34,27 @@ a) Described the variables that are read in through vegetation.in
 a) Writes the variables that are read in through vegetation.in in a NETCDF file
 --* Not sure if this is needed or being used 
 
-5.) veg_rhs.F --> (# VEG_RHS)
+5.) vegetation_drag.F --> (# VEG_DRAG)
 a) Algorithm to calculate the contribution of right hand side terms from vegetation. 
 **********Outputs ru_veg, rv_veg, bend******** 
 b) ru_veg--> Feeds back to the ../rhs3d.F
 c) rv_veg--> Feeds back to the ../rhs3d.F
 d) bend--> bending calculated for flexible plants --> Feeds back to the veg_gls_corstep.F
 
-6.) veg_gls_corstep.F  (# VEG_TURB)
+6.) vegetation_gls_corstep.F  (# VEG_TURB)
 a) Algorithm that calculates tke (turbulent kinetic energy) and gls(length scales) contribution
 from vegetation.  
 *********Outputs tke_veg, gls_veg***********
 b)tke_veg--> Feeds back to the ../gls_corstep.F
 c)gls_veg--> Feeds back to the ../gls_cosrstep.F 
 
-7) wave_thrust_marsh.F (# WAVE_THRUST_MARSH) 
+7.) vegetation_stream.F  (# VEG_STREAM)
+a) Algorithm that calculates takes the effect of changes in current on waves due to veg
+*********Outputs ***********
+b)BWDXL_veg--> Feeds back to the ../Wec/wec_streaming.F
+c)BWDYL_veg--> Feeds back to the ../Wec/wec_streaming.F
+
+8) wave_thrust_marsh.F (# WAVE_THRUST_MARSH) 
 
 -----------------------------------------------
        OUTSIDE THE VEGETATION FOLDER

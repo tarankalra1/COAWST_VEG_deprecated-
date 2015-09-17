@@ -14,7 +14,7 @@ This repository contains the COAWST version to compute the effects of
 * #define vegetation 
 * #ifdef vegetation
 *  #ifdef ana_vegetation 
-*  #ifdef veg_rhs 
+*  #ifdef veg_drag
 *  #ifdef veg_turb 
  *  #ifdef veg_flex
 *  #ifdef veg_stream
