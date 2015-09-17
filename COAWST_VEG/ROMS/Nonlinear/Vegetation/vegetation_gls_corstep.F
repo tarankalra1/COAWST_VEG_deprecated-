@@ -4,7 +4,7 @@
 
 #if defined NONLINEAR && defined VEGETATION && defined VEG_TURB
 !
-!svn $Id: veg_gls_corstep.F 429 2015-06-10 12:30:26Z arango $
+!svn $Id: vegetation_gls_corstep.F 429 2015-06-10 12:30:26Z arango $
 !=======================================================================
 !  Copyright (c) 2002-2014 The ROMS/TOMS Group                         !
 !    Licensed under a MIT/X style license           Hernan G. Arango   !
@@ -36,7 +36,7 @@
       USE mod_ocean
       USE mod_mixing 
       USE mod_vegarr
-      USE vegetation_rhs_mod
+      USE vegetation_drag_mod
 !
       integer, intent(in) :: ng, tile
 !
@@ -88,7 +88,7 @@
       USE mod_scalars
       USE mod_vegetation 
       USE mod_vegarr
-      USE vegetation_rhs_mod
+      USE vegetation_drag_mod
 !
 !
 !  Imported variable declarations.

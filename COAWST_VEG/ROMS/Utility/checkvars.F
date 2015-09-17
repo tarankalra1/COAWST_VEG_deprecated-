@@ -43,7 +43,7 @@
 #if defined SEDIMENT || defined BBL_MODEL
       USE mod_sediment
 #endif
-#if defined VEGETATION && defined VEG_RHS 
+#if defined VEGETATION 
       USE mod_vegetation 
       USE mod_vegarr
 #endif 
@@ -470,7 +470,7 @@
         END DO
 
 # ifdef VEGETATION 
-#  ifdef VEG_RHS
+#  if defined VEG_DRAG || defined VEG_BIOMASS 
         DO ivpr=1,NVEGP 
           IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idvprp(ivpr)))) THEN
             have_var(idvprp(ivpr))=.TRUE.
@@ -816,7 +816,7 @@
 # endif
 
 # ifdef VEGETATION 
-#  ifdef VEG_RHS 
+#  if defined VEG_DRAG || defined VEG_BIOMASS 
       DO ivpr=1,NVEGP 
         IF (.not.have_var(idvprp(ivpr)).and.                            &
      &      get_var(idvprp(ivpr))) THEN

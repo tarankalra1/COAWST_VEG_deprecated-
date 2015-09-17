@@ -25,9 +25,9 @@
 # if defined SEDIMENT && defined SED_MORPH && defined SOLVE3D
       USE mod_sedbed
 # endif
-# if defined VEGETATION && defined VEG_RHS
+# if defined VEGETATION && defined VEG_DRAG
       USE mod_vegarr 
-      USE vegetation_rhs_mod, ONLY : vegetation_rhs_cal
+      USE vegetation_drag_mod, ONLY : vegetation_drag_cal
 # endif 
       USE mod_stepping
 !
@@ -86,7 +86,7 @@
      &                  MIXING(ng) % visc4_p,   MIXING(ng) % visc4_r,   &
 #  endif
 # endif
-# if defined VEGETATION && defined VEG_RHS 
+# if defined VEGETATION && defined VEG_DRAG 
      &                  GRID(ng) % Hz,                                  &
      &                  VEG(ng) % ru_veg,                               &
      &                  VEG(ng) % rv_veg,                               &
@@ -194,7 +194,7 @@
      &                        visc4_p, visc4_r,                         &
 #  endif
 # endif
-# if defined VEGETATION && defined VEG_RHS
+# if defined VEGETATION && defined VEG_DRAG
      &                        Hz, ru_veg, rv_veg,                       &
 # endif
 # ifdef WEC
@@ -316,7 +316,7 @@
       real(r8), intent(in) :: visc4_r(LBi:,LBj:)
 #   endif
 #  endif
-#  if defined VEGETATION && defined VEG_RHS 
+#  if defined VEGETATION && defined VEG_DRAG 
       real(r8), intent(in) :: Hz(LBi:,LBj:,:)
       real(r8), intent(in) :: ru_veg(LBi:,LBj:,:)
       real(r8), intent(in) :: rv_veg(LBi:,LBj:,:)
@@ -453,7 +453,7 @@
       real(r8), intent(in) :: visc4_r(LBi:UBi,LBj:UBj)
 #   endif
 #  endif
-#  if defined VEGETATION && defined VEG_RHS
+#  if defined VEGETATION && defined VEG_DRAG
       real(r8), intent(in) :: Hz(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(in) :: ru_veg(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(in) :: rv_veg(LBi:UBi,LBj:UBj,UBk)
@@ -2261,7 +2261,7 @@
       END DO
 #  endif
 # endif
-# if defined VEGETATION && defined VEG_RHS && defined SOLVE3D
+# if defined VEGETATION && defined VEG_DRAG && defined SOLVE3D
 !
 !-----------------------------------------------------------------------
 !  Add in resistance imposed on the flow by the seagrass (3D->2D).

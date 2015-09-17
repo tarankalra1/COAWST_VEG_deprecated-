@@ -51,10 +51,8 @@
       USE mod_sediment
 #endif
 #if defined VEGETATION 
-# if defined VEG_RHS || defined WAVE_THRUST_MARSH 
       USE mod_vegarr
       USE mod_vegetation
-# endif 
 #endif 
 #ifdef ICE_MODEL
       USE mod_ice
@@ -1701,7 +1699,7 @@
 #  endif
 
 #  ifdef VEGETATION 
-#   ifdef VEG_RHS 
+#   if defined VEG_DRAG || defined VEG_BIOMASS
 !
 !  Read in plant properties for each vegetation type 
 !

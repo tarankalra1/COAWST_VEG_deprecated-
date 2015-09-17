@@ -86,8 +86,10 @@
 # if defined BIO_FENNEL && defined SPECTRAL_LIGHT
       integer :: s3dgrd(4)
 # endif
-#if defined VEGETATION && defined VEG_RHS
+#if defined VEGETATION 
+# if defined VEG_DRAG || defined VEG_BIOMASS
       integer :: v3pgrd(4)
+# endif
 #endif
       integer :: t3dgrd(4), u3dgrd(4), v3dgrd(4), w3dgrd(4)
 # ifdef ADJUST_BOUNDARY
@@ -284,10 +286,12 @@
         IF (exit_flag.ne.NoError) RETURN
 #endif
 
-#if defined VEGETATION && defined VEG_RHS
+#if defined VEGETATION
+# if defined VEG_DRAG || defined VEG_BIOMASS
         status=def_dim(ng, iNLM, HIS(ng)%ncid, ncname, 'NVEGP',         &
      &                 NVEGP, DimIDs(35))
         IF (exit_flag.ne.NoError) RETURN
+# endif 
 #endif
 
 #ifdef ADJUST_BOUNDARY
@@ -401,11 +405,13 @@
 ! 
 !  Define dimensions for the plant array variables
 ! 
-# if defined VEGETATION && defined VEG_RHS
+# if defined VEGETATION 
+#  if defined VEG_DRAG || defined VEG_BIOMASS
         v3pgrd(1)=DimIDs( 1)
         v3pgrd(2)=DimIDs( 5)
         v3pgrd(3)=DimIDs(35)
         v3pgrd(4)=DimIDs(12)
+#  endif 
 # endif 
 !
 # ifdef INWAVE_MODEL
@@ -4179,13 +4185,15 @@
 #endif
           END IF
 !
-#if defined VEGETATION && defined VEG_RHS 
+#if defined VEGETATION 
+# if defined VEG_DRAG || defined VEG_BIOMASS
           DO itrc=1,NVEGP
             IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idvprp(itrc)))) THEN
               got_var(idvprp(itrc))=.TRUE.
               HIS(ng)%Vid(itrc)=var_id(i)
             END IF
           END DO
+# endif 
 #endif
 ! 
 #ifdef SOLVE3D
@@ -5150,7 +5158,8 @@
           END IF
 # endif
         END DO
-# if defined VEGETATION && defined VEG_RHS 
+# if defined VEGETATION 
+#  if defined VEG_DRAG || defined VEG_BIOMASS 
         DO i=1,NVEGP 
           IF (.not.got_var(idvprp(i)).and.Hout(idvprp(i),ng)) THEN
             IF (Master) WRITE (stdout,60) TRIM(Vname(1,idvprp(i))),     &
@@ -5159,6 +5168,7 @@
             RETURN
           END IF
         END DO 
+#  endif
 # endif 
 # ifdef SEDIMENT
         DO i=1,NST

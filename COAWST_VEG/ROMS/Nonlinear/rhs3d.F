@@ -63,8 +63,8 @@
 # ifdef UV_VIS4
       USE uv3dmix_mod, ONLY : uv3dmix4
 # endif
-# if defined VEGETATION && defined VEG_RHS
-     USE vegetation_rhs_mod, ONLY : vegetation_rhs_cal
+# if defined VEGETATION && defined VEG_DRAG
+     USE vegetation_drag_mod, ONLY : vegetation_drag_cal
 # endif
 !
 !  Imported variable declarations.
@@ -120,13 +120,13 @@
 #  endif
 # endif
 
-# if defined VEGETATION && defined VEG_RHS
+# if defined VEGETATION && defined VEG_DRAG
 
 !-----------------------------------------------------------------------
 !  Add the effect of vegetation on the momentum terms.
 !-----------------------------------------------------------------------
 !
-      CALL vegetation_rhs_cal (ng, tile)
+      CALL vegetation_drag_cal (ng, tile)
 # endif
 
 # if !defined OFFLINE_BIOLOGY
@@ -167,7 +167,7 @@
      &                 OCEAN(ng) % u,                                   &
      &                 OCEAN(ng) % v,                                   &
      &                 OCEAN(ng) % W,                                   &
-# if defined VEGETATION && defined VEG_RHS
+# if defined VEGETATION && defined VEG_DRAG
      &                 VEG(ng) % ru_veg,                                &
      &                 VEG(ng) % rv_veg,                                &
 # endif	 
@@ -232,7 +232,7 @@
      &                       bustr, bvstr,                              &
      &                       sustr, svstr,                              &
      &                       u, v, W,                                   &
-# if defined VEGETATION && defined VEG_RHS
+# if defined VEGETATION && defined VEG_DRAG
      &                       ru_veg, rv_veg,                            &
 # endif	 
 # ifdef WEC
@@ -287,7 +287,7 @@
       real(r8), intent(in) :: u(LBi:,LBj:,:,:)
       real(r8), intent(in) :: v(LBi:,LBj:,:,:)
       real(r8), intent(in) :: W(LBi:,LBj:,0:)
-#  if defined VEGETATION && defined VEG_RHS
+#  if defined VEGETATION && defined VEG_DRAG
       real(r8), intent(in) :: ru_veg(LBi:,LBj:,:)
       real(r8), intent(in) :: rv_veg(LBi:,LBj:,:)
 #  endif	 
@@ -339,7 +339,7 @@
       real(r8), intent(in) :: u(LBi:UBi,LBj:UBj,N(ng),2)
       real(r8), intent(in) :: v(LBi:UBi,LBj:UBj,N(ng),2)
       real(r8), intent(in) :: W(LBi:UBi,LBj:UBj,0:N(ng))
-# if defined VEGETATION && defined VEG_RHS
+# if defined VEGETATION && defined VEG_DRAG
       real(r8), intent(in) :: ru_veg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(in) :: rv_veg(LBi:UBi,LBj:UBj,N(ng))
 # endif	 
@@ -541,7 +541,7 @@
       END DO
 # endif
 !
-#  if defined VEGETATION && defined VEG_RHS
+#  if defined VEGETATION && defined VEG_DRAG
 !
 !-----------------------------------------------------------------------
 !  Resistance imposed on the flow by the submerged (seagrass) 
@@ -2103,7 +2103,7 @@
           DiaRUfrc(i,j,3,M2yvis)=0.0_r8
           DiaRUfrc(i,j,3,M2hvis)=0.0_r8
 #  endif
-#  if defined VEGETATION && defined VEG_RHS 
+#  if defined VEGETATION && defined VEG_DRAG
           DiaRUfrc(i,j,3,M2fveg)=DiaRU(i,j,1,nrhs,M3fveg)
 #  endif
 #  ifdef BODYFORCE
@@ -2158,7 +2158,7 @@
             DiaRUfrc(i,j,3,M2wbrk)=DiaRUfrc(i,j,3,M2wbrk)+              &
      &                             DiaRU(i,j,k,nrhs,M3wbrk)
 #  endif
-#  if defined VEGETATION && defined VEG_RHS 
+#  if defined VEGETATION && defined VEG_DRAG
             DiaRUfrc(i,j,3,M2fveg)=DiaRUfrc(i,j,3,M2fveg)+              &
      &                             DiaRU(i,j,k,nrhs,M3fveg)
 #  endif
@@ -2223,7 +2223,7 @@
             DiaRVfrc(i,j,3,M2xvis)=0.0_r8
             DiaRVfrc(i,j,3,M2yvis)=0.0_r8
 #  endif
-#  if defined VEGETATION && defined VEG_RHS 
+#  if defined VEGETATION && defined VEG_DRAG
             DiaRVfrc(i,j,3,M2fveg)=DiaRV(i,j,1,nrhs,M3fveg)
 #  endif
 #  ifdef BODYFORCE
@@ -2278,7 +2278,7 @@
               DiaRVfrc(i,j,3,M2wbrk)=DiaRVfrc(i,j,3,M2wbrk)+            &
      &                               DiaRV(i,j,k,nrhs,M3wbrk)
 #  endif
-#  if defined VEGETATION && defined VEG_RHS 
+#  if defined VEGETATION && defined VEG_DRAG
               DiaRVfrc(i,j,3,M2fveg)=DiaRVfrc(i,j,3,M2fveg)+            &
      &                               DiaRV(i,j,k,nrhs,M3fveg)
 #  endif

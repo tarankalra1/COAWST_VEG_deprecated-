@@ -17,7 +17,7 @@
 !
 !  Define vegetation module parameters.
 !
-#ifdef VEG_RHS 
+#if defined VEG_DRAG || defined VEG_BIOMASS
       DO i=1,NVEGP
         IF (Hout(idvprp(i),ng)) THEN
            Vinfo( 1)=Vname(1,idvprp(i))

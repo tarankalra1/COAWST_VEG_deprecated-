@@ -81,7 +81,7 @@
 !  Read output ids from vegetation.in
 !-----------------------------------------------------------------------
 !          
-#ifdef VEG_RHS 
+#ifdef VEG_DRAG
             CASE ('Hout(ipdens)')
               IF (idvprp(pdens).eq.0) THEN 
                 IF (Master) WRITE (out,30) 'ipdens'
@@ -184,7 +184,7 @@
 !  Report output parameters (switched on in vegetation.in).
 !-----------------------------------------------------------------------
 ! 
-#ifdef VEG_RHS 
+#ifdef VEG_DRAG
 !      IF (Hout(idvprp(pdens),ng)WRITE (out,90) Hout(idvprp(pdens),ng),  & 
 !     &  'Hout(ipdens)',                                                 &
 !     &  'Write out plant density for each veg type.'

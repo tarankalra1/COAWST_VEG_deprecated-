@@ -1,10 +1,10 @@
 #include "cppdefs.h"
 
-      MODULE vegetation_rhs_mod
+      MODULE vegetation_drag_mod
 
-#if defined VEGETATION && defined VEG_RHS 
+#if defined VEGETATION && defined VEG_DRAG
 !
-!svn $Id: veg_rhs.F 429 2015-05-26 10:10:26Z arango $
+!svn $Id: vegetation_drag.F 429 2015-05-26 10:10:26Z arango $
 !=======================================================================
 !  Copyright (c) 2002-2014 The ROMS/TOMS Group                         !
 !    Licensed under a MIT/X style license           Hernan G. Arango   !
@@ -33,12 +33,12 @@
       implicit none
 
       PRIVATE
-      PUBLIC  :: vegetation_rhs_cal
+      PUBLIC  :: vegetation_drag_cal
 
       CONTAINS
 !
 !***********************************************************************
-      SUBROUTINE vegetation_rhs_cal (ng, tile)
+      SUBROUTINE vegetation_drag_cal (ng, tile)
 !***********************************************************************
 !
       USE mod_param
@@ -56,7 +56,7 @@
 # ifdef PROFILE
       CALL wclock_on (ng, iNLM, 16)
 # endif
-      CALL vegetation_rhs_tile   (ng, tile,                             &
+      CALL vegetation_drag_tile  (ng, tile,                             &
      &                        LBi, UBi, LBj, UBj,                       &
      &                        IminS, ImaxS, JminS, JmaxS,               &
      &                        nrhs(ng),                                 & 
@@ -77,10 +77,10 @@
       CALL wclock_off (ng, iNLM, 16)
 # endif
       RETURN
-      END SUBROUTINE vegetation_rhs_cal
+      END SUBROUTINE vegetation_drag_cal
 !
 !***********************************************************************
-      SUBROUTINE vegetation_rhs_tile   (ng, tile,                       &
+      SUBROUTINE vegetation_drag_tile  (ng, tile,                       &
      &                              LBi, UBi, LBj, UBj,                 &
      &                              IminS, ImaxS, JminS, JmaxS,         &
      &                              nrhs,                               & 
@@ -264,6 +264,6 @@
       END DO VEG_LOOP
 !             
       RETURN
-      END SUBROUTINE vegetation_rhs_tile
+      END SUBROUTINE vegetation_drag_tile
 #endif
-      END MODULE vegetation_rhs_mod
+      END MODULE vegetation_drag_mod

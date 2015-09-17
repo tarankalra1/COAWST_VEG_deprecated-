@@ -20,7 +20,7 @@
 **                                                                    **
 **   *  Vegetation modifies rhs3d terms:                              **
 **                                                                    **
-**        veg_rhs.F                                                   **
+**        veg_drag.F                                                  **
 **                                                                    **
 **   *  Vegetation modifies rhs3d terms:                              **
 **                                                                    **

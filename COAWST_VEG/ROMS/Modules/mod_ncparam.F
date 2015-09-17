@@ -1783,7 +1783,7 @@
               idDu3d(M3vvis)=varid
             CASE ('idDv3d(M3vvis)')
               idDv3d(M3vvis)=varid
-#  if defined VEGETATION && defined VEG_RHS 
+#  if defined VEGETATION && defined VEG_DRAG
             CASE ('idDu3d(M3fveg)')
               idDu3d(M3fveg)=varid
             CASE ('idDv3d(M3fveg)')
@@ -2059,8 +2059,8 @@
 #ifdef BIOLOGY
 # if defined BIO_FENNEL && !defined SPECTRAL_LIGHT
 #  include <fennel_var.h>
-# elif defined BIO_FENNEL && defined SPECTRAL_LIGHT
-#  include <spect_fennel_var.h>
+# elif defined BIO_ESTUARY
+#  include <estuarybgc_var.h>
 # elif defined BIO_UMAINE
 #  include <umaine_var.h>
 # elif defined ECOSIM

@@ -3,13 +3,14 @@
        MODULE vegetation_stream_mod
 #if defined VEGETATION && defined VEG_STREAMING 
 !
-!svn $Id: wave_thrust_marsh.F 429 2015-04-20 17:30:26Z arango $
+!svn $Id: vegetation_stream.F 429 2015-04-20 17:30:26Z arango $
 !=======================================================================
 !  Copyright (c) 2002-2015 The ROMS/TOMS Group                         !
 !    Licensed under a MIT/X style license           Hernan G. Arango   !
 !    See License_ROMS.txt                   Alexander F. Shchepetkin   !
 !================================================John C. Warner=========
 !================================================Neil K. Ganju  ========
+!================================================Alexis Beudin  ========
 !==============================================Tarandeep S. Kalra=======
 !                                                                      ! 
 !  References:                                                         !   

@@ -13,7 +13,7 @@
 **                                                                    **
 ************************************************************************
 */
-# ifdef VEG_RHS
+# if defined VEG_DRAG || defined VEG_BIOMASS
 !
 !  Write out vegetation properties 
 ! 

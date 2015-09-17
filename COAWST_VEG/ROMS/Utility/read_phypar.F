@@ -3613,7 +3613,7 @@
                 Dout(idDu3d(M3vvis),ng)=Ldiag(ng)
                 Dout(idDv3d(M3vvis),ng)=Ldiag(ng)
               END DO
-#  if defined VEGETATION && defined VEG_RHS 
+#  if defined VEGETATION && defined VEG_DRAG
             CASE ('Dout(M3fveg)')
               IF (M3fveg.le.0) THEN
                 IF (Master) WRITE (out,280) 'M3fveg'
