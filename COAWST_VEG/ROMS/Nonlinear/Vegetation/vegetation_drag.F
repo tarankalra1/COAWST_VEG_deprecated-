@@ -171,7 +171,6 @@
               cff1=MIN((dab(i,j,k)-plant(i,j,iveg,phght))/Hz(i,j,k),    &
      &                                                      1.0_r8)
               Lveg(i,j,k)=MIN(1.0_r8-cff1,1.0_r8)
-               
 # ifdef VEG_FLEX 
               sma=(plant(i,j,iveg,pdiam)*                               &
      &             plant(i,j,iveg,pthck)**3.0_r8)/12.0_r8
@@ -209,20 +208,16 @@
 !  Compute blade bending angle
 !
               bend(i,j,iveg)=ACOS(cflex**(-3.0_r8))
-            END DO 
-          END DO
-! 
-!   Else statement to compute for non-flexible vegetation
-!       
-# else 
+# endif 
 !
 !   Prepare drag term (at rho point)S          
 !       
               wrk(i,j)=0.5_r8*cd_veg(iveg,ng)*plant(i,j,iveg,pdiam)*      &
      &             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg(i,j,k)
+
+              write(59,*) Lveg(i,j,k),wrk(i,j)              
             END DO 
           END DO
-# endif 
 !
 !   Compute friction force (at cell faces)
 !
@@ -242,6 +237,7 @@
 !                     multiple vegetation types are concomitant
 !
               ru_veg(i,j,k)=ru_loc_veg(i,j,k,iveg)+ru_veg(i,j,k) 
+              write(60,*),ru_loc_veg(i,j,k,iveg),cff3
             END DO
           END DO
           DO j=JstrV,Jend
@@ -258,6 +254,7 @@
 !   which can be there at the same point (i,j,k) 
 !
               rv_veg(i,j,k)=rv_loc_veg(i,j,k,iveg)+rv_veg(i,j,k)
+              write(61,*),rv_loc_veg(i,j,k,iveg),cff3
             END DO
           END DO
         END DO K_LOOP
