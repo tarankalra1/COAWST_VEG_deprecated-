@@ -134,7 +134,8 @@
           real(r8), pointer :: uwave(:,:)
           real(r8), pointer :: vwave(:,:)
 # endif
-# if (defined BIO_FENNEL || defined BIO_UMAINE) && defined CARBON
+# if (defined BIO_FENNEL || defined ESTUARYBGC ||      \
+      defined BIO_UMAINE) && defined CARBON
           real(r8), pointer :: pH(:,:)
 # endif
 # if defined ESTUARYBGC && defined SPECTRAL_LIGHT 
@@ -402,7 +403,8 @@
       allocate ( OCEAN(ng) % vwave(LBi:UBi,LBj:UBj) )
 # endif
 
-# if (defined BIO_FENNEL || defined BIO_UMAINE) && defined CARBON
+# if (defined BIO_FENNEL || defined ESTUARYBGC ||           \
+      defined BIO_UMAINE) && defined CARBON
       allocate ( OCEAN(ng) % pH(LBi:UBi,LBj:UBj) )
 # endif
 # if defined ESTUARYBGC && defined SPECTRAL_LIGHT
@@ -706,8 +708,8 @@
             OCEAN(ng) % ubar_stokes(i,j) = IniVal
             OCEAN(ng) % vbar_stokes(i,j) = IniVal
 #endif
-#if (defined BIO_FENNEL || defined BIO_UMAINE) && \
-      defined CARBON && defined SOLVED3D
+#if (defined BIO_FENNEL || defined ESTUARYBGC || defined BIO_UMAINE) \
+        && defined CARBON && defined SOLVED3D
             OCEAN(ng) % pH(i,j) = 8.0_r8
 #endif
 #if defined NEMURO_SED1
