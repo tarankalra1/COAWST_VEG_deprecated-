@@ -177,6 +177,13 @@
       integer, parameter :: irct=2    ! relict index for DOC.
       character (len=11), dimension(Ndom) :: DomName
 # endif
+      real(r8), allocatable :: SIGATRB(:)             
+      real(r8), allocatable :: STRB(:)                
+      real(r8), allocatable :: BLTRB(:)             
+      real(r8), allocatable :: SIGBTRB(:)             
+      real(r8), allocatable :: ETASPEC(:)             
+      real(r8), allocatable :: BB2B(:)             
+#endif
 #ifdef SAV_BIOMASS
       integer,  allocatable :: GMODopt(:)
       real(r8), allocatable :: KNSED(:)             
@@ -200,13 +207,6 @@
       real(r8), allocatable :: TCRIT(:)             
       real(r8), allocatable :: KM(:)             
 #endif 
-      real(r8), allocatable :: SIGATRB(:)             
-      real(r8), allocatable :: STRB(:)                
-      real(r8), allocatable :: BLTRB(:)             
-      real(r8), allocatable :: SIGBTRB(:)             
-      real(r8), allocatable :: ETASPEC(:)             
-      real(r8), allocatable :: BB2B(:)             
-#endif
 
       CONTAINS
 

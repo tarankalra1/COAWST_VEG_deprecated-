@@ -326,6 +326,7 @@
       integer, dimension(Nsink) :: idsink
 
       real(r8), parameter :: eps = 1.0e-20_r8
+      real(r8) :: pmonth                         ! months since Jan 1951
 
 #ifdef OXYGEN
       real(r8), parameter :: OA0 = 2.00907_r8       ! Oxygen
@@ -360,7 +361,6 @@
       real(r8), parameter :: B2 = -0.023656_r8
       real(r8), parameter :: B3 = 0.0047036_r8
 
-      real(r8) :: pmonth                         ! months since Jan 1951
       real(r8) :: pCO2air_secular
       real(r8) :: yday, hour
 
@@ -409,7 +409,7 @@
 #endif
 #ifdef SAV_BIOMASS
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: DOwcr, CO2wcr
-      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeCwcr_loc
+      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeCwcr
 #endif 
       real(r8), dimension(Nsink) :: Wbio
 !
@@ -1536,11 +1536,11 @@
 
             DO k = 1,N(ng) 
               CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi, LBj, UBj,  &
-     &                     IminS, ImaxS, pmonth, t(:,j,1,nstp,itemp),   &
+     &                     pmonth, t(:,j,1,nstp,itemp),                 &
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
      &                     DOwcr(:,j,k), CO2wcr(:,j,k), LDeCwcr(:,j,k), &
      &                     AGB(:,j),BGB(:,j)) 
-            END DO 
+            END DO
 #endif 
 !
 #if defined SAV_BIOMASS && defined VEG_BIOMASS  
