@@ -24,8 +24,8 @@ This repository contains the COAWST version to compute the effects of
 * #endif 
 
 ------------------------------------------------
-Turning on SAV model (Executable file ./coawstS) 
-* #ifdef BIO_FENNEL
+Turning on SAV model (Executable file ./coawstM) 
+* #ifdef ESTUARYBGC 
 * # define SPECTRAL_LIGHT 
 * # define CARBON
 * # define OXYGEN
