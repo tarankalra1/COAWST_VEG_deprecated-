@@ -273,7 +273,7 @@
                 END IF
               END DO
 #endif
-#if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+#if defined ESTUARYBGC && defined SPECTRAL_LIGHT
             CASE ('NBAND') 
               Npts=load_i(Nval, Rval, 1, Ivalue)
               NBAND=Ivalue(1)

@@ -56,7 +56,7 @@
 !***********************************************************************
 !
       USE mod_param
-# if defined DIAGNOSTICS_BIO && defined BIO_FENNEL
+# if defined DIAGNOSTICS_BIO && defined BIO_FENNEL 
       USE mod_biology
 # endif
       USE mod_diags
@@ -81,6 +81,7 @@
       USE mp_exchange_mod, ONLY : mp_exchange4d
 #  endif
 # endif
+!
 !
       implicit none
 !
@@ -458,7 +459,7 @@
           END DO
         END DO
 # endif
-# if defined DIAGNOSTICS_BIO && defined BIO_FENNEL
+# if defined DIAGNOSTICS_BIO && defined BIO_FENNEL 
         DO idiag=1,NDbio2d
           IF (idiag.ne.ipCO2) THEN
             DO j=JstrR,JendR

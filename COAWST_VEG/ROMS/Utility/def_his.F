@@ -62,7 +62,7 @@
       integer :: t2dobc(4)
 #endif
 
-#if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+#if defined ESTUARYBGC 
       integer :: DimIDs(34)
 #elif defined INWAVE_MODEL 
       integer :: DimIDs(33)
@@ -83,7 +83,7 @@
 # ifdef SEDIMENT
       integer :: b3dgrd(4)
 # endif
-# if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+# if defined ESTUARYBGC
       integer :: s3dgrd(4)
 # endif
 #if defined VEGETATION 
@@ -245,7 +245,7 @@
 #  endif
 # endif
 
-# if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+# if defined ESTUARYBGC && defined SPECTRAL_LIGHT 
         status=def_dim(ng, iNLM, HIS(ng)%ncid, ncname, 'NBAND',         &
      &                 NBAND, DimIDs(34))
         IF (exit_flag.ne.NoError) RETURN
@@ -466,7 +466,7 @@
         b3dgrd(4)=DimIDs(12)
 #  endif
 # endif
-# if defined BIO_FENNEL && defined SPECTRAL_LIGHT 
+# if defined ESTUARYBGC 
 !
 !  Define dimension vector for spectral light type variables.
 !
@@ -1807,7 +1807,7 @@
 # endif
 #endif
 !
-# if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+# if defined ESTUARYBGC && defined SPECTRAL_LIGHT
 !  Define Photosynthetically Available Radiation (PAR)
 !
         IF (Hout(idPARo,ng)) THEN
@@ -1859,7 +1859,7 @@
         END IF
 # endif
 !
-# if defined BIO_FENNEL && defined SAV_BIOMASS
+# if defined ESTUARYBGC && defined SAV_BIOMASS
 !
 !  Define Dissolved Inorganic Nitrogen in water column
 !

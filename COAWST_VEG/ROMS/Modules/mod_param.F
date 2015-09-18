@@ -454,7 +454,7 @@
 !  Number of biological tracers.
 !
       integer :: NBT = 0
-#if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+#if defined ESTUARYBGC && defined SPECTRAL_LIGHT
       integer :: NBAND = 0
 #endif
 !

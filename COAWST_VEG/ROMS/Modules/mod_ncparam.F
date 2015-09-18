@@ -2057,7 +2057,7 @@
 #endif
 
 #ifdef BIOLOGY
-# if defined BIO_FENNEL && !defined SPECTRAL_LIGHT
+# if defined BIO_FENNEL
 #  include <fennel_var.h>
 # elif defined ESTUARYBGC
 #  include <estuarybgc_var.h>

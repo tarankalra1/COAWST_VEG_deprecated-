@@ -849,10 +849,10 @@
                 Itop=PAR
 # if defined SPECTRAL_LIGHT
                 PAR=E0_nz(i,k)
+                PARout(i,j,k)=PAR
 # else
                 PAR=Itop*(1.0_r8-ExpAtt)/Att    ! average at cell center
 # endif                
-                PARout(i,j,k)=PAR
 !
 !  Compute Chlorophyll-a phytoplankton ratio, [mg Chla / (mg C)].
 !

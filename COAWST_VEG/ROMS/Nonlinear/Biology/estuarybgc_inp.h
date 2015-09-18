@@ -8,7 +8,7 @@
 !=======================================================================
 !                                                                      !
 !  This routine reads in Fennel et al. (2006) ecosystem model input    !
-!  parameters. They are specified in input script "fennel.in".         !
+!  parameters. They are specified in input script "estuarybgc.in".     !
 !                                                                      !
 !=======================================================================
 !

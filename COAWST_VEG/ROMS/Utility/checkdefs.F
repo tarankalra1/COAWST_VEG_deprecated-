@@ -569,12 +569,12 @@
       Coptions(is:is+12)=' BIO_FENNEL,'
       ibiology=ibiology+1
 #endif
-#if defined BIO_SEDIMENT && \
-   (defined BIO_FENNEL   || defined NEMURO || defined ECOSIM)
-      IF (Master) WRITE (stdout,20) 'BIO_SEDIMENT',                     &
-     &   'Restore fallen particulate material to the nutrient pool.'
+#ifdef ESTUARYBGC 
+      IF (Master) WRITE (stdout,20) 'ESTUARYBGC',                       &
+     &   'Estuary bio-geo-chemical model (Testa et. al).'
       is=LEN_TRIM(Coptions)+1
-      Coptions(is:is+14)=' BIO_SEDIMENT,'
+      Coptions(is:is+11)=' ESTUARYBGC,'
+      ibiology=ibiology+1
 #endif
 #ifdef BIO_UMAINE
       IF (Master) WRITE (stdout,20) 'BIO_UMAINE',                       &
@@ -621,6 +621,12 @@
       Coptions(is:is+8)=' CANUTO_B,'
 #endif
 #if defined CARBON && defined BIO_FENNEL
+      IF (Master) WRITE (stdout,20) 'CARBON',                           &
+     &   'Add Carbon constituents.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+8)=' CARBON,'
+#endif
+#if defined CARBON && defined ESTUARYBGC
       IF (Master) WRITE (stdout,20) 'CARBON',                           &
      &   'Add Carbon constituents.'
       is=LEN_TRIM(Coptions)+1
@@ -761,13 +767,31 @@
       is=LEN_TRIM(Coptions)+1
       Coptions(is:is+17)=' DENITRIFICATION,'
 #endif
+#if defined DENITRIFICATION && defined ESTUARYBGC 
+      IF (Master) WRITE (stdout,20) 'DENITRIFICATION',                  &
+     &   'Add denitrification processes.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+17)=' DENITRIFICATION,'
+#endif
 #if defined DIAGNOSTICS_BIO && defined BIO_FENNEL
       IF (Master) WRITE (stdout,20) 'DIAGNOSTICS_BIO',                  &
      &   'Computing and writing biological diagnostic terms.'
       is=LEN_TRIM(Coptions)+1
       Coptions(is:is+17)=' DIAGNOSTICS_BIO,'
 #endif
+#if defined DIAGNOSTICS_BIO && defined ESTUARYBGC
+      IF (Master) WRITE (stdout,20) 'DIAGNOSTICS_BIO',                  &
+     &   'Computing and writing biological diagnostic terms.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+17)=' DIAGNOSTICS_BIO,'
+#endif
 #if defined SPECTRAL_LIGHT && defined BIO_FENNEL
+      IF (Master) WRITE (stdout,20) 'SPECTRAL_LIGHT',                   &
+     &   'Computing and writing spectral light terms.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+16)=' SPECTRAL_LIGHT,'
+#endif
+#if defined SPECTRAL_LIGHT && defined ESTUARYBGC
       IF (Master) WRITE (stdout,20) 'SPECTRAL_LIGHT',                   &
      &   'Computing and writing spectral light terms.'
       is=LEN_TRIM(Coptions)+1
@@ -1697,6 +1721,23 @@
       is=LEN_TRIM(Coptions)+1
       Coptions(is:is+8)=' OXYGEN,'
 #endif
+#if defined OXYGEN && defined ESTUARYBGC 
+# ifdef OCMIP_OXYGEN_SC
+      IF (Master) WRITE (stdout,20) 'OCMIP_OXYGEN_SC',                  &
+     &   'Schmidt number from Keeling et al. (1998).'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+17)=' OCMIP_OXYGEN_SC,'
+# else
+      IF (Master) WRITE (stdout,20) '!OCMIP_OXYGEN_SC',                 &
+     &   'Schmidt number from Wanninkhof (1992).'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+18)=' !OCMIP_OXYGEN_SC,'
+# endif
+      IF (Master) WRITE (stdout,20) 'OXYGEN',                           &
+     &   'Add oxygen dynamics.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+8)=' OXYGEN,'
+#endif
 #if defined PARALLEL_IO && defined DISTRIBUTE
       IF (Master) WRITE (stdout,20) 'PARALLEL_IO',                      &
      &   'Parallel I/O processing.'
@@ -2225,6 +2266,19 @@
       Coptions(is:is+15)=' SWAN_COUPLING,'
 #endif
 #if defined CARBON && defined BIO_FENNEL
+# ifdef TALK_NONCONSERV
+      IF (Master) WRITE (stdout,20) 'TALK_NONCONSERV',                  &
+     &   'Alkalinity is affected by changes in nitrate or ammonium.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+17)=' TALK_NONCONSERV,'
+# else
+      IF (Master) WRITE (stdout,20) '!TALK_NONCONSERV',                 &
+     &   'Alkalinity is passive and unaffected by nitrate or ammonium.'
+      is=LEN_TRIM(Coptions)+1
+      Coptions(is:is+18)=' !TALK_NONCONSERV,'
+# endif
+#endif
+#if defined CARBON && defined ESTUARYBGC
 # ifdef TALK_NONCONSERV
       IF (Master) WRITE (stdout,20) 'TALK_NONCONSERV',                  &
      &   'Alkalinity is affected by changes in nitrate or ammonium.'

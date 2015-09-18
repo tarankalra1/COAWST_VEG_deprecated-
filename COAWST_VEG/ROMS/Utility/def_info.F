@@ -2679,7 +2679,7 @@
 #endif
 
 #if defined BIOLOGY && defined SOLVE3D
-# if defined BIO_FENNEL && !defined SPECTRAL_LIGHT
+# if defined BIO_FENNEL 
 #  include <fennel_def.h>
 # elif defined ESTUARYBGC 
 #  include <estuarybgc_def.h>

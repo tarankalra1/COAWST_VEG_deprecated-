@@ -371,7 +371,8 @@
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: Wa
 # endif
 # ifdef TS_HSIMT
-       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: kaz, kaz_inverse
+       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: kaz
+       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: kaz_inverse
        real(r8):: rd, rkad, a1, b1, betad, sw, ru, rkau, betau
        real(r8):: epson, cc1, cc2, cc3
        real(r8):: u_k(LBi:UBi,LBj:UBj)
@@ -1242,7 +1243,7 @@
           IF (LwSrc(ng)) THEN
             DO is=1,Nsrc(ng)
               i=SOURCES(ng)%Isrc(is)
-#  ifdef TS_MPDATA || defined TS_HSIMT
+#  if defined TS_MPDATA || defined TS_HSIMT
               IF (((IstrUm2.le.i).and.(i.le.Iendp2i)).and.              &
      &            ((JstrVm2.le.j).and.(j.le.Jendp2i))) THEN
 #  else

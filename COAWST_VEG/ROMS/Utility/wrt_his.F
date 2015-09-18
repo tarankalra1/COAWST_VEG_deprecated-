@@ -2655,7 +2655,7 @@
 # endif
 #endif
 !
-#if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+#if defined ESTUARYBGC && defined SPECTRAL_LIGHT 
 !  Write out Photosynthetically Available Radiation (PAR)
 !
       IF (Hout(idPARo,ng)) THEN
@@ -2734,7 +2734,7 @@
       END IF
 #endif
 !
-#if defined BIO_FENNEL && defined SAV_BIOMASS 
+#if defined ESTUARYBGC && defined SAV_BIOMASS
 !
 !  Write out Dissolved Inorganic Nitrogen in water column 
 !

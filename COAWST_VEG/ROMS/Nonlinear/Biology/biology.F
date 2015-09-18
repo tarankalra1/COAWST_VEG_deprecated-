@@ -23,9 +23,9 @@
 
 # if defined BEST_NPZ
 #  include <bestnpz.h>
-# elif defined BIO_FENNEL && !defined SPECTRAL_LIGHT
+# elif defined BIO_FENNEL
 #  include <fennel.h>
-# elif defined BIO_ESTUARY
+# elif defined ESTUARYBGC 
 #  include <estuarybgc.h>
 # elif defined ECOSIM
 #  include <ecosim.h>

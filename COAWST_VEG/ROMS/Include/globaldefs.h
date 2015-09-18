@@ -538,7 +538,8 @@
 */
 
 #if defined BIO_FENNEL  || defined ECOSIM      || \
-    defined NEMURO      || defined NPZD_FRANKS || \
+    defined ESTUARYBGC  || defined NEMURO      || \
+    defined NPZD_FRANKS ||                        \
     defined NPZD_IRON   || defined NPZD_POWELL || \
     defined BIO_UMAINE  || defined BEST_NPZ
 # define BIOLOGY

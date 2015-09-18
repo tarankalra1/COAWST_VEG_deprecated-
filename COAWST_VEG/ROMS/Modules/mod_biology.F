@@ -104,7 +104,7 @@
 */
 
 #ifdef BIOLOGY
-# if defined BIO_FENNEL && !defined SPECTRAL_LIGHT
+# if defined BIO_FENNEL
 #  include <fennel_mod.h>
 # elif defined ESTUARYBGC
 #  include <estuarybgc_mod.h>

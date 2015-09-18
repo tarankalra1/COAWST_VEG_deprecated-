@@ -34,12 +34,12 @@
 !                                                                      !
 !  pH           Surface concentration of hydrogen ions.                !
 !                                                                      !
-#ifdef SPECTRAL_LIGHT
-!  PARout       Photosynthetically Available Radiation (PAR)           !
-!  PARs         Spectral PAR                                           !
-!  SpKd         Spectral Attenuation                                   !
+#if defined ESTUARYBGC && defined SPECTRAL_LIGHT
+! PARout        Photosynthetically Available Radiation (PAR)           !
+! PARs          Spectral PAR                                           !
+! SpKd          Spectral Attenuation     
 #endif
-#if defined BIO_FENNEL && defined SAV_BIOMASS
+#if defined ESTUARYBGC && defined SAV_BIOMASS                             
 ! DINwcr        Dissolved Inorganic Nitrogen-water column(mu mols N)   !
 ! DINsed        Dissolved Inorganic Nitrogen-sediment column(mu mols N)!
 ! AGB           Above ground biomass                                   !
@@ -137,12 +137,12 @@
 # if (defined BIO_FENNEL || defined BIO_UMAINE) && defined CARBON
           real(r8), pointer :: pH(:,:)
 # endif
-# if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+# if defined ESTUARYBGC && defined SPECTRAL_LIGHT 
           real(r8), pointer :: PARout(:,:,:)
           real(r8), pointer :: PARs(:,:,:)
           real(r8), pointer :: SpKd(:,:,:)
 # endif
-# if defined BIO_FENNEL && defined SAV_BIOMASS
+# if defined ESTUARYBGC && defined SAV_BIOMASS
           real(r8), pointer :: DINwcr(:,:,:)
           real(r8), pointer :: DINsed(:,:,:)
           real(r8), pointer :: AGB(:,:)
@@ -405,12 +405,12 @@
 # if (defined BIO_FENNEL || defined BIO_UMAINE) && defined CARBON
       allocate ( OCEAN(ng) % pH(LBi:UBi,LBj:UBj) )
 # endif
-# if defined BIO_FENNEL && defined SPECTRAL_LIGHT
+# if defined ESTUARYBGC && defined SPECTRAL_LIGHT
       allocate ( OCEAN(ng) % PARout(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( OCEAN(ng) % PARs(LBi:UBi,LBj:UBj,NBAND) )
       allocate ( OCEAN(ng) % SpKd(LBi:UBi,LBj:UBj,NBAND) )
 # endif
-# if defined BIO_FENNEL && defined SAV_BIOMASS
+# if defined ESTUARYBGC && defined SAV_BIOMASS
       allocate ( OCEAN(ng) % DINwcr(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( OCEAN(ng) % DINsed(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( OCEAN(ng) % AGB(LBi:UBi,LBj:UBj) )
@@ -735,10 +735,10 @@
               OCEAN(ng) % u(i,j,k,2) = IniVal
               OCEAN(ng) % v(i,j,k,1) = IniVal
               OCEAN(ng) % v(i,j,k,2) = IniVal
-# if defined BIO_FENNEL && defined SPECTRAL_LIGHT 
+# if defined ESTUARYBGC && defined SPECTRAL_LIGHT
               OCEAN(ng) % PARout(i,j,k) = IniVal
 # endif
-# if defined BIO_FENNEL && defined SAV_BIOMASS
+# if defined ESTUARYBGC && defined SAV_BIOMASS
             OCEAN(ng) % DINwcr(i,j,k) = IniVal
             OCEAN(ng) % DINsed(i,j,k) = IniVal
             OCEAN(ng) % AGB(i,j) = IniVal

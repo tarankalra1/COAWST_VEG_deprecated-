@@ -13,7 +13,7 @@
 !!                                                                     !
 !!======================================================================
 !!
-# if defined BIO_FENNEL && !defined SPECTRAL_LIGHT
+# if defined BIO_FENNEL 
 #  include <fennel_inp.h>
 # elif defined ESTUARYBGC 
 #  include <estuarybgc_inp.h>
