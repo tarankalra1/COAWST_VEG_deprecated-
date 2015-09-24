@@ -1,8 +1,9 @@
       SUBROUTINE SAV_BIOMASS_SUB(ng, Istr, Iend,                          &
-     &                        LBi, UBi, LBj, UBj, IminS, ImaxS, pmonth,   & 
+     &                        LBi, UBi, LBj, UBj, pmonth,                 & 
      &                        wtemp, PARz, DINwcr_loc, DINsed_loc,        &
      &                        DOwcr_loc, CO2wcr_loc, LDeCwcr_loc,         &
      &                        agb_loc, bgb_loc)
+
 !
 !***********************************************************************
 !****************************************** John C. Warner *************
@@ -21,8 +22,6 @@
 !     UBi        I-dimension upper bound.                              !
 !     LBj        J-dimension lower bound.                              !
 !     UBj        J-dimension upper bound.                              !
-!     IminS      I-dimension lower bound for private arrays.           !
-!     ImaxS      I-dimension upper bound for private arrays.           !
 !     t          Water temperature (Celsius).                          !
 !     PArout     PAR at depth (mu E m-2 s-1).                          !
 !     DINwcr_loc Dissolved Inorganic N in water col. (mu M)            !
@@ -52,29 +51,29 @@
 !
 !  Imported variable declarations.
 !
-      integer, intent(in) :: ng, LBi, UBi, LBj, UBj, IminS, ImaxS
+      integer, intent(in) :: ng, LBi, UBi, LBj, UBj
       integer, intent(in) :: Istr, Iend
       real(r8), intent(in) :: pmonth
 #  ifdef ASSUMED_SHAPE
-      real(r8), intent(in) :: wtemp(IminS:)
-      real(r8), intent(in) :: PARz(IminS:)
-      real(r8), intent(inout) :: DINwcr_loc(IminS:)
-      real(r8), intent(inout) :: DINsed_loc(IminS:)
-      real(r8), intent(inout) :: DOwcr_loc(IminS:)
-      real(r8), intent(inout) :: CO2wcr_loc(IminS:)
-      real(r8), intent(inout) :: LdeCwcr_loc(IminS:)
-      real(r8), intent(inout) :: Agb_loc(IminS:)
-      real(r8), intent(inout) :: Bgb_loc(IminS:)
+      real(r8), intent(in) :: wtemp(LBi:)
+      real(r8), intent(in) :: PARz(LBi:)
+      real(r8), intent(inout) :: DINwcr_loc(LBi:)
+      real(r8), intent(inout) :: DINsed_loc(LBi:)
+      real(r8), intent(inout) :: DOwcr_loc(LBi:)
+      real(r8), intent(inout) :: CO2wcr_loc(LBi:)
+      real(r8), intent(inout) :: LdeCwcr_loc(LBi:)
+      real(r8), intent(inout) :: Agb_loc(LBi:)
+      real(r8), intent(inout) :: Bgb_loc(LBi:)
 #  else
-      real(r8), intent(in) :: wtemp(IminS:ImaxS)
-      real(r8), intent(in) :: PARz(IminS:ImaxS)
-      real(r8), intent(inout) :: DINwcr_loc(IminS:ImaxS)
-      real(r8), intent(inout) :: DINsed_loc(IminS:ImaxS)
-      real(r8), intent(inout) :: DOwcr_loc(IminS:Imaxs)
-      real(r8), intent(inout) :: CO2wcr_loc(IminS:Imaxs)
-      real(r8), intent(inout) :: LdeCwcr_loc(IminS:Imaxs)
-      real(r8), intent(inout) :: Agb_loc(IminS:ImaxS)
-      real(r8), intent(inout) :: Bgb_loc(IminS:ImaxS)
+      real(r8), intent(in) :: wtemp(LBi:UBi)
+      real(r8), intent(in) :: PARz(LBi:UBi)
+      real(r8), intent(inout) :: DINwcr_loc(LBi:UBi)
+      real(r8), intent(inout) :: DINsed_loc(LBi:UBi)
+      real(r8), intent(inout) :: DOwcr_loc(LBi:UBi)
+      real(r8), intent(inout) :: CO2wcr_loc(LBi:UBi)
+      real(r8), intent(inout) :: LdeCwcr_loc(LBi:UBi)
+      real(r8), intent(inout) :: Agb_loc(LBi:UBi)
+      real(r8), intent(inout) :: Bgb_loc(LBi:UBi)
 #  endif
 
 !

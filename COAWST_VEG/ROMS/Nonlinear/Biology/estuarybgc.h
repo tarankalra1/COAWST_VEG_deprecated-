@@ -1533,7 +1533,6 @@
                 DINwcr(i,j,k)=Bio(i,k,iNH4_)+Bio(i,k,iNO3_)
               END DO
             END DO
-
             DO k = 1,N(ng) 
               CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi, LBj, UBj,  &
      &                     pmonth, t(:,j,1,nstp,itemp),                 &
@@ -1541,6 +1540,7 @@
      &                     DOwcr(:,j,k), CO2wcr(:,j,k), LDeCwcr(:,j,k), &
      &                     AGB(:,j),BGB(:,j)) 
             END DO
+
 #endif 
 !
 #if defined SAV_BIOMASS && defined VEG_BIOMASS  
