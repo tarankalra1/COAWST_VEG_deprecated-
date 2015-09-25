@@ -1534,7 +1534,7 @@
               END DO
             END DO
             DO k = 1,N(ng) 
-              CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi, LBj, UBj,  &
+              CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi,            &
      &                     pmonth, t(:,j,1,nstp,itemp),                 &
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
      &                     DOwcr(:,j,k), CO2wcr(:,j,k), LDeCwcr(:,j,k), &

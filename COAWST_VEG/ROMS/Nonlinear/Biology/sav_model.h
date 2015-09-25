@@ -1,5 +1,5 @@
       SUBROUTINE SAV_BIOMASS_SUB(ng, Istr, Iend,                          &
-     &                        LBi, UBi, LBj, UBj, pmonth,                 & 
+     &                        LBi, UBi, pmonth,                           & 
      &                        wtemp, PARz, DINwcr_loc, DINsed_loc,        &
      &                        DOwcr_loc, CO2wcr_loc, LDeCwcr_loc,         &
      &                        agb_loc, bgb_loc)
@@ -51,7 +51,7 @@
 !
 !  Imported variable declarations.
 !
-      integer, intent(in) :: ng, LBi, UBi, LBj, UBj
+      integer, intent(in) :: ng, LBi, UBi
       integer, intent(in) :: Istr, Iend
       real(r8), intent(in) :: pmonth
 #  ifdef ASSUMED_SHAPE
