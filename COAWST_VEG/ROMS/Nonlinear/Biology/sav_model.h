@@ -20,8 +20,6 @@
 !     Iend       Ending   tile index in the I-direction.               !
 !     LBi        I-dimension lower bound.                              !
 !     UBi        I-dimension upper bound.                              !
-!     LBj        J-dimension lower bound.                              !
-!     UBj        J-dimension upper bound.                              !
 !     t          Water temperature (Celsius).                          !
 !     PArout     PAR at depth (mu E m-2 s-1).                          !
 !     DINwcr_loc Dissolved Inorganic N in water col. (mu M)            !
