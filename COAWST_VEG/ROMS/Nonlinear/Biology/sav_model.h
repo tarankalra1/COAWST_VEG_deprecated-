@@ -154,7 +154,7 @@
 !-----------------------------------------------------------------------
 !
         agm=(kmag(ng)*agb_loc(i))**2
-        agar=pp*arsc(i)*EXP(arc(ng)*wtemp(i))
+        agar=pp*arsc(ng)*EXP(arc(ng)*wtemp(i))
 !
 !-----------------------------------------------------------------------
 !  Above ground basal respiration and seasonal root storage of carbon
@@ -214,7 +214,8 @@
 !  Compute new BGB Biomass  (g C m-2)
 !-----------------------------------------------------------------------
 !
-        bgb_loc(i)=bgb_loc(i)+(sears+agbg-bgag-bgm+bgr)*dtdays 
+!        bgb_loc(i)=bgb_loc(i)+(sears+agbg-bgag-bgm+bgr)*dtdays 
+        bgb_loc(i)=bgb_loc(i)+(sears+agbg-bgag-bgm-bgr)*dtdays 
 !
 !-----------------------------------------------------------------------
 !  Compute Primary Production per unit biomass
@@ -257,7 +258,6 @@
        agb_loc(i)=agb_loc(i)*temp
        bgb_loc(i)=bgb_loc(i)*temp 
      END DO 
-
      RETURN
      END SUBROUTINE SAV_BIOMASS_SUB
 
