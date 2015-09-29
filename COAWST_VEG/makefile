@@ -446,8 +446,8 @@ ifdef USE_ROMS
  modules  +=	ROMS/Nonlinear \
 		ROMS/Nonlinear/Biology \
 		ROMS/Nonlinear/Sediment \
-		ROMS/Nonlinear/Vegetation \
 		ROMS/Nonlinear/Wec \
+		ROMS/Nonlinear/Vegetation \
 		ROMS/Functionals \
 		ROMS/Utility \
 		ROMS/Modules
@@ -479,8 +479,8 @@ ifdef USE_ROMS
  includes +=	ROMS/Nonlinear \
 		ROMS/Nonlinear/Biology \
 		ROMS/Nonlinear/Sediment \
-		ROMS/Nonlinear/Vegetation \
 		ROMS/Nonlinear/Wec \
+		ROMS/Nonlinear/Vegetation \
 		ROMS/Utility \
 		ROMS/Drivers \
 		ROMS/Functionals
