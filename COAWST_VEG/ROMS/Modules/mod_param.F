@@ -889,7 +889,7 @@
       NDM2d=NDM2d+8  ! zeta, zetaw, zqsp, zbeh (all 4 = prsgrd),
                        ! K- and Horiz- VF, roller, break
 #   endif
-#   ifdef VEGETATION && defined VEG_DRAG 
+#   if defined VEGETATION && defined VEG_DRAG 
       NDM2d=NDM2d+1  ! Resistance imposed on the flow by vegetation
 #   endif
 #   ifdef UV_COR
