@@ -1516,7 +1516,7 @@
             cff3=115.0_r8/16.0_r8
             cff4=106.0_r8/16.0_r8
 # endif
-#ifdef SAV_BIOMASS 
+# ifdef SAV_BIOMASS 
 !  
 !  Calling the SAV MODEL developed by Dr. Jeremy Testa 
 !  Need sediment biogechemical equations to get DINsed and DINwcr
@@ -1527,7 +1527,6 @@
 !
 ! Calculation of DINwcr for SAV MODEL 
 !
-
             DO k=1,N(ng)
               DO i=Istr,Iend
                 DINwcr(i,j,k)=Bio(i,k,iNH4_)+Bio(i,k,iNO3_)
@@ -1540,18 +1539,35 @@
      &                     DOwcr(:,j,k), CO2wcr(:,j,k), LDeCwcr(:,j,k), &
      &                     AGB(:,j),BGB(:,j)) 
             END DO
-
-#endif 
 !
-#if defined SAV_BIOMASS && defined VEG_BIOMASS  
+            DO k=1,N(ng)
+              DO i=Istr,Iend
+                IF (DINwcr(i,j,k).lt.0) THEN 
+                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr(i,j,k)
+                ELSE
+                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)-DINwcr(i,j,k)*0.5_r8 
+                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)-DINwcr(i,j,k)*0.5_r8
+                END IF 
+                Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeCwcr(i,j,k)
+#  ifdef OXYGEN
+                Bio(i,1,iOxyg)=Bio(i,1,iOxyg)+DOwcr(i,j,k)
+#  endif	
+#  ifdef CARBON
+                Bio(i,1,iTIC_)=Bio(i,1,iTIC_)+CO2wcr(i,j,k)
+#  endif
+              END DO 
+            END DO 
+!
+#  ifdef VEG_BIOMASS  
             DO k=1,NVEG
               DO i=Istr,Iend
                 plant(i,j,iveg,pagbm)=AGB(i,j)
                 plant(i,j,iveg,pbgbm)=BGB(i,j)
               END DO 
             END DO 
-#endif 
-
+#  endif 
+# endif
+!----------------------------------------------------------------------	
             IF ((ibio.eq.iPhyt).or.                                     &
      &          (ibio.eq.iSDeN).or.                                     &
      &          (ibio.eq.iLDeN)) THEN
