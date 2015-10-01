@@ -62,7 +62,9 @@
       integer :: t2dobc(4)
 #endif
 
-#if defined ESTUARYBGC 
+#if defined VEGETATION && (defined VEG_DRAG || defined VEG_BIOMASS)
+      integer :: DimIDs(35)
+#elif defined ESTUARYBGC 
       integer :: DimIDs(34)
 #elif defined INWAVE_MODEL 
       integer :: DimIDs(33)

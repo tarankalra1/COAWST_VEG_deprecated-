@@ -58,7 +58,6 @@
 #endif
 !  NSA        Number of state array for error covariance.              !
 !  NSV        Number of model state variables.                         !
-!  NVEG       Number of vegetation types 
 !                                                                      !
 !  Tracer parameters:                                                  !
 !                                                                      !
@@ -569,10 +568,6 @@
 !
       integer, allocatable :: NSV(:)
 
-#ifdef VEGETATION
-!      integer, allocatable :: NVEG(:)
-#endif 
-       
 #ifdef PROPAGATOR
 !
 !  Size of the full packed state vector (water points only), its
@@ -671,8 +666,6 @@
       allocate ( NTCLM(Ngrids) )
 
       allocate ( NSV(Ngrids) )
-
-!      allocate ( NVEG(Ngrids) )
 
       allocate ( NtileI(Ngrids) )
       allocate ( NtileJ(Ngrids) )
@@ -896,8 +889,8 @@
       NDM2d=NDM2d+8  ! zeta, zetaw, zqsp, zbeh (all 4 = prsgrd),
                        ! K- and Horiz- VF, roller, break
 #   endif
-#   ifdef SGR_FLOW
-      NDM2d=NDM2d+1  ! Resistance imposed on the flow by seagrass
+#   ifdef VEGETATION && defined VEG_DRAG 
+      NDM2d=NDM2d+1  ! Resistance imposed on the flow by vegetation
 #   endif
 #   ifdef UV_COR
       NDM2d=NDM2d+1  ! Coriolis
@@ -935,8 +928,8 @@
       NDM3d=NDM3d+5  ! wave break, roller, K- Horiz and Jvert- VF
       NDrhs=NDrhs+5
 #   endif
-#   ifdef SGR_FLOW
-      NDM3d=NDM3d+1  ! Resistance imposed on the flow by seagrass
+#   if defined VEGETATION && defined VEG_DRAG
+      NDM3d=NDM3d+1  ! Resistance imposed on the flow by vegetation
       NDrhs=NDrhs+1
 #   endif
 #   ifdef UV_COR
@@ -991,9 +984,6 @@
 #endif
 #ifdef ADJUST_STFLUX
         NSV(ng)=NSV(ng)+NT(ng)
-#endif
-#ifdef VEGETATION 
-!      NVEG(ng) = 1
 #endif
       END DO
 !
