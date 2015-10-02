@@ -215,7 +215,6 @@
               wrk(i,j)=0.5_r8*cd_veg(iveg,ng)*plant(i,j,iveg,pdiam)*      &
      &             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg(i,j,k)
 
-              write(59,*) Lveg(i,j,k),wrk(i,j)              
             END DO 
           END DO
 !
@@ -237,7 +236,6 @@
 !                     multiple vegetation types are concomitant
 !
               ru_veg(i,j,k)=ru_loc_veg(i,j,k,iveg)+ru_veg(i,j,k) 
-              write(60,*),ru_loc_veg(i,j,k,iveg),cff3
             END DO
           END DO
           DO j=JstrV,Jend
@@ -254,7 +252,6 @@
 !   which can be there at the same point (i,j,k) 
 !
               rv_veg(i,j,k)=rv_loc_veg(i,j,k,iveg)+rv_veg(i,j,k)
-              write(61,*),rv_loc_veg(i,j,k,iveg),cff3
             END DO
           END DO
         END DO K_LOOP
