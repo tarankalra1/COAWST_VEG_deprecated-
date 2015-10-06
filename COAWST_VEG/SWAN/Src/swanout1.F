@@ -922,6 +922,9 @@
       CALL STRACE (IENT, 'SWOUTP')
 
       Numcouple=13
+#if defined VEGETATION && defined VEG_SWAN_COUPLING 
+      Numcouple=14
+#endif 
       ALLOCATE (Cpltype(Numcouple))
       Cpltype(1)=54                      ! DISBOT  SWOEXD
       Cpltype(2)=55                      ! DISSURF SWOEXD
@@ -936,6 +939,9 @@
       Cpltype(11)=71                     ! WLENP   SWOEXA
       Cpltype(12)=16                     ! WDSPR   SWOEXA
       Cpltype(13)=58                     ! WQP     SWOEXA
+#if defined VEGETATION && defined VEG_SWAN_COUPLING 
+      Cpltype(14)=57                     ! DISVEG  SWOEXD         
+#endif 
 !
       ALLOCATE (OQI(4))
       OQI(1) = 0

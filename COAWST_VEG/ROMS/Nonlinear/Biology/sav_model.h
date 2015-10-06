@@ -196,7 +196,7 @@
 !  Compute new AGB biomass (g C m-2)
 !-----------------------------------------------------------------------
 !
-         cff=pp
+        cff=pp
 !
 !-----------------------------------------------------------------------
 !  If pp>(available nutrients), no growth    
@@ -247,7 +247,7 @@
 !
         LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm)*temp*dtdays  
 !
-     END DO
+      END DO
 !
 !-----------------------------------------------------------------------
 !  (temp--> converts gram Carbon units to mmol Nitrogen units)
