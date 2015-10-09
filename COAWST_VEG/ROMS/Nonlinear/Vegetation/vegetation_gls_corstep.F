@@ -175,7 +175,7 @@
               wkv3=rv_loc_veg(i,j+1,k,iveg)*v(i,j+1,k,nstp)
               wkv4=rv_loc_veg(i,j+1,k+1,iveg)*v(i,j+1,k+1,nstp)
               wkv=0.25_r8*(wkv1+wkv2+wkv3+wkv4)
-              tke_loc_veg=sqrt(wku2+wkv2)
+              tke_loc_veg=sqrt(wku*wku+wkv*wkv)
 !
 !-----------------------------------------------------------------------
 !  Dissipation due to vegetation
