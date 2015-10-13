@@ -134,7 +134,7 @@
       real(r8), parameter :: one_third=1.0_r8/3.0_r8 
       real(r8), parameter :: Inival=0.0_r8
       real(r8), parameter :: cl_veg=1.0_r8, cmu=0.09_r8
-      real(r8), parameter :: max_eps=10.0e10_r8 
+      real(r8), parameter :: max_L=10.0e10_r8 
       real(r8) :: wku1, wku2, wku3, wku4, wku
       real(r8) :: wkv1, wkv2, wkv3, wkv4, wkv
       real(r8) :: L
@@ -209,7 +209,7 @@
 !
               L=cl_veg*((1.0_r8-MIN(solid,1.0_r8))/                     &
      &                 plant(i,j,iveg,pdens))**one_half
-              L=MIN(L,max_eps)
+              L=MIN(L,max_L)
 !
 !-----------------------------------------------------------------------
 !  Dissipation time-scale of eddies in between the plants
