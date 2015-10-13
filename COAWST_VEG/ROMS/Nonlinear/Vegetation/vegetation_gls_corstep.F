@@ -133,10 +133,11 @@
       real(r8), parameter :: one_half=1.0_r8/2.0_r8 
       real(r8), parameter :: one_third=1.0_r8/3.0_r8 
       real(r8), parameter :: Inival=0.0_r8
-      real(r8), parameter :: cl_veg=1.0_r8 
+      real(r8), parameter :: cl_veg=1.0_r8, cmu=0.09_r8
+      real(r8), parameter :: max_eps=10.0e10_r8 
       real(r8) :: wku1, wku2, wku3, wku4, wku
       real(r8) :: wkv1, wkv2, wkv3, wkv4, wkv
-      real(r8) :: cmu, L
+      real(r8) :: L
       real(r8) :: kveg
       real(r8) :: solid, eqvegT
       real(r8) :: taufree, tauveg, taueff
@@ -206,8 +207,9 @@
 !  Eddies typical size constrained by distance in between the plants
 !-----------------------------------------------------------------------
 !
-              L=cl_veg*((1.0_r8-MAX(solid,1.0_r8))/                     &
+              L=cl_veg*((1.0_r8-MIN(solid,1.0_r8))/                     &
      &                 plant(i,j,iveg,pdens))**one_half
+              L=MIN(L,max_eps)
 !
 !-----------------------------------------------------------------------
 !  Dissipation time-scale of eddies in between the plants
@@ -228,6 +230,7 @@
 ! 
               tke_veg(i,j,k)=tke_loc_veg + tke_veg(i,j,k)
               gls_veg(i,j,k)=gls_loc_veg + gls_veg(i,j,k)
+             
             END DO 
           END DO
         END DO 
