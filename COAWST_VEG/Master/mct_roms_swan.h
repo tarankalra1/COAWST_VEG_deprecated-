@@ -849,7 +849,7 @@
           ij=ij+1
           cff=0.0
           DO iveg=1,NVEG
-            cff=VEG(ng)%plant(i,j,iveg,ipdens)+cff
+            cff=VEG(ng)%plant(i,j,iveg,pdens)+cff
           END DO
           A(ij)=cff/NVEG
         END DO
