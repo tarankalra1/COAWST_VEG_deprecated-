@@ -66,9 +66,9 @@
         real(r8), pointer :: gls_veg(:,:,:)
 # endif 
 # if defined VEG_SWAN_COUPLING && defined VEG_STREAMING
-        real(r8), pointer :: dissip_veg(:,:)
-        real(r8), pointer :: BWDXL_veg(:,:)
-        real(r8), pointer :: BWDYL_veg(:,:)
+        real(r8), pointer :: dissip_veg(:,:,:)
+        real(r8), pointer :: BWDXL_veg(:,:,:)
+        real(r8), pointer :: BWDYL_veg(:,:,:)
 # endif 
 # ifdef WAVE_THRUST_MARSH
         real(r8), pointer :: marsh_mask(:,:)
@@ -127,8 +127,8 @@
 # endif
 # if defined VEG_SWAN_COUPLING && defined VEG_STREAMING
       allocate ( VEG(ng) % dissip_veg(LBi:UBi,LBj:UBj) )
-      allocate ( VEG(ng) % BWDXL_veg(LBi:UBi,LBj:UBj) )
-      allocate ( VEG(ng) % BWDYL_veg(LBi:UBi,LBj:UBj) )
+      allocate ( VEG(ng) % BWDXL_veg(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( VEG(ng) % BWDYL_veg(LBi:UBi,LBj:UBj,N(ng)) )
 # endif
 
 # ifdef WAVE_THRUST_MARSH
@@ -271,10 +271,12 @@
             VEG(ng) % dissip_veg(i,j) = IniVal
           END DO 
         END DO 
-        DO j=Jmin,Jmax
-          DO i=Imin,Imax
-            VEG(ng) % BWDXL_veg(i,j) = IniVal
-            VEG(ng) % BWDYL_veg(i,j) = IniVal
+        DO k=1,N(ng)
+          DO j=Jmin,Jmax
+            DO i=Imin,Imax
+              VEG(ng) % BWDXL_veg(i,j,k) = IniVal
+              VEG(ng) % BWDYL_veg(i,j,k) = IniVal
+            END DO 
           END DO
         END DO 
 # endif

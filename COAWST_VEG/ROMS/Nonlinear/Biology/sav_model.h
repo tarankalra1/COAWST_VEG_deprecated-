@@ -1,7 +1,8 @@
       SUBROUTINE SAV_BIOMASS_SUB(ng, Istr, Iend,                          &
      &                        LBi, UBi, pmonth,                           & 
      &                        wtemp, PARz, DINwcr_loc, DINsed_loc,        &
-     &                        DOwcr_loc, CO2wcr_loc, LDeCwcr_loc,         &
+     &                        DINwcr_sav_loc, DOwcr_loc, CO2wcr_loc,      &
+     &                        LDeCwcr_loc,                                &
      &                        agb_loc, bgb_loc)
 
 !
@@ -24,9 +25,11 @@
 !     PArout     PAR at depth (mu E m-2 s-1).                          !
 !     DINwcr_loc Dissolved Inorganic N in water col. (mu M)            !
 !     DINsed_loc Dissolved Inorganic N in sediment col. (mu M)         !
+!     DINwcr_sav_loc Change in dissolved Inorganic N in water col.     !
+!                due to SAV model (mu M)                               !
 !     DOwcr_loc  O2 interaction with bed                               ! 
 !     CO2wcr_loc CO2 interactions with bed                             ! 
-!     LdeCwcr_locLabile detrital carbon in fennel 
+!     LdeCwcr_locLabile detrital carbon in fennel                      ! 
 !     agb_loc    Vector of above ground biomass  (mmol N m-2)          !
 !     bgb_loc    Vector of below ground biomass  (mmol N m-2)          !
 !                                                                      !
@@ -57,6 +60,7 @@
       real(r8), intent(in) :: PARz(LBi:)
       real(r8), intent(inout) :: DINwcr_loc(LBi:)
       real(r8), intent(inout) :: DINsed_loc(LBi:)
+      real(r8), intent(inout) :: DINwcr_sav_loc(LBi:)
       real(r8), intent(inout) :: DOwcr_loc(LBi:)
       real(r8), intent(inout) :: CO2wcr_loc(LBi:)
       real(r8), intent(inout) :: LdeCwcr_loc(LBi:)
@@ -67,6 +71,7 @@
       real(r8), intent(in) :: PARz(LBi:UBi)
       real(r8), intent(inout) :: DINwcr_loc(LBi:UBi)
       real(r8), intent(inout) :: DINsed_loc(LBi:UBi)
+      real(r8), intent(inout) :: DINwcr_sav_loc(LBi:UBi)
       real(r8), intent(inout) :: DOwcr_loc(LBi:UBi)
       real(r8), intent(inout) :: CO2wcr_loc(LBi:UBi)
       real(r8), intent(inout) :: LdeCwcr_loc(LBi:UBi)
@@ -169,7 +174,7 @@
 !  (temp--> converts gram Carbon units to mmol Nitrogen units)
 !-----------------------------------------------------------------------
 !
-        DINwcr_loc(i)=DINwcr_loc(i)+(agar+agbr-pp)*temp*dtdays 
+        DINwcr_sav_loc(i)=DINwcr_loc(i)+(agar+agbr-pp)*temp*dtdays 
 !
 !-----------------------------------------------------------------------
 !  Translocation of above ground biomass to below ground

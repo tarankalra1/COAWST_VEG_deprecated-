@@ -408,6 +408,7 @@
       real(r8) :: br20, brthta, N_Flux_BaseResp
 #endif
 #ifdef SAV_BIOMASS
+      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: DINwcr_sav_loc
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: DOwcr, CO2wcr
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeCwcr
 #endif 
@@ -1536,17 +1537,18 @@
               CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi,            &
      &                     pmonth, t(:,j,1,nstp,itemp),                 &
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
-     &                     DOwcr(:,j,k), CO2wcr(:,j,k), LDeCwcr(:,j,k), &
+     &                     DINwcr_sav_loc(:,j,k), DOwcr(:,j,k),         &
+     &                     CO2wcr(:,j,k), LDeCwcr(:,j,k),               &
      &                     AGB(:,j),BGB(:,j)) 
             END DO
 !
             DO k=1,N(ng)
               DO i=Istr,Iend
-                IF (DINwcr(i,j,k).lt.0) THEN 
-                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr(i,j,k)
+                IF (DINwcr_sav_loc(i,j,k).lt.0) THEN 
+                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav_loc(i,j,k)
                 ELSE
-                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)-DINwcr(i,j,k)*0.5_r8 
-                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)-DINwcr(i,j,k)*0.5_r8
+                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)-DINwcr_sav_loc(i,j,k)*0.5_r8 
+                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)-DINwcr_sav_loc(i,j,k)*0.5_r8
                 END IF 
                 Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeCwcr(i,j,k)
 #  ifdef OXYGEN

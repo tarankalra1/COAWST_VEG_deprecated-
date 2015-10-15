@@ -125,8 +125,8 @@
       real(r8), intent(in) :: plant(LBi:,LBj:,:,:)
       real(r8), intent(in) :: dissip_veg(LBi:,LBj:)
       real(r8), intent(in) :: Lveg(LBi:,LBj:,:)
-      real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:)
-      real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:)
+      real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:,:)
+      real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:,:)
 # else
       real(r8), intent(in)  :: angler(LBi:UBi,LBj:UBj)
 #  ifdef SOLVE3D
@@ -144,8 +144,8 @@
       real(r8), intent(in) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
       real(r8), intent(in) :: dissip_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
-      real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj)
-      real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj)
+      real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj,N(ng))
+      real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj,N(ng))
 # endif
 
 !  Local variable declarations.
@@ -219,8 +219,8 @@
             EWD_veg=(0.5_r8/sqrt(pi))*cff4*(cff3**3.0_r8)
 #  endif
             cff5=EWD_veg*osigma(i,j)*Lveg(i,j,k)
-            BWDXL_veg(i,j)=cff5*wavenx(i,j)
-            BWDYL_veg(i,j)=cff5*waveny(i,j)
+            BWDXL_veg(i,j,k)=cff5*wavenx(i,j)
+            BWDYL_veg(i,j,k)=cff5*waveny(i,j)
 !
           END DO
         END DO

@@ -201,8 +201,8 @@
       real(r8), intent(inout) :: rustr3d(LBi:,LBj:,:)
       real(r8), intent(inout) :: rvstr3d(LBi:,LBj:,:)
 #  if defined VEGETATION && defined VEG_STREAMING 
-      real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:)
-      real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:)
+      real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:,:)
+      real(r8), intent(inout) :: BWDYL_veg(LBi:,LBj:,:)
 #  endif
 # else
       real(r8), intent(in) :: angler(LBi:UBi,LBj:UBj)
@@ -241,8 +241,8 @@
       real(r8), intent(inout) :: rvsst2d(LBi:UBi,LBj:UBj)
 #  endif
 #  if defined VEGETATION && defined VEG_STREAMING 
-      real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj)
-      real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj)
+      real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj,N(ng))
+      real(r8), intent(inout) :: BWDYL_veg(LBi:UBi,LBj:UBj,N(ng))
 #  endif
       real(r8), intent(inout) :: rustr3d(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(inout) :: rvstr3d(LBi:UBi,LBj:UBj,N(ng))
@@ -422,8 +422,8 @@
 # if defined VEGETATION && defined VEG_STREAMING
         DO j=Jstr-1,Jend+1
           DO i=Istr-1,Iend+1
-            BWDXL(i,j)=BWDXL_veg(i,j)
-            BWDYL(i,j)=BWDXL_veg(i,j)
+            BWDXL(i,j)=BWDXL_veg(i,j,k)
+            BWDYL(i,j)=BWDXL_veg(i,j,k)
           END DO
         END DO
 # endif
