@@ -127,6 +127,15 @@
               END IF 
               Npts=load_l(Nval, Cval, Ngrids, Hout(idvprp(pdwbm),:))
 #endif 
+#ifdef VEG_STREAMING 
+            CASE ('Hout(idWdvg)')
+              IF ((idWdvg).eq.0) THEN 
+                IF (Master) WRITE (out,30) 'idWdvg'
+                exit_flag=5
+                RETURN
+              END IF 
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idWdvg,:))
+#endif 
 #ifdef WAVE_THRUST_MARSH
             CASE ('Hout(idTims)')
               IF (idTims.eq.0) THEN 
@@ -134,14 +143,14 @@
                 exit_flag=5
                 RETURN
               END IF
-              Npts=load_l(Nval, Cval, Ngrids, Hout(idTims,1:Ngrids))
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idTims,:))
             CASE ('Hout(idTmsk)')
               IF (idTmsk.eq.0) THEN 
                 IF (Master) WRITE (out,30) 'idTmsk'
                 exit_flag=5
                 RETURN
               END IF
-              Npts=load_l(Nval, Cval, Ngrids, Hout(idTmsk,1:Ngrids))
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idTmsk,:))
             CASE ('Hout(idTmax)')
               IF (idTmax.eq.0) THEN 
                 IF (Master) WRITE (out,30) 'idTmax'
@@ -203,6 +212,11 @@
 !     &  'Hout(idwbm)',                                                  &
 !     &  'Write out below ground plant biomass.'
 #endif 
+#ifdef VEG_STREAMING 
+!      IF (Hout(idWdvg,ng) WRITE (out,90) Hout(idWdvg,ng), & 
+!     &  'Hout(idWdvg).    
+!     &  'Write out wave dissipation due to vegetation.'
+#endif
 #ifdef WAVE_THRUST_MARSH
           IF (Hout(idTims,ng)) WRITE (out,90) Hout(idTims,ng),          &
      &       'Hout(idTims)',                                            &

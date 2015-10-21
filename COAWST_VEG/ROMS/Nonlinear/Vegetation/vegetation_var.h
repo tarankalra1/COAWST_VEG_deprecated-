@@ -33,8 +33,8 @@
                 idvprp(pbgbm)=varid
 #endif 
 #if defined VEG_STREAMING 
-            CASE ('idWdve')
-              idWdve=varid
+            CASE ('idWdvg')
+              idWdvg=varid
 #endif 
 #if defined WAVE_THRUST_MARSH
             CASE ('idTims')

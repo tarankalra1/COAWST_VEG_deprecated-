@@ -66,7 +66,7 @@
         real(r8), pointer :: gls_veg(:,:,:)
 # endif 
 # if defined VEG_SWAN_COUPLING && defined VEG_STREAMING
-        real(r8), pointer :: dissip_veg(:,:,:)
+        real(r8), pointer :: dissip_veg(:,:)
         real(r8), pointer :: BWDXL_veg(:,:,:)
         real(r8), pointer :: BWDYL_veg(:,:,:)
 # endif 

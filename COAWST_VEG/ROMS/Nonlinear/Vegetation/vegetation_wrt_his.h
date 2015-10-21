@@ -41,6 +41,31 @@
       END DO 
 # endif 
 !
+# ifdef VEG_STREAMING 
+!
+!  Write out wave dissipation due to vegetation 
+! 
+      IF (Hout(idWdvg,ng)) THEN 
+        scale=1.0_r8
+        gtype=gfactor*r2dvar
+        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid,HIS(ng)%Vid(idWdvg),  &
+     &                     HIS(ng)%Rindex, gtype,                       &
+     &                     LBi, UBi, LBj, UBj, scale,                   &
+# ifdef MASKING
+     &                     GRID(ng) % rmask,                            &
+# endif
+     &                     VEG(ng)%Dissip_veg )
+        IF (status.ne.nf90_noerr) THEN 
+          IF (Master) THEN 
+            WRITE (stdout,10) TRIM(Vname(1,idWdvg)), HIS(ng)%Rindex
+          END IF
+          exit_flag=3
+          ioerror=status
+          RETURN
+        END IF
+      END IF
+# endif
+! 
 # ifdef WAVE_THRUST_MARSH 
 !
 !  Write out initial masking for marshes 
