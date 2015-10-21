@@ -8731,6 +8731,16 @@
   'idvprp(pbgbm)'
   'v3pgrd'
    1.0d0
+
+'Dissip_veg'                                       ! Input/Output
+  'Wave dissipation due to vegetation' 
+  'W meter-2'                                      ! [W/m2]
+  'dissip_veg, scalar, series'
+  'ocean_time'
+  'idWdvg'
+  'r2dvar' 
+   1.0d0
+!
 !
 !------------------------------------------------------------------------------
 !  Diaganostics for momentum terms.
