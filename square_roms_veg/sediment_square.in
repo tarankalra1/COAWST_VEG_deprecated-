@@ -196,11 +196,39 @@ Hout(iSVbld) == T                               ! bed load at V-points
 ! Bed layer and bottom sediment parameters, [1:Ngrids] values expected.
 !------------------------------------------------------------------------------
 
- Hout(ithck) == T                               ! sediment layer thickness
- Hout(iaged) == T                               ! sediment layer age
- Hout(iporo) == T                               ! sediment layer porosity
- Hout(idiff) == F                               ! biodiffusivity
- 
+Hout(ithck) == F       ! bed_thickness           sediment layer thickness
+Hout(iaged) == F       ! bed_age                 sediment layer age
+Hout(iporo) == F       ! bed_porosity            sediment layer porosity
+Hout(idiff) == F       ! bed_biodiff             biodiffusivity
+Hout(ibtrc) == F       !                         critical stress for erosion
+
+Hout(isd50) == T       ! mean grain diameter
+Hout(idens) == T       ! mean grain density
+Hout(iwsed) == T       ! mean settling velocity
+Hout(itauc) == T       ! critical erosion stress
+Hout(irlen) == T       ! ripple length
+Hout(irhgt) == T       ! ripple height
+Hout(izdef) == T       ! default bottom roughness
+Hout(izapp) == T       ! apparent bottom roughness
+Hout(izNik) == F       ! Nikuradse bottom roughness
+Hout(izbio) == F       ! biological bottom roughness
+Hout(izbfm) == F       ! bed form bottom roughness
+Hout(izbld) == F       ! bed load bottom roughness
+Hout(izwbl) == F       ! bottom roughness wave BBL
+Hout(iactv) == F       ! active layer thickness for erosive potential
+Hout(ishgt) == F       ! sediment saltation height
+Hout(imaxD) == F       ! maximum inundation depth
+Hout(idnet) == F       ! erosion or deposition
+Hout(idoff) == F       ! offset of dmix or erodibility profile
+Hout(idslp) == F       ! slope of dmix or erodibility profile
+Hout(idtim) == F       ! time scale for restoring erodibility profile
+Hout(idbmx) == F       ! bed biodifusivity maximum
+Hout(idbmm) == F       ! bed biodifusivity minimum
+Hout(idbzs) == F       ! bed biodifusivity zs
+Hout(idbzm) == F       ! bed biodifusivity zm
+Hout(idbzp) == F       ! bed biodifusivity phi
+Hout(idprp) == F       ! cohesive behavior
+
 !
 !  GLOSSARY:
 !  =========
@@ -444,4 +472,64 @@ Hout(iSVbld) == T                               ! bed load at V-points
 !  Hout(iporo)     Sediment layer porosity.
 !
 !  Hout(idiff)     Biodiffusivity at the bottom of each layer.
+!
+!  Hout(isd50)     Sand grain diameter.
+!
+!  Hout(idens)     Mean grain density
+!
+!  Hout(iwsed)     Mean settling velocity
+!  
+!  Hout(itauc)     Critical erosion stress
+!
+!  Hout(irlen)     Ripple length
+!
+!  Hout(irhgt)     Ripple height
+!  
+!  Hout(iwsed)     Mean settling velocity
+!
+!  Hout(itauc)     Critical erosion stress
+! 
+!  Hout(irlen)     Ripple length
+!
+!  Hout(irhgt)     Ripple height
+! 
+!  Hout(izdef)     Default bottom roughness
+!
+!  Hout(izapp)     Apparent bottom roughness
+!
+!  Hout(izNik)     Nikuradse bottom roughness
+!
+!  Hout(izbio)     Biological bottom roughness
+!
+!  Hout(izbfm)     Bed form bottom roughness 
+!   
+!  Hout(izbld)     Bed load bottom roughness 
+!
+!  Hout(izwbl)     Bottom roughness wave BBL 
+!
+!  Hout(iactv)     Active layer thickness for erosive potential
+!
+!  Hout(ishgt)     Sediment saltation height
+! 
+!  Hout(imaxD)     Maximum inundation depth
+!
+!  Hout(idnet)     Erosion or deposition
+!
+!  Hout(idoff)     Offset of dmix or erodibility profile
+!
+!  Hout(idslp)     Dmix or erodibility slope
+!
+!  Hout(idtim)     Erodibility profile restore time
+!
+!  Hout(idbmx)     Bed biodifusivity maximum
+!
+!  Hout(idbmm)     Bed biodifusivity minimum
+!
+!  Hout(idbzs)     Bed biodifusivity zs
+!
+!  Hout(idbzm)     Bed biodifusivity zm
+!
+!  Hout(idbzp)     Bed biodifusivity phi 
+!
+!  Hout(idprp)     Cohesive behavior 
 !

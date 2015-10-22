@@ -81,4 +81,4 @@
 
 #undef AVERAGES
 #undef STATIONS
-#undef DIAGNOSTICS_UV 
+#define DIAGNOSTICS_UV 

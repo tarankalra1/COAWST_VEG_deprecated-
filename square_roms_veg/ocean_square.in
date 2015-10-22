@@ -73,7 +73,7 @@
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = /home/gadar/Documents/Development/VEGETATION/clone/COAWST_VEG/COAWST_VEG/ROMS/External/varinfo.dat
+     VARNAME = /home/gadar/Documents/Development/VEGETATION/clone1/COAWST_VEG/COAWST_VEG/ROMS/External/varinfo.dat
 
 ! Number of nested grids.
 
@@ -206,7 +206,7 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
 
-      NTIMES == 50000! 345600 !57600 !43200 !34560 ! 2 days
+      NTIMES == 15 ! 50000! 345600 !57600 !43200 !34560 ! 2 days
           DT == 0.5d0 !1.0d0 !2.0d0 !3.0d0 !4.0d0 !5.0d0
      NDTFAST == 20
 
@@ -237,10 +237,10 @@ ad_VolCons(north) ==  F                            ! northern boundary
 ! Output history, average, diagnostic files parameters.
 
      LDEFOUT == T
-        NHIS == 1200 ! 1200 !200 !150 !120
+        NHIS == 5 ! 1200 ! 1200 !200 !150 !120
      NDEFHIS == 0
       NTSAVG == 1
-        NAVG == 86400 !43200 !21600 !14400 !10800 !8640
+        NAVG == 5 ! 86400 !43200 !21600 !14400 !10800 !8640
      NDEFAVG == 0
       NTSDIA == 1
         NDIA == 20  !1800 !1200 !900 !720
@@ -918,12 +918,12 @@ Dout(iTvdif) == F F     ! temp_vdiff, ...    vertical diffusion
 
 !     GSTNAME == ocean_gst.nc
      RSTNAME == rst.nc 
-     HISNAME == his.nc
+     HISNAME == his_1proc.nc
 !     TLMNAME == ocean_tlm.nc
 !     TLFNAME == ocean_tlf.nc
 !     ADJNAME == ocean_adj.nc
      AVGNAME == avg.nc
-     DIANAME == /clay/usgs/users/tkalra/dia.nc
+     DIANAME == dia.nc
 !     STANAME == ocean_sta.nc
 !     FLTNAME == ocean_flt.nc
 

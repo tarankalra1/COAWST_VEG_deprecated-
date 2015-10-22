@@ -101,8 +101,8 @@ export     NestedGrids=1
 # Set a local environmental variable to define the path to the directories
 # where all this project's files are kept.
 
-export     MY_ROOT_DIR=/home/gadar/Documents/Development/VEGETATION/clone/
-export     MY_PROJECT_DIR=/home/gadar/Documents/Development/VEGETATION/clone/COAWST_VEG/square_couple_veg
+export     MY_ROOT_DIR=/home/gadar/Documents/Development/VEGETATION/clone1/COAWST_VEG
+export     MY_PROJECT_DIR=${MY_ROOT_DIR}/square_couple_veg
 # The path to the user's local current ROMS source code.
 #
 # If using svn locally, this would be the user's Working Copy Path (WCPATH).
@@ -113,8 +113,7 @@ export     MY_PROJECT_DIR=/home/gadar/Documents/Development/VEGETATION/clone/COA
 # machine. This script is designed to more easily allow for differing paths
 # to the code and inputs on differing machines.
 
-export    MY_ROMS_SRC=/home/gadar/Documents/Development/VEGETATION/clone/COAWST_VEG/COAWST_VEG
-
+export    MY_ROMS_SRC=${MY_ROOT_DIR}/COAWST_VEG
 # Set path of the directory containing makefile configuration (*.mk) files.
 # The user has the option to specify a customized version of these files
 # in a different directory than the one distributed with the source code,

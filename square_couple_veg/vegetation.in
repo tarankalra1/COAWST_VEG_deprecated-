@@ -36,7 +36,7 @@
 !==============================================================================
 !
 ! NOTICE: Input parameter units are specified within brackets and default
-! ******  values are specified within braces.
+! values are specified within braces.
 !
     NVEG   == 1
 
@@ -49,10 +49,17 @@
 ! Logical switches (TRUE/FALSE) to activate writing of vegetation fields
 ! into HISTORY output file: [1:NVEG,Ngrids].
 
-Hout(idvprp(pdens)) == T    ! plant_density
-Hout(idTmsk) == F       ! mask_thrust        masking for getting thrust due to waves
-Hout(idTmax) == F       ! Thrust_max         maxmimum thrust due to waves
-Hout(idTton) == F       ! Thrust_tonelli     Tonelli masking based thrust due to waves
+Hout(ipdens)   == F       ! Plant_density      Density of the plant for each vegetation
+Hout(iphght)   == F       ! Plant_height       Height of the plant for each vegetation
+Hout(ipdiam)   == F       ! Plant_diameter     Diameter of the plant for each vegetation
+Hout(ipthck)   == T       ! Plant_thickness    Thickness of the plant for each vegetation
+Hout(ipagbm)   == F       ! Plant_agb          Above ground plant biomass
+Hout(ipbgbm)   == F       ! Plant_bgb          Below ground plant biomass
+Hout(idWdvg)   == T       ! Dissip_veg         Wave dissipation due to vegetation 
+Hout(idTims)   == T       ! marsh_mask         Initial masking for the marsh 
+Hout(idTmsk)   == T       ! mask_thrust        masking for getting thrust due to waves
+Hout(idTmax)   == T       ! Thrust_max         maxmimum thrust due to waves
+Hout(idTton)   == T       ! Thrust_tonelli     Tonelli masking based thrust due to waves
 
 !
 !  GLOSSARY:
@@ -61,14 +68,6 @@ Hout(idTton) == F       ! Thrust_tonelli     Tonelli masking based thrust due to
 !------------------------------------------------------------------------------
 !
 !  NVEG           Number of vegetation types 
-!
-!  SHOOT_DENS     Shoot density for each vegetation type
-!
-!  SHOOT_HGHT     Shoot height for each vegetation type
-!
-!  SHOOT_DIA      Shoot diameter for each vegetation type
-!
-!  SHOOT_THCK     Shoot thicknes for each vegetation types
 !
 !  CD_VEG         Drag coefficient for each vegetation type
 !
