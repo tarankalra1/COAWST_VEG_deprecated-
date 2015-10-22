@@ -1323,11 +1323,17 @@
 #endif
             DO itrc=1,MBEDP
               i=idSbed(itrc)
-              write(60,*)idSbed(itrc),idSbed(1)
               IF (Hout(i,ng)) WRITE (out,160) Hout(i,ng),               &
      &            'Hout(idSbed)',                                       &
      &            'Write out BED property ', itrc, TRIM(Vname(1,i))
             END DO
+            DO itrc=1,MBOTP
+              i=idBott(itrc)
+              IF (Hout(i,ng)) WRITE (out,160) Hout(i,ng),               &
+     &           'Hout(idBott)',                                        &
+     &           'Write out BOTTOM property', itrc, TRIM(Vname(1,i))
+            END DO
+!
 #if defined AVERAGES    || \
    (defined AD_AVERAGES && defined ADJOINT) || \
    (defined RP_AVERAGES && defined TL_IOMS) || \

@@ -129,7 +129,7 @@
       real(r8), intent(inout) :: bend(LBi:UBi,LBj:UBj,N(ng),NVEG)
 #  endif 
       real(r8), intent(inout) ::                                        &
-    &               ru_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG),         &
+    &               ru_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG),             &
     &               rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG)
       real(r8), intent(inout) :: ru_veg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(inout) :: rv_veg(LBi:UBi,LBj:UBj,N(ng))
@@ -144,6 +144,7 @@
       real(r8), parameter :: Inival  = 0.0_r8
       real(r8) :: cff1 , cff2, cff3 
       real(r8) :: sma, buoy, Umag, Ca, cflex 
+      real(r8) :: plant_mod_height 
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: dab  
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wrk
 !
@@ -199,7 +200,7 @@
 !
 ! Effective blade length
 !
-              plant(i,j,iveg,phght)=cflex*plant(i,j,iveg,phght)
+              plant_mod_height=cflex*plant(i,j,iveg,phght)
 !
 ! Blade bending angle
 !
@@ -209,8 +210,7 @@
 ! Select the grid cell (full or part) within the canopy layer
 !                
               dab(i,j,k)=dab(i,j,k-1)+Hz(i,j,k)
-              cff1=MIN((dab(i,j,k)-plant(i,j,iveg,phght))/Hz(i,j,k),    &
-     &                                                      1.0_r8)
+              cff1=MIN((dab(i,j,k)-plant_mod_height)/Hz(i,j,k),1.0_r8)
               Lveg(i,j,k)=MIN(1.0_r8-cff1,1.0_r8) 
 !
 ! Prepare drag term (at rho points)        
