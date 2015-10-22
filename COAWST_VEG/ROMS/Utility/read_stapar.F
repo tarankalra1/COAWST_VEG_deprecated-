@@ -301,16 +301,6 @@
             CASE ('Sout(idWro)')
               Npts=load_l(Nval, Cval, Ngrids, Sout(idWro,:))
 #  endif
-#  if defined BBL_MODEL || defined SEDIMENT
-            CASE ('Sout(idBott)')
-              Npts=load_l(Nval, Cval, MBOTP*Ngrids, Lbottom)
-              DO ng=1,Ngrids
-                DO itrc=1,MBOTP
-                  i=idBott(itrc)
-                  Sout(i,ng)=Lbottom(itrc,ng)
-                END DO
-              END DO
-#  endif
 # endif
             CASE ('NSTATION')
               Npts=load_i(Nval, Rval, Ngrids, Nstation)
@@ -568,14 +558,6 @@
             IF (Sout(idWdis,ng)) WRITE (out,80) Sout(idWdis,ng),        &
      &         'Sout(idWdis)',                                          &
      &         'Write out wave dissipation.'
-# endif
-# if defined SOLVE3D && (defined BBL_MODEL || defined SEDIMENT)
-            DO itrc=1,MBOTP
-              IF (Sout(idBott(itrc),ng)) WRITE (out,90)                 &
-     &            Sout(idBott(itrc),ng), 'Sout(idBott)',                &
-     &            'Write out bottom property ', itrc,                   &
-     &            TRIM(Vname(1,idBott(itrc)))
-            END DO
 # endif
 # ifdef SOLVE3D
 #  if defined BULK_FLUXES || defined ECOSIM || defined ATM_PRESS

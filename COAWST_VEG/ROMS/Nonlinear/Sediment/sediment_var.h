@@ -85,11 +85,11 @@
                 idBott(idbzm)=varid
               CASE ('idBott(idbzp)')
                 idBott(idbzp)=varid
-#endif
+#endif 
 #if defined MIXED_BED
               CASE ('idBott(idprp)')
                 idBott(idprp)=varid
-#endif
+#endif 
               CASE ('idTvar(idmud(i))')
                 load=.FALSE.
                 IF (NCS.gt.0) THEN
