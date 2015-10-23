@@ -97,7 +97,7 @@
 # endif
 # if defined VEGETATION && defined VEG_STREAMING
      &                         VEG(ng) % BWDXL_veg,                     &
-     &                         VEG(ng) % BWDXL_veg,                     &                  
+     &                         VEG(ng) % BWDYL_veg,                     &                  
 # endif
      &                         MIXING(ng) % rustr3d,                    &
      &                         MIXING(ng) % rvstr3d) 
@@ -423,7 +423,7 @@
         DO j=Jstr-1,Jend+1
           DO i=Istr-1,Iend+1
             BWDXL(i,j)=BWDXL_veg(i,j,k)
-            BWDYL(i,j)=BWDXL_veg(i,j,k)
+            BWDYL(i,j)=BWDYL_veg(i,j,k)
           END DO
         END DO
 # endif

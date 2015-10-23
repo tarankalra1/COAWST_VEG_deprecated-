@@ -210,9 +210,7 @@
 !
 ! For stiff vegetation 
 !
-
               plant_height_eff=plant(i,j,iveg,phght)
-  
 # endif
 !
 ! Select the grid cell (full or part) within the canopy layer
