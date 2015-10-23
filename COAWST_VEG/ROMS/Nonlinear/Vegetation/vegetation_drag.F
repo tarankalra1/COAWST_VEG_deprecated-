@@ -144,7 +144,7 @@
       real(r8), parameter :: Inival  = 0.0_r8
       real(r8) :: cff1 , cff2, cff3 
       real(r8) :: sma, buoy, Umag, Ca, cflex 
-      real(r8) :: plant_mod_height 
+      real(r8) :: plant_height_eff
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: dab  
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wrk
 !
@@ -200,17 +200,25 @@
 !
 ! Effective blade length
 !
-              plant_mod_height=cflex*plant(i,j,iveg,phght)
+              plant_height_eff=cflex*plant(i,j,iveg,phght)
 !
 ! Blade bending angle
 !
               bend(i,j,iveg)=ACOS(cflex**(-3.0_r8))
+
+# else
+!
+! For stiff vegetation 
+!
+
+              plant_height_eff=plant(i,j,iveg,phght)
+  
 # endif
 !
 ! Select the grid cell (full or part) within the canopy layer
 !                
               dab(i,j,k)=dab(i,j,k-1)+Hz(i,j,k)
-              cff1=MIN((dab(i,j,k)-plant_mod_height)/Hz(i,j,k),1.0_r8)
+              cff1=MIN((dab(i,j,k)-plant_height_eff)/Hz(i,j,k),1.0_r8)
               Lveg(i,j,k)=MIN(1.0_r8-cff1,1.0_r8) 
 !
 ! Prepare drag term (at rho points)        

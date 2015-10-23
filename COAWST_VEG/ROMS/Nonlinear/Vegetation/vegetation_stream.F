@@ -53,16 +53,8 @@
 # ifdef SOLVE3D
      &                         GRID(ng) % z_w,                          &
 # endif
-!# ifdef WAVES_HEIGHT
-     &                         FORCES(ng) % Hwave,                      &
-!# endif
-!# ifdef WAVES_DIR
      &                         FORCES(ng) % Dwave,                      &
-!# endif
-!# ifdef WAVES_LENGTH
      &                         FORCES(ng) % Lwave,                      &
-!# endif
-     &                         VEG(ng) % plant,                         &
      &                         VEG(ng) % dissip_veg,                    &
      &                         VEG(ng) % Lveg,                          &
      &                         VEG(ng) % BWDXL_veg,                     &
@@ -82,16 +74,8 @@
 # ifdef SOLVE3D
      &                              z_w,                                &
 # endif
-!# ifdef WAVES_HEIGHT
-     &                              Hwave,                              &
-!# endif
-!# ifdef WAVES_DIR
      &                              Dwave,                              &
-!# endif
-!# ifdef WAVES_LENGTH
      &                              Lwave,                              &
-!# endif
-     &                              plant,                              &
      &                              dissip_veg, Lveg,                   &
      &                              BWDXL_veg, BWDYL_veg)  
 !***********************************************************************
@@ -113,16 +97,8 @@
 #  ifdef SOLVE3D
       real(r8), intent(in) :: z_w(LBi:,LBj:,0:)
 #  endif
-!#  ifdef WAVES_HEIGHT
-      real(r8), intent(in) :: Hwave(LBi:,LBj:)
-!#  endif
-!#  ifdef WAVES_LENGTH
       real(r8), intent(in) :: Lwave(LBi:,LBj:)
-!#  endif
-!#  ifdef WAVES_DIR
       real(r8), intent(in) :: Dwave(LBi:,LBj:)
-!#  endif
-      real(r8), intent(in) :: plant(LBi:,LBj:,:,:)
       real(r8), intent(in) :: dissip_veg(LBi:,LBj:)
       real(r8), intent(in) :: Lveg(LBi:,LBj:,:)
       real(r8), intent(inout) :: BWDXL_veg(LBi:,LBj:,:)
@@ -132,16 +108,8 @@
 #  ifdef SOLVE3D
       real(r8), intent(in) :: z_w(LBi:UBi,LBj:UBj,UBk)
 #  endif
-!#  ifdef WAVES_HEIGHT
-      real(r8), intent(in)  :: Hwave(LBi:UBi,LBj:UBj)
-!#  endif
-!#  ifdef WAVES_LENGTH
       real(r8), intent(in)  :: Lwave(LBi:UBi,LBj:UBj)
-!#  endif
-!#  ifdef WAVES_DIR
       real(r8), intent(in)  :: Dwave(LBi:UBi,LBj:UBj)
-!#  endif
-      real(r8), intent(in) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
       real(r8), intent(in) :: dissip_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(inout) :: BWDXL_veg(LBi:UBi,LBj:UBj,N(ng))
@@ -151,78 +119,44 @@
 !  Local variable declarations.
 !
       integer :: i, j, k, iveg
-      real(r8) :: cff1, cff2, cff3, cff4, cff5
+      real(r8) :: cff1, cff2
       real(r8) :: EWD_veg
-      real(r8), parameter :: sqrt2=SQRT(2.0_r8)
-      real(r8), parameter :: ks=0.03_r8
-      real(r8), parameter :: awd=1.0_r8
-      real(r8), parameter :: KWDmax=200.0_r8
-      real(r8), parameter :: eps = 1.0E-14_r8
-      real(r8), parameter :: kDmax = 5.0_r8
       real(r8), parameter :: Lwave_min = 1.0_r8
 
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: Dstp
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: kD
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: waven
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wavenx
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: waveny
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: sigma
-      real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: osigma
+      real(r8) :: Dstp
+      real(r8) :: waven, wavenx, waveny
+      real(r8) :: sigma, osigma
 
 # include "set_bounds.h"
 !----------------------------------------------------------------------
 !----------Executing the code------------------------------------------
 !----------------------------------------------------------------------
 !     
-      DO j=Jstr-1,Jend+1
-        DO i=Istr-1,Iend+1
-          Dstp(i,j)=z_w(i,j,N(ng))-z_w(i,j,0)
+      DO k=1,N(ng)
+        DO j=Jstr,Jend
+          DO i=Istr,Iend
+            Dstp=z_w(i,j,N(ng))-z_w(i,j,0)
 !----------------------------------------------------------------------
 !  Compute wave amplitude (0.5*Hrms), wave number, intrinsic frequency.
 !----------------------------------------------------------------------
-          waven(i,j)=2.0_r8*pi/MAX(Lwave(i,j),Lwave_min)
-          cff2=1.5_r8*pi-Dwave(i,j)-angler(i,j)
-          wavenx(i,j)=waven(i,j)*COS(cff2)
-          waveny(i,j)=waven(i,j)*SIN(cff2)
-          sigma(i,j)=MIN(SQRT(g*waven(i,j)*TANH(waven(i,j)*             &
-     &                                  Dstp(i,j))),2.0_r8)
-          osigma(i,j)=1.0_r8/sigma(i,j)
-!----------------------------------------------------------------------
-!  Compute wave celerity and nonlinear water depth 
-!----------------------------------------------------------------------
-          kD(i,j)=MIN(waven(i,j)*Dstp(i,j)+eps,kDmax)
-        END DO 
-      END DO 
-!
-      DO k=1,N(ng)
-        DO j=Jstr-1,Jend+1
-          DO i=Istr-1,Iend+1
-!----------------------------------------------------------------------
-!  Metric for vertical bottom streaming distribution     
-!----------------------------------------------------------------------
-            cff3=0.25_r8*sqrt2*sigma(i,j)*Hwave(i,j)/                   &
-     &           (SINH(kD(i,j))+eps)
-
-!----------------------------------------------------------------------
-!  Wave friction factor (based on Soulsby, 1997).
-!----------------------------------------------------------------------
-            cff4=MIN(1.39_r8*(sigma(i,j)*(ks/30.0_r8)/                  &
-     &               cff3)**0.52_r8,0.2_r8)
+            waven=2.0_r8*pi/MAX(Lwave(i,j),Lwave_min)
+            cff1=1.5_r8*pi-Dwave(i,j)-angler(i,j)
+            wavenx=waven*COS(cff1)
+            waveny=waven*SIN(cff1)
+            sigma=MIN(SQRT(g*waven*TANH(waven*Dstp)),2.0_r8)
+            osigma=1.0_r8/sigma
 ! 
-#  ifdef WAVES_OCEAN
 !----------------------------------------------------------------------
 !   Note: Alexis - check if we need a local dissip_veg here 
 !   Also Lveg is for 1 veg type only 
 !----------------------------------------------------------------------
-            EWD_veg=dissip_veg(i,j)
-#  else
-            EWD_veg=(0.5_r8/sqrt(pi))*cff4*(cff3**3.0_r8)
-#  endif
-            cff5=EWD_veg*osigma(i,j)*Lveg(i,j,k)
-            BWDXL_veg(i,j,k)=cff5*wavenx(i,j)
-            BWDYL_veg(i,j,k)=cff5*waveny(i,j)
 !
-          END DO
+            EWD_veg=dissip_veg(i,j)
+            cff2=EWD_veg*osigma*Lveg(i,j,k)
+            BWDXL_veg(i,j,k)=cff2*wavenx
+            BWDYL_veg(i,j,k)=cff2*waveny
+!           
+           END DO
         END DO
       END DO    
 !
