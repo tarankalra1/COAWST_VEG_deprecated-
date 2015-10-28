@@ -2470,7 +2470,8 @@
       JDSXW = 32
       JNPLA2= 33                                                          40.55
       JNPLA3= 34                                                          40.55
-      MCMVAR = 34
+      JDSXV = 35                                                          40.65 40.61
+      MCMVAR = 35
       LADDS = .TRUE.
 #else
       MCMVAR = 28                                                         41.38 40.65 40.61 40.51 40.13
@@ -2505,8 +2506,8 @@
       JDSXB  = 1                                                          40.65 40.61
       JDSXS  = 1                                                          40.65 40.61
       JDSXW  = 1                                                          40.65 40.61
-#endif
       JDSXV  = 1                                                          40.65 40.61
+#endif
       JGENR  = 1                                                          40.85
       JGSXW  = 1                                                          40.85
       JREDS  = 1                                                          40.85
