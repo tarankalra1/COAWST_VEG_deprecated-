@@ -32,6 +32,10 @@
       USE mod_sedbed
       USE mod_sediment
 #endif
+#if defined VEGETATION 
+      USE mod_vegetation
+      USE mod_vegarr
+#endif
 #if (defined PERFECT_RESTART && defined ICE_MODEL) || defined NCEP_FLUXES
       USE mod_forces
 #endif
@@ -1631,6 +1635,11 @@
         RETURN
       END IF
 # endif
+
+#ifdef VEGETATION
+#include "vegetation_wrt_rst.h"
+#endif 
+
 # ifdef SEDIMENT
 #  ifdef BEDLOAD
 !

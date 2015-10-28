@@ -3509,24 +3509,6 @@
   'r2dvar'
   1.0d0
 
-'seagrass_height'                                  ! Input/Output
-  'seagrass height'
-  'meter'                                          ! [m]
-  'seagrass_height, scalar, series'
-  'ocean_time'
-  'idBott(isgrH)'
-  'r2dvar'
-  1.0d0
-
-'seagrass_density'                                  ! Input/Output
-  'seagrass shoot density'
-  'shoots meter-2'                                  ! [shoots/m2]
-  'seagrass_density, scalar, series'
-  'ocean_time'
-  'idBott(isgrD)'
-  'r2dvar'
-  1.0d0
-
 'dep_net'                                          ! Output
   'erosion or deposition'
   'meter'                                          ! [m]

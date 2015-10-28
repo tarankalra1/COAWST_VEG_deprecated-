@@ -23,6 +23,10 @@
 #ifdef BIOLOGY
       USE mod_biology
 #endif
+#ifdef VEGETATION
+      USE mod_vegetation
+      USE mod_vegarr
+#endif
 #ifdef FOUR_DVAR
       USE mod_fourdvar
 #endif
@@ -57,6 +61,11 @@
       integer :: sr3dgrd(4), su3dgrd(4), sv3dgrd(4)
       integer :: t2dgrd(4), u2dgrd(4), v2dgrd(4)
       integer :: Vsize(4)
+#if defined VEGETATION 
+# if defined VEG_DRAG || defined VEG_BIOMASS
+      integer :: v3pgrd(4)
+# endif
+#endif
 
       integer :: def_dim
 
@@ -203,6 +212,14 @@
         IF (exit_flag.ne.NoError) RETURN
 #  endif
 # endif
+
+#if defined VEGETATION
+# if defined VEG_DRAG || defined VEG_BIOMASS
+        status=def_dim(ng, iNLM, RST(ng)%ncid, ncname, 'NVEGP',         &
+     &                 NVEGP, DimIDs(35))
+        IF (exit_flag.ne.NoError) RETURN
+# endif 
+#endif
 
 #  if defined VARIABLE_CDOM && defined SPECTRAL_LIGHT
         status=def_dim(ng, iNLM, RST(ng)%ncid, ncname, 'Ndom',          &
@@ -717,6 +734,11 @@
      &                 SetFillVal = .FALSE.)
         IF (exit_flag.ne.NoError) RETURN
 #endif
+!
+#if defined VEGETATION 
+#include "vegetation_def_rst.h"
+#endif
+!
 #if defined SEDIMENT && defined SED_MORPH
 !
 !  Define  time-varying bathymetry
@@ -2344,6 +2366,18 @@
             got_var(idbath)=.TRUE.
             RST(ng)%Vid(idbath)=var_id(i)
 #endif
+!
+#if defined VEGETATION 
+# if defined VEG_DRAG || defined VEG_BIOMASS
+          DO itrc=1,NVEGP
+            IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idvprp(itrc)))) THEN
+              got_var(idvprp(itrc))=.TRUE.
+              RST(ng)%Vid(itrc)=var_id(i)
+            END IF
+          END DO
+# endif 
+#endif
+!
 #if defined WET_DRY
           ELSE IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idRwet))) THEN
             got_var(idRwet)=.TRUE.
@@ -2552,6 +2586,19 @@
             END IF
           END DO
 # endif
+!
+# if defined VEGETATION 
+#  if defined VEG_DRAG || defined VEG_BIOMASS 
+        DO i=1,NVEGP
+            IF (TRIM(var_name(i)).eq.                                   &
+     &          TRIM(Vname(1,idvprp(i)))) THEN
+              got_var(idvprp(i))=.TRUE.
+              RST(ng)%Vid(idvprp(i))=var_id(i)
+          END IF
+        END DO
+#  endif
+# endif 
+
 # if defined SEDIMENT || defined BBL_MODEL
           DO itrc=1,6
             IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idBott(itrc)))) THEN
@@ -2881,6 +2928,18 @@
             RETURN
           END IF
         END DO
+# ifdef VEGETATION 
+#  if defined VEG_DRAG || defined VEG_BIOMASS 
+        DO i=1,NVEGP
+          IF (.not.got_var(idvprp(i)).and.Hout(idvprp(i),ng)) THEN
+            IF (Master) WRITE (stdout,40) TRIM(Vname(1,idvprp(i))),     &
+     &                                    TRIM(ncname)
+            exit_flag=3
+            RETURN
+          END IF
+        END DO
+#  endif
+# endif 
 # ifdef SEDIMENT
         DO i=1,NST
           IF (.not.got_var(idfrac(i))) THEN
