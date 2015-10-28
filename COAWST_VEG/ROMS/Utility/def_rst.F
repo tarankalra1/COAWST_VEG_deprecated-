@@ -55,7 +55,11 @@
       integer :: i, j, nvd3, nvd4, nvd5
       integer :: recdim, status, varid
 
+#if defined VEGETATION && (defined VEG_DRAG || defined VEG_BIOMASS)
+      integer :: DimIDs(35)
+#else
       integer :: DimIDs(32)
+#endif
       integer :: r2dgrd(4), ru2dgrd(4), rv2dgrd(4)
       integer :: sp2dgrd(3), sr2dgrd(3), su2dgrd(3), sv2dgrd(3)
       integer :: sr3dgrd(4), su3dgrd(4), sv3dgrd(4)
@@ -66,7 +70,6 @@
       integer :: v3pgrd(4)
 # endif
 #endif
-
       integer :: def_dim
 
 #ifdef SOLVE3D
@@ -212,7 +215,7 @@
         IF (exit_flag.ne.NoError) RETURN
 #  endif
 # endif
-
+!
 #if defined VEGETATION
 # if defined VEG_DRAG || defined VEG_BIOMASS
         status=def_dim(ng, iNLM, RST(ng)%ncid, ncname, 'NVEGP',         &
@@ -220,7 +223,7 @@
         IF (exit_flag.ne.NoError) RETURN
 # endif 
 #endif
-
+!
 #  if defined VARIABLE_CDOM && defined SPECTRAL_LIGHT
         status=def_dim(ng, iNLM, RST(ng)%ncid, ncname, 'Ndom',          &
      &                 Ndom, DimIDs(27))
@@ -2367,17 +2370,6 @@
             RST(ng)%Vid(idbath)=var_id(i)
 #endif
 !
-#if defined VEGETATION 
-# if defined VEG_DRAG || defined VEG_BIOMASS
-          DO itrc=1,NVEGP
-            IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idvprp(itrc)))) THEN
-              got_var(idvprp(itrc))=.TRUE.
-              RST(ng)%Vid(itrc)=var_id(i)
-            END IF
-          END DO
-# endif 
-#endif
-!
 #if defined WET_DRY
           ELSE IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idRwet))) THEN
             got_var(idRwet)=.TRUE.
@@ -2587,17 +2579,6 @@
           END DO
 # endif
 !
-# if defined VEGETATION 
-#  if defined VEG_DRAG || defined VEG_BIOMASS 
-        DO i=1,NVEGP
-            IF (TRIM(var_name(i)).eq.                                   &
-     &          TRIM(Vname(1,idvprp(i)))) THEN
-              got_var(idvprp(i))=.TRUE.
-              RST(ng)%Vid(idvprp(i))=var_id(i)
-          END IF
-        END DO
-#  endif
-# endif 
 
 # if defined SEDIMENT || defined BBL_MODEL
           DO itrc=1,6
@@ -2690,6 +2671,17 @@
           END IF
 #endif
         END DO
+# if defined VEGETATION 
+#  if defined VEG_DRAG || defined VEG_BIOMASS 
+        DO i=1,NVEGP
+            IF (TRIM(var_name(i)).eq.                                   &
+     &          TRIM(Vname(1,idvprp(i)))) THEN
+              got_var(idvprp(i))=.TRUE.
+              RST(ng)%Vid(idvprp(i))=var_id(i)
+          END IF
+        END DO
+#  endif
+# endif 
 !
 !  Check if initialization variables are available in input NetCDF
 !  file.
