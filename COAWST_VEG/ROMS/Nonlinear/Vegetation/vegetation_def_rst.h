@@ -20,14 +20,18 @@
 !
 #if defined VEG_DRAG || defined VEG_BIOMASS
       DO i=1,NVEGP
-        IF (Hout(idvprp(i),ng)) THEN
            Vinfo( 1)=Vname(1,idvprp(i))
            Vinfo( 2)=Vname(2,idvprp(i))
            Vinfo( 3)=Vname(3,idvprp(i))
            Vinfo(14)=Vname(4,idvprp(i))
            Vinfo(16)=Vname(1,idtime)
 #  if defined WRITE_WATER && defined MASKING
-           Vinfo(20)='mask_rho'
+#   if defined PERFECT_RESTART
+          Vinfo(24)='_FillValue'
+          Aval(6)=spval
+#   else
+          Vinfo(20)='mask_rho'
+#   endif
 #  endif
            Vinfo(22)='coordinates'
            Aval(5)=REAL(Iinfo(1,idvprp(i),ng),r8)
@@ -35,7 +39,6 @@
      &                   NF_FOUT, nvd4, v3pgrd, Aval, Vinfo, ncname,     &
      &                   SetFillVal = .FALSE.)
           IF (exit_flag.ne.NoError) RETURN
-        END IF
       END DO
 #endif
 !
@@ -43,7 +46,6 @@
 !
 !  Define wave dissipation due to vegetation 
 !
-        IF (Hout(idWdvg,ng)) THEN 
           Vinfo( 1)=Vname(1,idWdvg)
           Vinfo( 2)=Vname(2,idWdvg)
           Vinfo( 3)=Vname(3,idWdvg)
@@ -57,13 +59,11 @@
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idWdvg),   &
      &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
-        END IF 
 #endif 
 #ifdef WAVE_THRUST_MARSH 
 !
 !  Store initial masking marsh 
 !
-        IF (Hout(idTims,ng)) THEN 
           Vinfo( 1)=Vname(1,idTims)
           Vinfo( 2)=Vname(2,idTims)
           Vinfo( 3)=Vname(3,idTims)
@@ -77,9 +77,7 @@
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTims),   &
      &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
-        END IF
 !
-        IF (Hout(idTmsk,ng)) THEN 
           Vinfo( 1)=Vname(1,idTmsk)
           Vinfo( 2)=Vname(2,idTmsk)
           Vinfo( 3)=Vname(3,idTmsk)
@@ -93,11 +91,9 @@
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTmsk),   &
      &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
-        END IF
 !
 !  Define maximum thrust due to waves.
 !
-        IF (Hout(idTmax,ng)) THEN 
           Vinfo( 1)=Vname(1,idTmax)
           Vinfo( 2)=Vname(2,idTmax)
           Vinfo( 3)=Vname(3,idTmax)
@@ -111,11 +107,9 @@
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTmax),   &
      &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
-        END IF 
 !     
 !  Define Tonelli masking based thrust due to waves.
 !
-        IF (Hout(idTton,ng)) THEN 
           Vinfo( 1)=Vname(1,idTton)
           Vinfo( 2)=Vname(2,idTton)
           Vinfo( 3)=Vname(3,idTton)
@@ -129,5 +123,4 @@
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTton),   &
      &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
-        ENDIF 
 #endif 

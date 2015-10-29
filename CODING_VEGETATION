@@ -104,6 +104,9 @@ def_his.F and wrt_his.F are the files where it is written out
 1e) Output to be written in vegetation_def_his.F  and Utility/def_his.F
 1f) Output to be written in vegetation_wrt_his.F  and Utility/wrt_his.F
 1g) Have the output variable definition in varinfo.dat  
+1h) Made changes for restart in def_rst.F, wrt_rst.F and added 
+vegetation_def_rst.F and vegetation_wrt_rst.F (Notice the change from his and rst.F
+in veg folder)
 
 ------------------------------------------------
    ANALYTICAL VEGETATION # ANA_VEGETATION

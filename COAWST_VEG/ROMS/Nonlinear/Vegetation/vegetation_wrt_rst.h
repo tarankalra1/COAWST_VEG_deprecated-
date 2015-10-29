@@ -19,7 +19,6 @@
 !  Write out vegetation properties 
 ! 
       DO i=1,NVEGP 
-        IF (Hout(idvprp(i),ng)) THEN 
           scale=1.0_r8
           gtype=gfactor*r3dvar
           status=nf_fwrite3d(ng, iNLM, RST(ng)%ncid,                    &
@@ -38,7 +37,6 @@
             ioerror=status
             RETURN
           END IF
-        END IF
       END DO 
 # endif 
 !
@@ -46,7 +44,6 @@
 !
 !  Write out wave dissipation due to vegetation 
 ! 
-      IF (Hout(idWdvg,ng)) THEN 
         scale=1.0_r8
         gtype=gfactor*r2dvar
         status=nf_fwrite2d(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idWdvg), &
@@ -64,14 +61,12 @@
           ioerror=status
           RETURN
         END IF
-      END IF
 # endif
 ! 
 # ifdef WAVE_THRUST_MARSH 
 !
 !  Write out initial masking for marshes 
 ! 
-      IF (Hout(idTims,ng)) THEN 
         scale=1.0_r8
         gtype=gfactor*r2dvar
         status=nf_fwrite2d(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTims), &
@@ -89,11 +84,9 @@
           ioerror=status
           RETURN
         END IF
-      END IF
 !
 !  Write out wave thrust on marsh output 
 ! 
-      IF (Hout(idTmsk,ng)) THEN 
         scale=1.0_r8
         gtype=gfactor*r2dvar
         status=nf_fwrite2d(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTmsk), &
@@ -111,11 +104,9 @@
           ioerror=status
           RETURN
         END IF
-      END IF
 !
 !  Define maximum thrust due to waves. 
 !
-      IF (Hout(idTmax,ng)) THEN 
         scale=1.0_r8
         gtype=gfactor*r2dvar
         status=nf_fwrite2d(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTmax), &
@@ -133,11 +124,9 @@
           ioerror=status
           RETURN
         END IF
-      END IF
 !
 !  Define maximum thrust due to waves. 
 !
-      IF (Hout(idTmax,ng)) THEN
         scale=1.0_r8
         gtype=gfactor*r2dvar
         status=nf_fwrite2d(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTmax), &
@@ -155,11 +144,9 @@
           ioerror=status
           RETURN
         END IF
-      END IF
 !
 !  Define Tonelli masking based thrust due to waves. 
 !
-      IF (Hout(idTton,ng)) THEN
         scale=1.0_r8
         gtype=gfactor*r2dvar
         status=nf_fwrite2d(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTton), &
@@ -177,6 +164,5 @@
           ioerror=status
           RETURN
         END IF
-      END IF
 # endif 
 
