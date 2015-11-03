@@ -17,6 +17,7 @@
 !  CD_VEG        Drag coefficient for each veg type                    ! 
 !  E_VEG         Youngs modulus for each veg type                      !
 !  VEG_MASSDEN   Mass density for each veg type                        !
+!  VEGHMIXCOEF   Viscosity coefficient for vegetation boundary         ! 
 !                                                                      ! 
 !  Plant Property indices:                                             !
 !  ======================                                              !
@@ -73,6 +74,7 @@
       real(r8), allocatable :: E_VEG(:,:)
       real(r8), allocatable :: CD_VEG(:,:)
       real(r8), allocatable :: VEG_MASSDENS(:,:)
+      real(r8), allocatable :: VEGHMIXCOEF(:,:)
 !
       CONTAINS 
 ! 

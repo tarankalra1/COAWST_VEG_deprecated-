@@ -55,6 +55,7 @@
       CALL vegetation_hmixing_tile  (ng, tile,                          &
      &                        LBi, UBi, LBj, UBj,                       &
      &                        IminS, ImaxS, JminS, JmaxS,               &
+     &                        VEG(ng) % Lveg,                           &
      &                        VEG(ng) % plant,                          &
      &                        VEG(ng) % visc2d_r_veg,                   &
      &                        VEG(ng) % visc3d_r_veg)
@@ -66,9 +67,10 @@
       END SUBROUTINE vegetation_hmixing_cal
 
 !***********************************************************************
-      SUBROUTINE vegetation_mask_hmixing_tile (ng, tile,                &
+      SUBROUTINE vegetation_hmixing_tile (ng, tile,                     &
      &                              LBi, UBi, LBj, UBj,                 &
      &                              IminS, ImaxS, JminS, JmaxS,         &
+     &                              Lveg,                               &
      &                              plant,                              &
      &                              visc2d_r_veg,                       &
      &                              visc3d_r_veg)          
@@ -86,21 +88,23 @@
       integer, intent(in) :: IminS, ImaxS, JminS, JmaxS
 !
 # ifdef ASSUMED_SHAPE
+      real(r8), intent(in) :: Lveg(LBi:,LBj:,:)
       real(r8), intent(in) :: plant(LBi:,LBj:,:,:)
-      real(r8), intent(inout) :: visc2d_r_veg(LBi:,LBj:,:)
+      real(r8), intent(inout) :: visc2d_r_veg(LBi:,LBj:)
       real(r8), intent(inout) :: visc3d_r_veg(LBi:,LBj:,:)
 # else
+      real(r8), intent(in) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(in) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
-      real(r8), intent(inout) :: visc2d_r_veg(LBi:UBi,LBj:UBj,N(ng))
+      real(r8), intent(inout) :: visc2d_r_veg(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: visc3d_r_veg(LBi:UBi,LBj:UBj,N(ng))
 # endif
 
 !  Local variable declarations.
 !
       integer :: i, j, k, iveg
-      real(r8), parameter :: Inival=0.0_r8
+      real(r8) :: visc3d_r_veg_loc, cff 
       real(r8) :: maxgradvegdens, gradu, gradv, wrku, wrkv
-      real(r8) :: visc3d_r_veg_loc
+      real(r8), parameter :: Inival=0.0_r8
 !
 # include "set_bounds.h"
 !----------------------------------------------------------------------
@@ -109,6 +113,7 @@
 ! 
 !   This is currently assuming that vegetation types do not overlap
 ! 
+      visc2d_r_veg=Inival
       visc3d_r_veg=Inival
       visc3d_r_veg_loc=Inival
 
@@ -127,7 +132,7 @@
         DO k=1,N(ng)  
           DO j=Jstr,Jend
             DO i=Istr,Iend
-              cff=VegHMixCoef*Lveg(i,j,k)/maxgradvegdens
+              cff=VegHMixCoef(iveg,ng)*Lveg(i,j,k)/maxgradvegdens
               gradu=ABS(plant(i,j,iveg,pdens)-plant(i-1,j,iveg,pdens))
               wrku=cff*gradu
               gradv=ABS(plant(i,j,iveg,pdens)-plant(i,j-1,iveg,pdens))

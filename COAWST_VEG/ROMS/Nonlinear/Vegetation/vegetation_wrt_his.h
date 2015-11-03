@@ -48,7 +48,7 @@
       IF (Hout(idWdvg,ng)) THEN 
         scale=1.0_r8
         gtype=gfactor*r2dvar
-        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, RST(ng)%Vid(idWdvg), &
+        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idWdvg), &
      &                     HIS(ng)%Rindex, gtype,                       &
      &                     LBi, UBi, LBj, UBj, scale,                   &
 # ifdef MASKING
@@ -73,7 +73,7 @@
       IF (Hout(idTims,ng)) THEN 
         scale=1.0_r8
         gtype=gfactor*r2dvar
-        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, RST(ng)%Vid(idTims), &
+        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idTims), &
      &                     HIS(ng)%Rindex, gtype,                       &
      &                     LBi, UBi, LBj, UBj, scale,                   &
 # ifdef MASKING
@@ -95,7 +95,7 @@
       IF (Hout(idTmsk,ng)) THEN 
         scale=1.0_r8
         gtype=gfactor*r2dvar
-        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, RST(ng)%Vid(idTmsk), &
+        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idTmsk), &
      &                     HIS(ng)%Rindex, gtype,                       &
      &                     LBi, UBi, LBj, UBj, scale,                   &
 # ifdef MASKING
@@ -117,7 +117,7 @@
       IF (Hout(idTmax,ng)) THEN 
         scale=1.0_r8
         gtype=gfactor*r2dvar
-        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, RST(ng)%Vid(idTmax), &
+        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idTmax), &
      &                     HIS(ng)%Rindex, gtype,                       &    
      &                     LBi, UBi, LBj, UBj, scale,                   &
 # ifdef MASKING
@@ -139,7 +139,7 @@
       IF (Hout(idTmax,ng)) THEN
         scale=1.0_r8
         gtype=gfactor*r2dvar
-        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, RST(ng)%Vid(idTmax), &
+        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idTmax), &
      &                     HIS(ng)%Rindex, gtype,                       &
      &                     LBi, UBi, LBj, UBj, scale,                   &
 # ifdef MASKING
@@ -161,7 +161,7 @@
       IF (Hout(idTton,ng)) THEN
         scale=1.0_r8
         gtype=gfactor*r2dvar
-        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, RST(ng)%Vid(idTton), &
+        status=nf_fwrite2d(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idTton), &
      &                     HIS(ng)%Rindex, gtype,                       &
      &                     LBi, UBi, LBj, UBj, scale,                   &
 # ifdef MASKING

@@ -276,7 +276,7 @@
 # if defined VEG_HMIXING
         DO j=Jmin,Jmax
           DO i=Imin,Imax
-            VEG(ng) % visc2d_r_veg(i,j,k) = IniVal
+            VEG(ng) % visc2d_r_veg(i,j) = IniVal
           END DO 
         END DO
         DO k=1,N(ng)

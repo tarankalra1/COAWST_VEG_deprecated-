@@ -33,12 +33,11 @@
           Vinfo(20)='mask_rho'
 #   endif
 #  endif
-           Vinfo(22)='coordinates'
-           Aval(5)=REAL(Iinfo(1,idvprp(i),ng),r8)
-           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idvprp(i)),&
-     &                   NF_FOUT, nvd4, v3pgrd, Aval, Vinfo, ncname,     &
-     &                   SetFillVal = .FALSE.)
-          IF (exit_flag.ne.NoError) RETURN
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idvprp(i),ng),r8)
+          status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idvprp(i)),&
+     &                  NF_FRST, nvd4, v3pgrd, Aval, Vinfo, ncname)
+         IF (exit_flag.ne.NoError) RETURN
       END DO
 #endif
 !
@@ -75,7 +74,7 @@
           Vinfo(22)='coordinates'
           Aval(5)=REAL(Iinfo(1,idTims,ng),r8)
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTims),   &
-     &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
+     &                   NF_FRST, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
 !
           Vinfo( 1)=Vname(1,idTmsk)
@@ -89,7 +88,7 @@
           Vinfo(22)='coordinates'
           Aval(5)=REAL(Iinfo(1,idTmsk,ng),r8)
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTmsk),   &
-     &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
+     &                   NF_FRST, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
 !
 !  Define maximum thrust due to waves.
@@ -105,7 +104,7 @@
           Vinfo(22)='coordinates'
           Aval(5)=REAL(Iinfo(1,idTmax,ng),r8)
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTmax),   &
-     &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
+     &                   NF_FRST, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
 !     
 !  Define Tonelli masking based thrust due to waves.
@@ -121,6 +120,6 @@
           Vinfo(22)='coordinates'
           Aval(5)=REAL(Iinfo(1,idTton,ng),r8)
           status=def_var(ng, iNLM, RST(ng)%ncid, RST(ng)%Vid(idTton),   &
-     &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
+     &                   NF_FRST, nvd3, t2dgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
 #endif 

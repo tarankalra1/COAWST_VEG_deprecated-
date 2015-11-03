@@ -14,10 +14,10 @@
 **                                                                    **
 ************************************************************************
 */
+#if defined VEG_DRAG || defined VEG_BIOMASS
 !
 !  Define vegetation module parameters.
 !
-#if defined VEG_DRAG || defined VEG_BIOMASS
       DO i=1,NVEGP
         IF (Hout(idvprp(i),ng)) THEN
            Vinfo( 1)=Vname(1,idvprp(i))
@@ -30,9 +30,8 @@
 #  endif
            Vinfo(22)='coordinates'
            Aval(5)=REAL(Iinfo(1,idvprp(i),ng),r8)
-           status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idvprp(i)),&
-     &                   NF_FOUT, nvd4, v3pgrd, Aval, Vinfo, ncname,     &
-     &                   SetFillVal = .FALSE.)
+           status=def_var(ng, iNLM, HIS(ng)%ncid,HIS(ng)%Vid(idvprp(i))  &
+     &                   ,NF_FOUT, nvd4, v3pgrd, Aval, Vinfo, ncname)
           IF (exit_flag.ne.NoError) RETURN
         END IF
       END DO
