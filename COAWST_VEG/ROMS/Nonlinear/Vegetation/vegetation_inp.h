@@ -76,6 +76,15 @@
                   VEG_MASSDENS(iveg,ng)=Rveg(iveg,ng)
                 END DO 
               END DO
+            CASE ('VEGHMixCoef') 
+              IF (.not.allocated(VEGHMIXCOEF))                         &
+     &                 allocate(VEGHMIXCOEF(NVEG,Ngrids)) 
+              Npts=load_r(Nval, Rval, NVEG*Ngrids, Rveg)
+              DO ng=1,Ngrids
+                DO iveg=1,NVEG
+                  VEGHMIXCOEF(iveg,ng)=Rveg(iveg,ng)
+                END DO 
+              END DO
 !
 !-----------------------------------------------------------------------
 !  Read output ids from vegetation.in
@@ -184,7 +193,7 @@
             WRITE (out,60)
             DO iveg=1,NVEG
               WRITE (out,70) NVEG, CD_VEG(iveg,ng), E_VEG(iveg,ng),     &
-     &                       VEG_MASSDENS(iveg,ng)
+     &                       VEG_MASSDENS(iveg,ng), VEGHMIXCOEF(ng)
             END DO 
         END DO 
 !     END IF 
@@ -237,7 +246,7 @@
    50  FORMAT (/,/,' Vegetation Parameters, Grid: ',i2.2,               &
       &        /,  ' =================================',/)
    60  FORMAT (/,1x,'Nveg(unitless)',2x,'Cd_veg(unitless)',2x,          &
-      &        'E_veg(N/m2)',2x,'Veg_massdens(kg/m3)'/)
+      &        'E_veg(N/m2)',2x,'Veg_massdens(kg/m3)',2x,'VegHMixCoeff/)
    70  FORMAT (2x,i2,3(10x,1p,e11.4))
    80  FORMAT (10x,l1,2x,a,'(',i2.2,')',t32,a,i2.2,':',1x,a)
 !   90  FORMAT (10x,l1,2x,a,t32,a,i2.2,':',1x,a)

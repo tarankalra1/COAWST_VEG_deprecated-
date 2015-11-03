@@ -58,9 +58,9 @@
       USE mod_mixing
       USE mod_ocean
       USE mod_stepping
-# if defined VEGETATION && defined VEG_MASK_HMIXING
+# if defined VEGETATION && defined VEG_HMIXING
       USE mod_vegarr
-      USE vegetation_mask_hmixing_mod, ONLY:vegetation_mask_hmixing_cal
+      USE vegetation_hmixing_mod, ONLY:vegetation_hmixing_cal
 # endif
 !
 !  Imported variable declarations.
@@ -72,13 +72,13 @@
 # include "tile.h"
 !
 !
-# if defined VEGETATION && defined VEG_MASK_HMIXING
+# if defined VEGETATION && defined VEG_HMIXING
 !
 !-----------------------------------------------------------------------
-!  Add the effect of vegetation interface on viscosity.
+!  Add the effect of vegetation on horizontal viscosity.
 !-----------------------------------------------------------------------
 !
-      CALL vegetation_mask_hmixing_cal (ng, tile)
+      CALL vegetation_hmixing_cal (ng, tile)
 # endif
 !
 # ifdef PROFILE
@@ -118,8 +118,8 @@
      &                   MIXING(ng) % visc3d_r,                         &
 #  endif
 # endif
-# if defined VEGETATION && defined VEG_MASK_HMIXING
-     &                   VEG(ng) % mask_veg_bound,                      &
+# if defined VEGETATION && defined VEG_HMIXING
+     &                   VEG(ng) % visc3d_r_veg,                        &
 # endif
      &                   OCEAN(ng) % u,                                 &
      &                   OCEAN(ng) % v)
@@ -155,8 +155,8 @@
      &                         visc3d_r,                                &
 #  endif
 # endif
-# if defined VEGETATION && defined VEG_MASK_HMIXING
-     &                         mask_veg_bound,                          &
+# if defined VEGETATION && defined VEG_HMIXING
+     &                         visc3d_r_veg,                            &
 # endif
      &                         u, v)
 !***********************************************************************
@@ -214,8 +214,8 @@
       real(r8), intent(out) :: visc3d_r(LBi:,LBj:,:)
 #   endif
 #  endif
-#  ifdef VEGETATION && defined VEG_MASK_HMIXING 
-      real(r8), intent(in) :: mask_veg_bound(LBi:,LBj:)
+#  if defined VEGETATION && defined VEG_HMIXING 
+      real(r8), intent(in) :: visc3d_r_veg(LBi:,LBj:,:)
 #  endif
 # else
 
@@ -255,8 +255,8 @@
       real(r8), intent(out) :: visc3d_r(LBi:UBi,LBj:UBj,N(ng))
 #   endif
 #  endif
-#  ifdef VEGETATION && defined VEG_MASK_HMIXING 
-      real(r8), intent(in) :: mask_veg_bound(LBi:UBi,LBj:UBj)
+#  if defined VEGETATION && defined VEG_HMIXING 
+      real(r8), intent(in) :: visc3d_r_veg(LBi:UBi,LBj:UBj,N(ng))
 #  endif
 # endif
 !
@@ -266,10 +266,6 @@
 
       real(r8), parameter :: SmagorCoef = 0.1_r8
       real(r8), parameter :: PecletCoef = 1.0_r8 / 12.0_r8
-#  ifdef VEGETATION && defined VEG_MASK_HMIXING 
-      real(r8), parameter :: veg_SmagorCoef = 0.1_r8
-      real(r8), parameter :: veg_PecletCoef = 1.0_r8 / 12.0_r8
-#  endif
 
       real(r8) :: DefRate, cff, clip_diff, clip_scale
 
@@ -408,42 +404,18 @@
       END DO
 # endif
 
-#if defined VEGETATION && defined VEG_MASK_HMIXING 
-!  Compute viscosity and clipping scale.
-!
+#if defined VEGETATION && defined VEG_HMIXING 
+
       clip_scale=0.01_r8*grdmax(ng)**3
 
       DO k=1,N(ng)
         DO j=JstrV-1,Jend
           DO i=IstrU-1,Iend
 !
-!  Compute local deformation rate at RHO-points.
-!
-            DefRate=SQRT(((u(i+1,j,k,nrhs)-                             &
-                           u(i  ,j,k,nrhs))*pm(i,j))**2+                &
-     &                   ((v(i,j+1,k,nrhs)-                             &
-     &                     v(i,j  ,k,nrhs))*pn(i,j))**2+                &
-     &                   0.5_r8*(0.25_r8*pn(i,j)*                       &
-     &                           (u(i  ,j+1,k,nrhs)+                    &
-     &                            u(i+1,j+1,k,nrhs)-                    &
-     &                            u(i  ,j-1,k,nrhs)-                    &
-     &                            u(i+1,j-1,k,nrhs))+                   &
-     &                           0.25_r8*pm(i,j)*                       &
-     &                           (v(i+1,j  ,k,nrhs)+                    &
-     &                            v(i+1,j+1,k,nrhs)-                    &
-     &                            v(i-1,j  ,k,nrhs)-                    &
-     &                            v(i-1,j+1,k,nrhs)))**2)
-!
-!  Smagorinsky viscosity.
-!
 #   if defined UV_VIS2
-            visc3d_r(i,j,k)=Hviscosity(i,j)+                            &
-     &                      veg_SmagorCoef*omn(i,j)*DefRate*            &
-                            mask_veg_bound(i,j)  
+            visc3d_r(i,j,k)=visc3d_r(i,j,k)+visc3d_r_veg(i,j,k)  
 #   elif defined UV_VIS4
-            visc3d_r(i,j,k)=Hviscosity(i,j)+                            &
-     &                      veg_PecletCoef*(omn(i,j)**2)*DefRate*       &
-                            mask_veg_bound(i,j)  
+            visc3d_r(i,j,k)=visc3d_r(i,j,k)+visc3d_r_veg(i,j,k)
 #    ifdef MIX_GEO_UV
             visc3d_r(i,j,k)=MIN(clip_scale, visc3d_r(i,j,k))
 #    endif

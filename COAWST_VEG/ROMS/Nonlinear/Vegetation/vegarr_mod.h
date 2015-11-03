@@ -32,7 +32,8 @@
 !  dissip_veg     Dissipation from the SWAN model due to vegetation    !
 !  BWDXL_veg      Wave streaming effect due to vegetation              !
 !  BWDYL_veg      Wave streaming effect due to vegetation              !
-!  mask_veg_bound Effect of viscosity change at vegetation interface   ! 
+!  visc2d_r_veg   Effect of viscosity change at vegetation interface   ! 
+!  visc3d_r_veg   Effect of viscosity change at vegetation interface   ! 
 !  marsh_mask     User input of marsh masking at MSL                   ! 
 !  mask_thrust    Tonellis masking for wave thrust on marshes          !
 !  Thrust_max     Maximum thrust from wave to marshes                  !
@@ -65,8 +66,9 @@
         real(r8), pointer :: tke_veg(:,:,:)
         real(r8), pointer :: gls_veg(:,:,:)
 # endif 
-# ifdef VEG_MASK_HMIXING
-        real(r8), pointer :: mask_veg_bound(:,:)
+# ifdef VEG_HMIXING
+        real(r8), pointer :: visc2d_r_veg(:,:)
+        real(r8), pointer :: visc3d_r_veg(:,:,:)
 # endif 
 # if defined VEG_SWAN_COUPLING && defined VEG_STREAMING
         real(r8), pointer :: dissip_veg(:,:)
@@ -124,8 +126,9 @@
 # ifdef VEG_FLEX
       allocate ( VEG(ng) % bend(LBi:UBi,LBj:UBj,NVEG) )
 # endif
-# ifdef VEG_MASK_HMIXING
-      allocate ( VEG(ng) % mask_veg_bound(LBi:UBi,LBj:UBj) )
+# ifdef VEG_HMIXING
+      allocate ( VEG(ng) % visc2d_r_veg(LBi:UBi,LBj:UBj) )
+      allocate ( VEG(ng) % visc3d_r_veg(LBi:UBi,LBj:UBj,N(ng)) )
 # endif 
 # ifdef VEG_TURB
       allocate ( VEG(ng) % tke_veg(LBi:UBi,LBj:UBj,N(ng)) )
@@ -270,12 +273,19 @@
           END DO
         END DO 
 # endif
-# if defined VEG_MASK_HMIXING
+# if defined VEG_HMIXING
         DO j=Jmin,Jmax
           DO i=Imin,Imax
-            VEG(ng) % mask_veg_bound(i,j) = IniVal
+            VEG(ng) % visc2d_r_veg(i,j,k) = IniVal
           END DO 
         END DO
+        DO k=1,N(ng)
+          DO j=Jmin,Jmax
+            DO i=Imin,Imax
+              VEG(ng) % visc3d_r_veg(i,j,k) = IniVal
+            END DO 
+          END DO
+        END DO 
 # endif  
 # if defined VEG_SWAN_COUPLING && defined VEG_STREAMING 
         DO j=Jmin,Jmax
