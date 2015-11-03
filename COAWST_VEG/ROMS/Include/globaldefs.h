@@ -919,3 +919,10 @@
 #if !defined VISC_3DCOEF && defined UV_SMAGORINSKY
 # define VISC_3DCOEF
 #endif
+
+/*
+** Define internal switch for vegetation horizontal mixing 
+*/
+#if defined VEG_HMIXING  
+# define VISC_3DCOEF
+#endif

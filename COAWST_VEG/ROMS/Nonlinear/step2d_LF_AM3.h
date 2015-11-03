@@ -29,6 +29,10 @@
       USE mod_vegarr 
       USE vegetation_drag_mod, ONLY : vegetation_drag_cal
 # endif 
+# if defined VEGETATION && defined VEG_HMIXING 
+      USE mod_vegarr 
+      USE vegetation_hmixing_mod, ONLY : vegetation_hmixing_cal
+# endif 
       USE mod_stepping
 !
 !  Imported variable declarations.
@@ -91,6 +95,9 @@
      &                  VEG(ng) % ru_veg,                               &
      &                  VEG(ng) % rv_veg,                               &
 # endif
+# if defined VEGETATION && defined VEG_HMIXING 
+     &                  VEG(ng) % visc2d_r_veg,                         &
+# endif 
 # ifdef WEC
 #  ifdef WEC_VF
 #   ifdef WEC_ROLLER
@@ -196,6 +203,9 @@
 # endif
 # if defined VEGETATION && defined VEG_DRAG
      &                        Hz, ru_veg, rv_veg,                       &
+# endif
+# if defined VEGETATION && defined VEG_HMIXING 
+     &                        visc2d_r_veg,                             &
 # endif
 # ifdef WEC
 #  ifdef WEC_VF
@@ -320,6 +330,9 @@
       real(r8), intent(in) :: Hz(LBi:,LBj:,:)
       real(r8), intent(in) :: ru_veg(LBi:,LBj:,:)
       real(r8), intent(in) :: rv_veg(LBi:,LBj:,:)
+#  endif
+#  if defined VEGETATION && defined VEG_HMIXING 
+      real(r8), intent(in) :: visc2d_r_veg(LBi:,LBj:)
 #  endif
 #  ifdef WEC
 #   ifdef WEC_VF
@@ -457,6 +470,9 @@
       real(r8), intent(in) :: Hz(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(in) :: ru_veg(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(in) :: rv_veg(LBi:UBi,LBj:UBj,UBk)
+#  endif
+#  if defined VEGETATION && defined VEG_HMIXING 
+      real(r8), intent(in) :: visc2d_r_veg(LBi:UBi,LBj:UBj)
 #  endif
 #  ifdef WEC
 #   ifdef WEC_VF
