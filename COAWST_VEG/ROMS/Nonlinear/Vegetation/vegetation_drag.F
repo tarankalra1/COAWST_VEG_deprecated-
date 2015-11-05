@@ -144,7 +144,7 @@
       real(r8), parameter :: Inival  = 0.0_r8
       real(r8) :: cff1 , cff2, cff3 
       real(r8) :: sma, buoy, Umag, Ca, cflex 
-      real(r8) :: plant_height_eff
+      real(r8) :: Lveg_loc, plant_height_eff
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: dab  
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wrk
 !
@@ -157,6 +157,7 @@
       dab=Inival
       ru_veg=Inival
       rv_veg=Inival
+      Lveg=Inival
 
       VEG_LOOP: DO iveg=1,NVEG
         K_LOOP: DO k=1,N(ng)
@@ -217,13 +218,16 @@
 !                
               dab(i,j,k)=dab(i,j,k-1)+Hz(i,j,k)
               cff1=MIN((dab(i,j,k)-plant_height_eff)/Hz(i,j,k),1.0_r8)
-              Lveg(i,j,k)=MIN(1.0_r8-cff1,1.0_r8) 
+              Lveg_loc=MIN(1.0_r8-cff1,1.0_r8) 
 !
 ! Prepare drag term (at rho points)        
 !       
               wrk(i,j)=0.5_r8*cd_veg(iveg,ng)*plant(i,j,iveg,pdiam)*      &
-     &             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg(i,j,k)
-
+     &             plant(i,j,iveg,pdens)*Hz(i,j,k)*Lveg_loc 
+! 
+! Store Lveg_loc for all vegetation types 
+! 
+              Lveg(i,j,k)=Lveg_loc+Lveg(i,j,k)
             END DO 
           END DO
 !
