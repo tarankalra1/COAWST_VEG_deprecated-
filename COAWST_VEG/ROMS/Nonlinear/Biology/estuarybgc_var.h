@@ -72,6 +72,10 @@
                 iddins=varid
               CASE ('iddinw')
                 iddinw=varid
+              CASE ('iddowc')
+                iddowc=varid
+              CASE ('idwsvl')
+                idwsvl=varid
               CASE ('idsagb')
                 idsagb=varid
               CASE ('idsbgb')

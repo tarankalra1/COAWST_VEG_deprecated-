@@ -42,6 +42,8 @@
 #if defined ESTUARYBGC && defined SAV_BIOMASS                             
 ! DINwcr        Dissolved Inorganic Nitrogen-water column(mu mols N)   !
 ! DINsed        Dissolved Inorganic Nitrogen-sediment column(mu mols N)!
+! DOwcr         Dissolved Oxygen - water column                        ! 
+! DINwcr_sav    Dissolved Inorganic Nitrogen-water column in SAV(mu M)! 
 ! AGB           Above ground biomass                                   !
 ! BGB           Below ground biomass                                   !
 #endif
@@ -146,6 +148,8 @@
 # if defined ESTUARYBGC && defined SAV_BIOMASS
           real(r8), pointer :: DINwcr(:,:,:)
           real(r8), pointer :: DINsed(:,:,:)
+          real(r8), pointer :: DOwcr(:,:,:)
+          real(r8), pointer :: DINwcr_sav(:,:,:)
           real(r8), pointer :: AGB(:,:)
           real(r8), pointer :: BGB(:,:)
 # endif
@@ -415,6 +419,8 @@
 # if defined ESTUARYBGC && defined SAV_BIOMASS
       allocate ( OCEAN(ng) % DINwcr(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( OCEAN(ng) % DINsed(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % DOwcr(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % DINwcr_sav(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( OCEAN(ng) % AGB(LBi:UBi,LBj:UBj) )
       allocate ( OCEAN(ng) % BGB(LBi:UBi,LBj:UBj) )
 # endif
@@ -743,6 +749,8 @@
 # if defined ESTUARYBGC && defined SAV_BIOMASS
             OCEAN(ng) % DINwcr(i,j,k) = IniVal
             OCEAN(ng) % DINsed(i,j,k) = IniVal
+            OCEAN(ng) % DOwcr(i,j,k) = IniVal
+            OCEAN(ng) % DINwcr_sav(i,j,k) = IniVal
             OCEAN(ng) % AGB(i,j) = IniVal
             OCEAN(ng) % BGB(i,j) = IniVal
 # endif

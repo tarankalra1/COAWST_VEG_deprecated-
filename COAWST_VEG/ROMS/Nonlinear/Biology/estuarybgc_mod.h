@@ -101,6 +101,8 @@
 #ifdef SAV_BIOMASS
       integer :: iddinw                 ! DINwcr  Dissolved Inorganic Nitrogen (water column)
       integer :: iddins                 ! DINsed  Dissolved Inorganic Nitrogen (sediment column) 
+      integer :: iddowc                 ! DOwcr   Dissolved Oxygen (water column) 
+      integer :: idwsvl                 ! DINwcr_sav_loc Dissolved Inorganic N in water column due to SAV
       integer :: idsagb                 ! AGB     Above ground biomass 
       integer :: idsbgb                 ! BGB     Below ground biomass 
 #endif

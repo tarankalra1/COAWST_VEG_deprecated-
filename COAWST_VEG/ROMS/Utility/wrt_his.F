@@ -2788,6 +2788,58 @@
         END IF
       END IF
 !
+!  Write out Dissolved Oxygen in water column 
+!
+      IF (Hout(iddowc,ng)) THEN 
+        scale=1.0_r8
+        gtype=gfactor*r3dvar
+        status=nf_fwrite3d(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(iddowc), &
+     &                     HIS(ng)%Rindex, gtype,                       &
+     &                     LBi, UBi, LBj, UBj, 1, N(ng), scale,         &
+# ifdef MASKING
+#  ifdef WET_DRY
+     &                     GRID(ng) % rmask_full,                       &
+#  else
+     &                     GRID(ng) % rmask,                            &
+#  endif
+# endif
+     &                     OCEAN(ng) % DOwcr)
+        IF (status.ne.nf90_noerr) THEN
+          IF (Master) THEN
+            WRITE (stdout,10) TRIM(Vname(1,iddowc)), HIS(ng)%Rindex
+          END IF
+          exit_flag=3
+          ioerror=status
+          RETURN
+        END IF
+      END IF
+!
+!  Write out Dissolved Inorganic Nitrogen in water column due to SAV 
+!
+      IF (Hout(idwsvl,ng)) THEN 
+        scale=1.0_r8
+        gtype=gfactor*r3dvar
+        status=nf_fwrite3d(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idwsvl), &
+     &                     HIS(ng)%Rindex, gtype,                       &
+     &                     LBi, UBi, LBj, UBj, 1, N(ng), scale,         &
+# ifdef MASKING
+#  ifdef WET_DRY
+     &                     GRID(ng) % rmask_full,                       &
+#  else
+     &                     GRID(ng) % rmask,                            &
+#  endif
+# endif
+     &                     OCEAN(ng) % DINwcr_sav)
+        IF (status.ne.nf90_noerr) THEN
+          IF (Master) THEN
+            WRITE (stdout,10) TRIM(Vname(1,idwsvl)), HIS(ng)%Rindex
+          END IF
+          exit_flag=3
+          ioerror=status
+          RETURN
+        END IF
+      END IF
+!
 !  Write out above ground biomass.
 !
       IF (Hout(idsagb,ng)) THEN

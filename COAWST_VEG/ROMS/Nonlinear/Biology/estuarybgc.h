@@ -145,6 +145,8 @@
 #ifdef SAV_BIOMASS
      &                   OCEAN(ng) % DINwcr,                            &
      &                   OCEAN(ng) % DINsed,                            &
+     &                   OCEAN(ng) % DOwcr,                             &
+     &                   OCEAN(ng) % DINwcr_sav,                        &
      &                   OCEAN(ng) % AGB,                               &
      &                   OCEAN(ng) % BGB,                               &
 #endif
@@ -191,6 +193,8 @@
 #ifdef SAV_BIOMASS
      &                         DINwcr,                                  &
      &                         DINsed,                                  &
+     &                         DOwcr,                                   &
+     &                         DINwcr_sav,                              &
      &                         AGB,                                     &
      &                         BGB,                                     &
 #endif
@@ -253,6 +257,8 @@
 # ifdef SAV_BIOMASS
       real(r8), intent(out) :: DINwcr(LBi:,LBj:,:)
       real(r8), intent(out) :: DINsed(LBi:,LBj:,:)
+      real(r8), intent(out) :: DOwcr(LBi:,LBj:,:)
+      real(r8), intent(out) :: DINwcr_sav(LBi:,LBj:,:)
       real(r8), intent(out) :: AGB(LBi:,LBj:)
       real(r8), intent(out) :: BGB(LBi:,LBj:)
 # endif
@@ -297,6 +303,8 @@
 # ifdef SAV_BIOMASS
       real(r8), intent(out) :: DINwcr(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(out) :: DINsed(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: DOwcr(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: DINwcr_sav(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(out) :: AGB(LBi:UBi,LBj:UBj)
       real(r8), intent(out) :: BGB(LBi:UBi,LBj:UBj)
 # endif
@@ -408,8 +416,7 @@
       real(r8) :: br20, brthta, N_Flux_BaseResp
 #endif
 #ifdef SAV_BIOMASS
-      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: DINwcr_sav_loc
-      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: DOwcr, CO2wcr
+      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: CO2wcr
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeCwcr
 #endif 
       real(r8), dimension(Nsink) :: Wbio
@@ -1537,18 +1544,18 @@
               CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi,            &
      &                     pmonth, t(:,j,1,nstp,itemp),                 &
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
-     &                     DINwcr_sav_loc(:,j,k), DOwcr(:,j,k),         &
+     &                     DINwcr_sav(:,j,k), DOwcr(:,j,k),             &
      &                     CO2wcr(:,j,k), LDeCwcr(:,j,k),               &
      &                     AGB(:,j),BGB(:,j)) 
             END DO
 !
             DO k=1,N(ng)
               DO i=Istr,Iend
-                IF (DINwcr_sav_loc(i,j,k).lt.0) THEN 
-                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav_loc(i,j,k)
+                IF (DINwcr_sav(i,j,k).lt.0) THEN 
+                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav(i,j,k)
                 ELSE
-                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)-DINwcr_sav_loc(i,j,k)*0.5_r8 
-                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)-DINwcr_sav_loc(i,j,k)*0.5_r8
+                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)-DINwcr_sav(i,j,k)*0.5_r8 
+                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)-DINwcr_sav(i,j,k)*0.5_r8
                 END IF 
                 Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeCwcr(i,j,k)
 #  ifdef OXYGEN

@@ -385,6 +385,17 @@
 # endif
 #endif
 !
+!  Define dimensions for the plant array variables
+!
+#ifdef VEGETATION 
+# if defined VEG_DRAG || defined VEG_BIOMASS
+        v3pgrd(1)=DimIDs( 1)
+        v3pgrd(2)=DimIDs( 5)
+        v3pgrd(3)=DimIDs(35)
+        v3pgrd(4)=DimIDs(12)
+# endif 
+#endif 
+!
 !  Define dimension vectors for staggered v-momentum type variables.
 !
 #if defined WRITE_WATER && defined MASKING
@@ -405,17 +416,6 @@
         v3dgrd(4)=DimIDs(12)
 # endif
 ! 
-!  Define dimensions for the plant array variables
-! 
-# if defined VEGETATION 
-#  if defined VEG_DRAG || defined VEG_BIOMASS
-        v3pgrd(1)=DimIDs( 1)
-        v3pgrd(2)=DimIDs( 5)
-        v3pgrd(3)=DimIDs(35)
-        v3pgrd(4)=DimIDs(12)
-#  endif 
-# endif 
-!
 # ifdef INWAVE_MODEL
 !
 !  Define dimension vector for energy wave layer type variables.
@@ -1896,6 +1896,41 @@
           status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(iddins),   &
      &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
         END IF
+!
+!  Define Dissolved Oxygen in water column
+!
+        IF (Hout(iddowc,ng)) THEN 
+          Vinfo( 1)=Vname(1,iddowc)
+          Vinfo( 2)=Vname(2,iddowc)
+          Vinfo( 3)=Vname(3,iddowc)
+          Vinfo(14)=Vname(4,iddowc)
+          Vinfo(16)=Vname(1,idtime)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,iddowc,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(iddowc),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+!  Define Dissolved Inorganic Nitrogen in water column due to SAV 
+!
+        IF (Hout(idwsvl,ng)) THEN 
+          Vinfo( 1)=Vname(1,idwsvl)
+          Vinfo( 2)=Vname(2,idwsvl)
+          Vinfo( 3)=Vname(3,idwsvl)
+          Vinfo(14)=Vname(4,idwsvl)
+          Vinfo(16)=Vname(1,idtime)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idwsvl,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idwsvl),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
 !
 !  Above ground biomass
 !
@@ -5160,7 +5195,7 @@
           END IF
 # endif
         END DO
-# if defined VEGETATION 
+# ifdef VEGETATION 
 #  if defined VEG_DRAG || defined VEG_BIOMASS 
         DO i=1,NVEGP 
           IF (.not.got_var(idvprp(i)).and.Hout(idvprp(i),ng)) THEN

@@ -8638,6 +8638,24 @@
   'r2dvar'
   1.0d0
 
+'DOwcr'                                            ! Input/Output
+  'Dissolved Oxygen in water column'
+  'millimole'                                      ! [millimole]
+  'DOwcr, scalar, series'
+  'ocean_time'
+  'iddowc'
+  'r2dvar'
+  1.0d0
+
+'DINwcr_sav'                                       ! Input/Output
+  'Dissolved inorganic N in water column in SAV'
+  'millimole'                                      ! [millimole]
+  'DINwcr_sav, scalar, series'
+  'ocean_time'
+  'idwsvl'
+  'r2dvar'
+  1.0d0
+
 'AGB'                                              ! Input/Output
   'Above ground biomass'
   'millimole_nitrogen meter-2'                     ! [millimole-N/m2]
