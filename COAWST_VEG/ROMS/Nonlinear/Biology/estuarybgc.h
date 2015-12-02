@@ -149,6 +149,15 @@
      &                   OCEAN(ng) % DINwcr_sav,                        &
      &                   OCEAN(ng) % AGB,                               &
      &                   OCEAN(ng) % BGB,                               &
+     &                   OCEAN(ng) % PP,                                &
+     &                   OCEAN(ng) % AGM,                               &
+     &                   OCEAN(ng) % AGAR,                              &
+     &                   OCEAN(ng) % AGBR,                              &
+     &                   OCEAN(ng) % SEARS,                             &
+     &                   OCEAN(ng) % AGBG,                              &
+     &                   OCEAN(ng) % BGAG,                              &
+     &                   OCEAN(ng) % BGR,                               &
+     &                   OCEAN(ng) % BGM,                               &
 #endif
 #if defined SAV_BIOMASS && defined VEG_BIOMASS
      &                   VEG(ng) % plant,                               &
@@ -197,6 +206,15 @@
      &                         DINwcr_sav,                              &
      &                         AGB,                                     &
      &                         BGB,                                     &
+     &                         PP,                                      &
+     &                         AGM,                                     &
+     &                         AGAR,                                    &
+     &                         AGBR,                                    &
+     &                         SEARS,                                   &
+     &                         AGBG,                                    &
+     &                         BGAG,                                    &
+     &                         BGR,                                     &
+     &                         BGM,                                     &
 #endif
 #if defined SAV_BIOMASS && defined VEG_BIOMASS
      &                         plant,                                   &
@@ -261,6 +279,15 @@
       real(r8), intent(out) :: DINwcr_sav(LBi:,LBj:,:)
       real(r8), intent(out) :: AGB(LBi:,LBj:)
       real(r8), intent(out) :: BGB(LBi:,LBj:)
+      real(r8), intent(out) :: PP(LBi:,LBj:,:)
+      real(r8), intent(out) :: AGM(LBi:,LBj:,:)
+      real(r8), intent(out) :: AGAR(LBi:,LBj:,:)
+      real(r8), intent(out) :: AGBR(LBi:,LBj:,:)
+      real(r8), intent(out) :: SEARS(LBi:,LBj:,:)
+      real(r8), intent(out) :: AGBG(LBi:,LBj:,:)
+      real(r8), intent(out) :: BGAG(LBi:,LBj:,:)
+      real(r8), intent(out) :: BGR(LBi:,LBj:,:)
+      real(r8), intent(out) :: BGM(LBi:,LBj:,:)
 # endif
 # if defined SAV_BIOMASS && defined VEG_BIOMASS
       real(r8), intent(inout) :: plant(LBi:,LBj:,:,:)
@@ -307,6 +334,15 @@
       real(r8), intent(out) :: DINwcr_sav(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(out) :: AGB(LBi:UBi,LBj:UBj)
       real(r8), intent(out) :: BGB(LBi:UBi,LBj:UBj)
+      real(r8), intent(out) :: PP(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: AGM(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: AGAR(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: AGBR(LLBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: SEARS(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: AGBG(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: BGAG(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: BGR(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(out) :: BGM(LBi:UBi,LBj:UBj,UBk)
 # endif
 # if defined SAV_BIOMASS && defined VEG_BIOMASS
       real(r8), intent(inout) :: plant(LBi:UBi,LBj:UBj,NVEG,NVEGP)
@@ -1546,7 +1582,10 @@
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
      &                     DINwcr_sav(:,j,k), DOwcr(:,j,k),             &
      &                     CO2wcr(:,j,k), LDeCwcr(:,j,k),               &
-     &                     AGB(:,j),BGB(:,j)) 
+     &                     AGB(:,j),BGB(:,j), PP(:,j,k), AGM(:,j,k),    &
+     &                     AGAR(:,j,k), AGBR(:,j,k), SEARS(:,j,k),      &
+     &                     AGBG(:,j,k), BGAG(:,j,k), BGR(:,j,k),        &
+     &                     BGM(:,j,k)) 
             END DO
 !
             DO k=1,N(ng)

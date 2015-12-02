@@ -80,6 +80,24 @@
                 idsagb=varid
               CASE ('idsbgb')
                 idsbgb=varid
+              CASE ('idsvpp')
+                idsvpp=varid
+              CASE ('idsvam')
+                idsvam=varid
+              CASE ('idsgar')
+                idsgar=varid
+              CASE ('idsvbr')
+                idsvbr=varid
+              CASE ('idsvrs')
+                idsvrs=varid
+              CASE ('idsvbg')
+                idsvbg=varid
+              CASE ('idsvag')
+                idsvag=varid
+              CASE ('idsbgr')
+                idsbgr=varid
+              CASE ('idsbgm')
+                idsbgm=varid
 # endif
 # ifdef CARBON
               CASE ('idTvar(iTIC_)')

@@ -43,9 +43,18 @@
 ! DINwcr        Dissolved Inorganic Nitrogen-water column(mu mols N)   !
 ! DINsed        Dissolved Inorganic Nitrogen-sediment column(mu mols N)!
 ! DOwcr         Dissolved Oxygen - water column                        ! 
-! DINwcr_sav    Dissolved Inorganic Nitrogen-water column in SAV(mu M)! 
-! AGB           Above ground biomass                                   !
+! DINwcr_sav    Dissolved Inorganic Nitrogen-water column in SAV(mu M) ! 
+! AGB           Above ground biomas                                    !
 ! BGB           Below ground biomass                                   !
+! PP                                                                   !  
+! AGM                             
+! AGAR
+! AGBR
+! SEARS
+! AGBG
+! BGAG
+! BGR
+! BGM 
 #endif
 #ifdef WEC
 !  Wave effect on currents variables                                   !
@@ -152,6 +161,15 @@
           real(r8), pointer :: DINwcr_sav(:,:,:)
           real(r8), pointer :: AGB(:,:)
           real(r8), pointer :: BGB(:,:)
+          real(r8), pointer :: PP(:,:,:)
+          real(r8), pointer :: AGM(:,:,:)
+          real(r8), pointer :: AGAR(:,:,:)
+          real(r8), pointer :: AGBR(:,:,:)
+          real(r8), pointer :: SEARS(:,:,:)
+          real(r8), pointer :: AGBG(:,:,:)
+          real(r8), pointer :: BGAG(:,:,:)
+          real(r8), pointer :: BGR(:,:,:)
+          real(r8), pointer :: BGM(:,:,:)
 # endif
 #endif
 
@@ -423,6 +441,16 @@
       allocate ( OCEAN(ng) % DINwcr_sav(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( OCEAN(ng) % AGB(LBi:UBi,LBj:UBj) )
       allocate ( OCEAN(ng) % BGB(LBi:UBi,LBj:UBj) )
+      allocate ( OCEAN(ng) % PP(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % AGM(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % AGAR(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % AGBR(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % SEARS(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % AGBG(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % BGAG(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % BGR(LBi:UBi,LBj:UBj,N(ng)) )
+      allocate ( OCEAN(ng) % BGM(LBi:UBi,LBj:UBj,N(ng)) )
+
 # endif
 #endif
 #if defined TANGENT || defined TL_IOMS
@@ -753,6 +781,15 @@
             OCEAN(ng) % DINwcr_sav(i,j,k) = IniVal
             OCEAN(ng) % AGB(i,j) = IniVal
             OCEAN(ng) % BGB(i,j) = IniVal
+            OCEAN(ng) % PP(i,j,k)= IniVal
+            OCEAN(ng) % AGM(i,j,k) = IniVal
+            OCEAN(ng) % AGAR(i,j,k) = IniVal
+            OCEAN(ng) % AGBR(i,j,k) = IniVal
+            OCEAN(ng) % SEARS(i,j,k) = IniVal
+            OCEAN(ng) % AGBG(i,j,k) = IniVal
+            OCEAN(ng) % BGAG(i,j,k) = IniVal
+            OCEAN(ng) % BGR(i,j,k) = IniVal
+            OCEAN(ng) % BGM(i,j,k) = IniVal
 # endif
 # if defined WEC
 #  ifdef WEC_MELLOR

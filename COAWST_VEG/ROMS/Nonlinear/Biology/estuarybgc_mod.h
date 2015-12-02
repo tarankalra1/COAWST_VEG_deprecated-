@@ -105,6 +105,16 @@
       integer :: idwsvl                 ! DINwcr_sav Dissolved Inorganic N in water column due to SAV
       integer :: idsagb                 ! AGB     Above ground biomass 
       integer :: idsbgb                 ! BGB     Below ground biomass 
+      integer :: idsvpp                 ! PP
+      integer :: idsvam                 ! AGM
+      integer :: idsgar                 ! AGAR
+      integer :: idsvbr                 ! AGBR
+      integer :: idsvrs                 ! SEARS
+      integer :: idsvbg                 ! AGBG
+      integer :: idsvag                 ! BGAG
+      integer :: idsbgr                 ! BGR
+      integer :: idsbgm                 ! BGM
+
 #endif
 #if defined DIAGNOSTICS && defined DIAGNOSTICS_BIO
 !

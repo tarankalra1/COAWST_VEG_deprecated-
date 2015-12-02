@@ -1965,7 +1965,160 @@
           status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsbgb),   &
      &                   NF_FOUT, nvd3, t2dgrd, Aval, Vinfo, ncname)
         END IF
-
+!
+!  PP
+!
+        IF (Hout(idsvpp,ng)) THEN
+          Vinfo( 1)=Vname(1,idsvpp)
+          Vinfo( 2)=Vname(2,idsvpp)
+          Vinfo( 3)=Vname(3,idsvpp)
+          Vinfo(14)=Vname(4,idsvpp)
+          Vinfo(16)=Vname(1,idsvpp)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsvpp,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsvpp),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+!  AGM
+!
+        IF (Hout(idsvam,ng)) THEN
+          Vinfo( 1)=Vname(1,idsvam)
+          Vinfo( 2)=Vname(2,idsvam)
+          Vinfo( 3)=Vname(3,idsvam)
+          Vinfo(14)=Vname(4,idsvam)
+          Vinfo(16)=Vname(1,idsvam)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsvam,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsvam),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+!  AGAR
+!
+        IF (Hout(idsgar,ng)) THEN
+          Vinfo( 1)=Vname(1,idsgar)
+          Vinfo( 2)=Vname(2,idsgar)
+          Vinfo( 3)=Vname(3,idsgar)
+          Vinfo(14)=Vname(4,idsgar)
+          Vinfo(16)=Vname(1,idsgar)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsgar,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsgar),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+!  AGBR
+!
+        IF (Hout(idsvbr,ng)) THEN
+          Vinfo( 1)=Vname(1,idsvbr)
+          Vinfo( 2)=Vname(2,idsvbr)
+          Vinfo( 3)=Vname(3,idsvbr)
+          Vinfo(14)=Vname(4,idsvbr)
+          Vinfo(16)=Vname(1,idsvbr)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsvbr,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsvbr),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+!  SEARS
+!
+        IF (Hout(idsvrs,ng)) THEN
+          Vinfo( 1)=Vname(1,idsvrs)
+          Vinfo( 2)=Vname(2,idsvrs)
+          Vinfo( 3)=Vname(3,idsvrs)
+          Vinfo(14)=Vname(4,idsvrs)
+          Vinfo(16)=Vname(1,idsvrs)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsvrs,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsvrs),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+! AGBG
+! 
+        IF (Hout(idsvbg,ng)) THEN
+          Vinfo( 1)=Vname(1,idsvbg)
+          Vinfo( 2)=Vname(2,idsvbg)
+          Vinfo( 3)=Vname(3,idsvbg)
+          Vinfo(14)=Vname(4,idsvbg)
+          Vinfo(16)=Vname(1,idsvbg)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsvbg,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsvbg),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+! BGAG
+! 
+        IF (Hout(idsvag,ng)) THEN
+          Vinfo( 1)=Vname(1,idsvag)
+          Vinfo( 2)=Vname(2,idsvag)
+          Vinfo( 3)=Vname(3,idsvag)
+          Vinfo(14)=Vname(4,idsvag)
+          Vinfo(16)=Vname(1,idsvag)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsvag,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsvag),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+! BGR 
+! 
+        IF (Hout(idsbgr,ng)) THEN
+          Vinfo( 1)=Vname(1,idsbgr)
+          Vinfo( 2)=Vname(2,idsbgr)
+          Vinfo( 3)=Vname(3,idsbgr)
+          Vinfo(14)=Vname(4,idsbgr)
+          Vinfo(16)=Vname(1,idsbgr)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsbgr,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsbgr),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
+! BGM
+! 
+        IF (Hout(idsbgm,ng)) THEN
+          Vinfo( 1)=Vname(1,idsbgm)
+          Vinfo( 2)=Vname(2,idsbgm)
+          Vinfo( 3)=Vname(3,idsbgm)
+          Vinfo(14)=Vname(4,idsbgm)
+          Vinfo(16)=Vname(1,idsbgm)
+#  if defined WRITE_WATER && defined MASKING
+          Vinfo(20)='mask_rho'
+#  endif
+          Vinfo(22)='coordinates'
+          Aval(5)=REAL(Iinfo(1,idsbgm,ng),r8)
+          status=def_var(ng, iNLM, HIS(ng)%ncid, HIS(ng)%Vid(idsbgm),   &
+     &                   NF_FOUT, nvd4, t3dgrd, Aval, Vinfo, ncname)
+        END IF
+!
 # endif
 !
 #if defined VEGETATION 

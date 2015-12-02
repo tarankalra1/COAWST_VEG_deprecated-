@@ -613,6 +613,69 @@
                 RETURN
               END IF
               Npts=load_l(Nval, Cval, Ngrids, Hout(idsbgb,1:Ngrids))
+            CASE ('Hout(idsvpp)')
+              IF (idsvpp.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsvpp'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsvpp,1:Ngrids))
+            CASE ('Hout(idsvam)')
+              IF (idsvam.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsvam'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsvam,1:Ngrids))
+            CASE ('Hout(idsgar)')
+              IF (idsgar.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsgar'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsgar,1:Ngrids))
+            CASE ('Hout(idsvbr)')
+              IF (idsvbr.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsvbr'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsvbr,1:Ngrids))
+            CASE ('Hout(idsvrs)')
+              IF (idsvrs.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsvrs'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsvrs,1:Ngrids))
+            CASE ('Hout(idsvbg)')
+              IF (idsvbg.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsvbg'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsvbg,1:Ngrids))
+            CASE ('Hout(idsvag)')
+              IF (idsvag.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsvag'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsvag,1:Ngrids))
+            CASE ('Hout(idsbgr)')
+              IF (idsbgr.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsbgr'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsbgr,1:Ngrids))
+            CASE ('Hout(idsbgm)')
+              IF (idsbgm.eq.0) THEN
+                IF (Master) WRITE (out,40) 'idsbgm'
+                exit_flag=5
+                RETURN
+              END IF
+              Npts=load_l(Nval, Cval, Ngrids, Hout(idsbgm,1:Ngrids))
 #endif
           END SELECT
         END IF
