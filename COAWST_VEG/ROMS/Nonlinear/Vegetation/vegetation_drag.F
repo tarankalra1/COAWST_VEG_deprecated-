@@ -205,7 +205,7 @@
 !
 ! Blade bending angle
 !
-              bend(i,j,iveg)=ACOS(cflex**(-3.0_r8))
+              bend(i,j,iveg)=ACOSD(cflex**one_third)
 
 # else
 !
