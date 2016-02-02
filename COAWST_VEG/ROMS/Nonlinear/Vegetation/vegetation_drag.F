@@ -14,19 +14,14 @@
 !==================================================== Alexis Beudin  ===
 !==================================================Tarandeep S. Kalra===
 !                                                                      !
-!  This routine computes the effect of flexible vegetation as a sink   !
-!  in the 3D momentume equations.                                      !
+!  This routine computes the vegetation (posture-dependent) drag       !
+!  for rhs3d.F                                                         !
 !                                                                      !  
 !  References:                                                         !
 !                                                                      !
-!   Uittenbogaard, R. (2003), Modelling turbulence in vegetated        !
-!   aquatic  flows, International workshop on RIParian FORest          !
-!   vegetated channels: hydraulic, morphological and ecological        !
-!   aspects, 20-22 February 2003, Trento, Italy.                       !
-!                                                                      ! 
-!   Luhar M., and H. M. Nepf (2011), Flow-induced reconfiguration of   !
-!   buoyant and flexible aquatic vegetation, Limnology and             !
-!   Oceanography, 56(6): 2003-2017.                                    !
+!  Luhar M., and H. M. Nepf (2011), Flow-induced reconfiguration of    !
+!  buoyant and flexible aquatic vegetation, Limnology and Oceanography,!
+!   56(6): 2003-2017.                                                  !
 !                                                                      !
 !=======================================================================
 !
