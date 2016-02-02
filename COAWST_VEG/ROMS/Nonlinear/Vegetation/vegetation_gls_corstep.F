@@ -14,9 +14,15 @@
 !==================================================== Alexis Beudin  ===
 !==================================================Tarandeep S. Kalra===
 !                                                                      !
-!  This routine computes the turbulent kinetic energy and length scale ! 
-!  modifications due to the vegetation. This is fed back to the        !
-!  gls_corstep.F eventually.                                           !
+!  This routine computes the turbulent kinetic energy and length scale !
+!  modifications due to vegetation for gls_corstep.F                   !
+!                                                                      !
+!  References:                                                         !
+!                                                                      !
+!   Uittenbogaard, R. (2003), Modelling turbulence in vegetated        !
+!   aquatic  flows, International workshop on RIParian FORest          !
+!   vegetated channels: hydraulic, morphological and ecological        !
+!   aspects, 20-22 February 2003, Trento, Italy.                       !
 !                                                                      !
 !=======================================================================
 !
