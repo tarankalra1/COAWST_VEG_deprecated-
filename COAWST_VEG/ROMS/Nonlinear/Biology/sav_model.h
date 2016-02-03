@@ -133,6 +133,11 @@
         agb_loc(i)=5.0_r8
         bgb_loc(i)=30.0_r8
         DINsed_loc(i)=0.0_r8
+        DINwcr_sav_loc(i)=0.0_r8
+        DOwcr_loc(i)=0.0_r8
+        CO2wcr_loc(i)=0.0_r8
+	LDeNwcr_loc(i)=0.0_r8
+	LDeCwcr_loc(i)=0.0_r8
       END DO
 !
 !-----------------------------------------------------------------------
@@ -199,8 +204,8 @@
 !  (temp--> converts gram Carbon units to mmol Nitrogen units)
 !-----------------------------------------------------------------------
 !
-        DINwcr_sav_loc(i)=(agar_loc(i)+agbr_loc(i)-pp_loc(i))           &
-      &                                           *temp*dtdays 
+        DINwcr_sav_loc(i)=DINwcr_loc(i)+(agar_loc(i)+agbr_loc(i)        &
+      &                                    -pp_loc(i))*temp*dtdays 
 !
 !-----------------------------------------------------------------------
 !  Translocation of above ground biomass to below ground
@@ -272,9 +277,9 @@
 !  O2 and CO2 interactions with bed 
 !-----------------------------------------------------------------------
 !
-        DOwcr_loc(i)=(pp_loc(i)-agar_loc(i)-agbr_loc(i))                &
+        DOwcr_loc(i)=DOwcr_loc(i)+(pp_loc(i)-agar_loc(i)-agbr_loc(i))   &
       &                             *gr2mmolC*pqrq*dtdays 
-        CO2wcr_loc(i)=(agar_loc(i)+agbr_loc(i)-pp_loc(i))               &
+        CO2wcr_loc(i)=CO2wcr_loc(i)+(agar_loc(i)+agbr_loc(i)-pp_loc(i)) &
       &                             *gr2mmolC*pqrq*dtdays
 !
 !-----------------------------------------------------------------------
