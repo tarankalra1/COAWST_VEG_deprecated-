@@ -146,10 +146,10 @@
      &                   OCEAN(ng) % DINwcr,                            &
      &                   OCEAN(ng) % DINsed,                            &
      &                   OCEAN(ng) % DOwcr,                             &
-     &                   OCEAN(ng) % CO2wcr,                            &     
+!     &                   OCEAN(ng) % CO2wcr,                            &     
      &                   OCEAN(ng) % DINwcr_sav,                        &
-     &                   OCEAN(ng) % LDeNwcr,                           &
-     &                   OCEAN(ng) % LDeCwcr,                           &
+!     &                   OCEAN(ng) % LDeNwcr,                           &
+!     &                   OCEAN(ng) % LDeCwcr,                           &
      &                   OCEAN(ng) % AGB,                               &
      &                   OCEAN(ng) % BGB,                               &
      &                   OCEAN(ng) % PP,                                &
@@ -206,10 +206,10 @@
      &                         DINwcr,                                  &
      &                         DINsed,                                  &
      &                         DOwcr,                                   &
-     &                         CO2wcr,                                  &
+!     &                         CO2wcr,                                  &
      &                         DINwcr_sav,                              &
-     &                         LDeNwcr,                                 &        
-     &                         LDeCwcr,                                 &  
+!     &                         LDeNwcr,                                 &        
+!     &                         LDeCwcr,                                 &  
      &                         AGB,                                     &
      &                         BGB,                                     &
      &                         PP,                                      &

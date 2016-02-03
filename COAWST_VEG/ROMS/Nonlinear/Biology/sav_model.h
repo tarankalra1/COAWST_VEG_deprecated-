@@ -2,8 +2,10 @@
      &                        LBi, UBi, pmonth,                           & 
      &                        wtemp, PARz, DINwcr_loc, DINsed_loc,        &
      &                        DINwcr_sav_loc, DOwcr_loc, CO2wcr_loc,      &
-     &                        LDeCwcr_loc,                                &
-     &                        agb_loc, bgb_loc)
+     &                        LDeCwcr_loc, LDeNwcr_loc,                   &
+     &                        agb_loc, bgb_loc, pp_loc, agm_loc,          &
+     &                        agar_loc, agbr_loc, sears_loc, agbg_loc,    &
+     &                        bgag_loc, bgr_loc, bgm_loc)
 
 !
 !***********************************************************************
@@ -30,6 +32,7 @@
 !     DOwcr_loc  O2 interaction with bed                               ! 
 !     CO2wcr_loc CO2 interactions with bed                             ! 
 !     LdeCwcr_locLabile detrital carbon in fennel                      ! 
+!     LdeNwcr_locLabile detrital carbon in fennel                      ! 
 !     agb_loc    Vector of above ground biomass  (mmol N m-2)          !
 !     bgb_loc    Vector of below ground biomass  (mmol N m-2)          !
 !                                                                      !
@@ -64,8 +67,18 @@
       real(r8), intent(inout) :: DOwcr_loc(LBi:)
       real(r8), intent(inout) :: CO2wcr_loc(LBi:)
       real(r8), intent(inout) :: LdeCwcr_loc(LBi:)
+      real(r8), intent(inout) :: LdeNwcr_loc(LBi:)
       real(r8), intent(inout) :: Agb_loc(LBi:)
       real(r8), intent(inout) :: Bgb_loc(LBi:)
+      real(r8), intent(inout) :: pp_loc(LBi:)
+      real(r8), intent(inout) :: agm_loc(LBi:)
+      real(r8), intent(inout) :: agar_loc(LBi:)
+      real(r8), intent(inout) :: agbr_loc(LBi:)
+      real(r8), intent(inout) :: sears_loc(LBi:)
+      real(r8), intent(inout) :: agbg_loc(LBi:)
+      real(r8), intent(inout) :: bgag_loc(LBi:)
+      real(r8), intent(inout) :: bgr_loc(LBi:)
+      real(r8), intent(inout) :: bgm_loc(LBi:)
 #  else
       real(r8), intent(in) :: wtemp(LBi:UBi)
       real(r8), intent(in) :: PARz(LBi:UBi)
@@ -75,8 +88,18 @@
       real(r8), intent(inout) :: DOwcr_loc(LBi:UBi)
       real(r8), intent(inout) :: CO2wcr_loc(LBi:UBi)
       real(r8), intent(inout) :: LdeCwcr_loc(LBi:UBi)
+      real(r8), intent(inout) :: LdeNwcr_loc(LBi:UBi)
       real(r8), intent(inout) :: Agb_loc(LBi:UBi)
       real(r8), intent(inout) :: Bgb_loc(LBi:UBi)
+      real(r8), intent(inout) :: pp_loc(LBi:UBi)
+      real(r8), intent(inout) :: agm_loc(LBi:UBi)
+      real(r8), intent(inout) :: agar_loc(LBi:UBi)
+      real(r8), intent(inout) :: agbr_loc(LBi:UBi)
+      real(r8), intent(inout) :: sears_loc(LBi:UBi)
+      real(r8), intent(inout) :: agbg_loc(LBi:UBi)
+      real(r8), intent(inout) :: bgag_loc(LBi:UBi)
+      real(r8), intent(inout) :: bgr_loc(LBi:UBi)
+      real(r8), intent(inout) :: bgm_loc(LBi:UBi)
 #  endif
 
 !
@@ -87,9 +110,11 @@
       integer, parameter  :: one=1
       real(r8) :: ua, day_year
       real(r8) :: llim, knt, nlim
-      real(r8) :: lmba, pp, agm, agar 
-      real(r8) :: agbr, sears, agbg, bgag
-      real(r8) :: bgr, bgm, ppbm 
+      real(r8) :: lmba
+      real(r8) :: ppbm 
+!     real(r8) :: pp, agm, agar 
+!     real(r8) :: agbr, sears, agbg, bgag
+!     real(r8) :: bgr, bgm
       real(r8) :: shtdens, shtLen
       real(r8) :: cff,cff1
       real(r8) :: temp
@@ -152,60 +177,21 @@
 !-----------------------------------------------------------------------
 ! 
         lmba=1.0_r8-(agb_loc(i)/lmbamx(ng))**2
-        pp=agb_loc(i)*(ua*MIN(llim,nlim)) 
+        pp_loc(i)=agb_loc(i)*(ua*MIN(llim,nlim)) 
 !
 !-----------------------------------------------------------------------
 !  Above ground mortality and above ground active respiration
 !-----------------------------------------------------------------------
 !
-        agm=kmag(ng)*agb_loc(i)**2
-        agar=pp*arsc(ng)*EXP(arc(ng)*wtemp(i))
+        agm_loc(i)=(kmag(ng)*agb_loc(i))**2
+        agar_loc(i)=pp_loc(i)*arsc(ng)*EXP(arc(ng)*wtemp(i))
 !
 !-----------------------------------------------------------------------
 !  Above ground basal respiration and seasonal root storage of carbon
 !-----------------------------------------------------------------------
 !
-        agbr=agb_loc(i)*(bsrc(ng)*EXP(rc(ng)*wtemp(i)))
-        sears=agb_loc(i)*RtSttl(ng)*thresh2
-!
-!-----------------------------------------------------------------------
-!  Translocation of above ground biomass to below ground
-!-----------------------------------------------------------------------
-!
-        agbg=pp*DOWNt(ng)
-!
-!-----------------------------------------------------------------------
-!  Translocation of below ground biomass to above ground
-!-----------------------------------------------------------------------
-!
-        bgag=bgb_loc(i)*trns(ng)*thresh
-!
-!-----------------------------------------------------------------------
-!  Below ground biomass respiration and Below ground biomass mortality
-!-----------------------------------------------------------------------
-!
-        bgr=bgb_loc(i)*bsrc(ng)*EXP(rc(ng)*wtemp(i))
-        bgm=bgb_loc(i)*(0.01_r8*EXP(km(ng)*wtemp(i)))
-!
-        DINsed_loc(i)=DINsed_loc(i)+(bgr+bgm)*temp*dtdays 
-!
-!-----------------------------------------------------------------------
-!  Compute new AGB biomass (g C m-2)
-!-----------------------------------------------------------------------
-!
-        cff=pp*temp*dtdays
-!
-!-----------------------------------------------------------------------
-!  If pp>(available nutrients), no growth    
-!  assumes no new growth if growth exceeds available nutrients      
-!-----------------------------------------------------------------------
-!  
-        IF(cff.gt.DINwcr_loc(i))THEN 
-          cff1=pp+bgag-agm-agar-agbr-sears-agbg
-        ELSE
-          cff1=bgag-agm-agar-agbr-sears-agbg
-        ENDIF 
-          agb_loc(i)=agb_loc(i)+cff1*dtdays 
+        agbr_loc(i)=agb_loc(i)*(bsrc(ng)*EXP(rc(ng)*wtemp(i)))
+        sears_loc(i)=agb_loc(i)*RtSttl(ng)*thresh2
 !
 !-----------------------------------------------------------------------
 !  Updating Nitrogen in water column with N uptake by plant and N 
@@ -213,23 +199,62 @@
 !  (temp--> converts gram Carbon units to mmol Nitrogen units)
 !-----------------------------------------------------------------------
 !
+        DINwcr_sav_loc(i)=(agar_loc(i)+agbr_loc(i)-pp_loc(i))           &
+      &                                           *temp*dtdays 
+!
+!-----------------------------------------------------------------------
+!  Translocation of above ground biomass to below ground
+!-----------------------------------------------------------------------
+!
+        agbg_loc(i)=pp_loc(i)*DOWNt(ng)
+!
+!-----------------------------------------------------------------------
+!  Translocation of below ground biomass to above ground
+!-----------------------------------------------------------------------
+!
+        bgag_loc(i)=bgb_loc(i)*trns(ng)*thresh
+!
+!-----------------------------------------------------------------------
+!  Below ground biomass respiration and Below ground biomass mortality
+!-----------------------------------------------------------------------
+!
+        bgr_loc(i)=bgb_loc(i)*bsrc(ng)*EXP(rc(ng)*wtemp(i))
+        bgm_loc(i)=bgb_loc(i)*(0.01_r8*EXP(km(ng)*wtemp(i)))
+!
+        DINsed_loc(i)=DINsed_loc(i)+(bgr_loc(i)+bgm_loc(i))*temp*dtdays 
+!
+!-----------------------------------------------------------------------
+!  Compute new AGB biomass (g C m-2)
+!-----------------------------------------------------------------------
+!
+        cff=pp_loc(i)
+!
+!-----------------------------------------------------------------------
+!  If pp>(available nutrients), no growth    
+!  assumes no new growth if growth exceeds available nutrients      
+!-----------------------------------------------------------------------
+!  
         IF(cff.gt.DINwcr_loc(i))THEN 
-          DINwcr_sav_loc(i)=(agar+agbr)*temp*dtdays
+          cff1=pp_loc(i)+bgag_loc(i)-agm_loc(i)-agar_loc(i)             &
+     &                  -agbr_loc(i)-sears_loc(i)-agbg_loc(i)
         ELSE
-          DINwcr_sav_loc(i)=(agar+agbr-pp)*temp*dtdays
-        ENDIF
-!        
+          cff1=bgag_loc(i)-agm_loc(i)-agar_loc(i)-agbr_loc(i)           &
+     &                                    -sears_loc(i)-agbg_loc(i)
+        ENDIF 
+          agb_loc(i)=agb_loc(i)+cff1*dtdays 
+!
 !-----------------------------------------------------------------------
 !  Compute new BGB Biomass  (g C m-2)
 !-----------------------------------------------------------------------
 !
-        bgb_loc(i)=bgb_loc(i)+(sears+agbg-bgag-bgm-bgr)*dtdays 
+        bgb_loc(i)=bgb_loc(i)+(sears_loc(i)+agbg_loc(i)-bgag_loc(i)     &
+     &                         -bgm_loc(i)-bgr_loc(i))*dtdays 
 !
 !-----------------------------------------------------------------------
 !  Compute Primary Production per unit biomass
 !-----------------------------------------------------------------------
 !
-        ppbm=(pp/(agb_loc(i)+eps))
+        ppbm=(pp_loc(i)/(agb_loc(i)+eps))
 !
 !-----------------------------------------------------------------------
 !  Observed stems per square meter (average of 6 cores)
@@ -247,16 +272,18 @@
 !  O2 and CO2 interactions with bed 
 !-----------------------------------------------------------------------
 !
-        DOwcr_loc(i)=DOwcr_loc(i)+(pp-agar-agbr)*gr2mmolC*pqrq*dtdays 
-        CO2wcr_loc(i)=CO2wcr_loc(i)+(agar+agbr-pp)*gr2mmolC*pqrq*dtdays
+        DOwcr_loc(i)=(pp_loc(i)-agar_loc(i)-agbr_loc(i))                &
+      &                             *gr2mmolC*pqrq*dtdays 
+        CO2wcr_loc(i)=(agar_loc(i)+agbr_loc(i)-pp_loc(i))               &
+      &                             *gr2mmolC*pqrq*dtdays
 !
 !-----------------------------------------------------------------------
 !  Labile detrital carbon and nitrogen interactions with fennel
 !-----------------------------------------------------------------------
 !
-        LDeNwcr_loc(i)=LDeNwcr_loc(i)+(agm)*temp*dtdays
-        LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm)*gr2mmolC*dtdays
-!
+        LDeNwcr_loc(i)=LDeNwcr_loc(i)+(agm_loc(i))*temp*dtdays  
+        LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm_loc(i))*gr2mmolC*dtdays  
+
       END DO
 !
 !-----------------------------------------------------------------------
