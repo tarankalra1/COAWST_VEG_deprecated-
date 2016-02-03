@@ -250,7 +250,8 @@
 !  Labile detrital carbon in fennel
 !-----------------------------------------------------------------------
 !
-        LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm)*temp*dtdays  
+        LDeNwcr_loc(i)=LDeNwcr_loc(i)+(agm)*temp*dtdays
+        LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm)*gr2mmolC*dtdays
 !
       END DO
 !
