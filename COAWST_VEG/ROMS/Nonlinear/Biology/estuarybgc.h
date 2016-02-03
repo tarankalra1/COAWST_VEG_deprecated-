@@ -146,7 +146,10 @@
      &                   OCEAN(ng) % DINwcr,                            &
      &                   OCEAN(ng) % DINsed,                            &
      &                   OCEAN(ng) % DOwcr,                             &
+     &                   OCEAN(ng) % CO2wcr,                            &     
      &                   OCEAN(ng) % DINwcr_sav,                        &
+     &                   OCEAN(ng) % LDeNwcr,                           &
+     &                   OCEAN(ng) % LDeCwcr,                           &
      &                   OCEAN(ng) % AGB,                               &
      &                   OCEAN(ng) % BGB,                               &
      &                   OCEAN(ng) % PP,                                &
@@ -203,7 +206,10 @@
      &                         DINwcr,                                  &
      &                         DINsed,                                  &
      &                         DOwcr,                                   &
+     &                         CO2wcr,                                  &
      &                         DINwcr_sav,                              &
+     &                         LDeNwcr,                                 &        
+     &                         LDeCwcr,                                 &  
      &                         AGB,                                     &
      &                         BGB,                                     &
      &                         PP,                                      &
@@ -454,6 +460,7 @@
 #ifdef SAV_BIOMASS
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: CO2wcr
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeCwcr
+      real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeNwcr
 #endif 
       real(r8), dimension(Nsink) :: Wbio
 !
@@ -1577,14 +1584,14 @@
               END DO
             END DO
             DO k = 1,N(ng) 
-              CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi,            &
-     &                     pmonth, t(:,j,1,nstp,itemp),                 &
-     &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k), &
-     &                     DINwcr_sav(:,j,k), DOwcr(:,j,k),             &
-     &                     CO2wcr(:,j,k), LDeCwcr(:,j,k),               &
-     &                     AGB(:,j),BGB(:,j), PP(:,j,k), AGM(:,j,k),    &
-     &                     AGAR(:,j,k), AGBR(:,j,k), SEARS(:,j,k),      &
-     &                     AGBG(:,j,k), BGAG(:,j,k), BGR(:,j,k),        &
+              CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi,              &
+     &                     pmonth, t(:,j,1,nstp,itemp),                   &
+     &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k),   &
+     &                     DINwcr_sav(:,j,k), DOwcr(:,j,k),               &
+     &                     CO2wcr(:,j,k), LDeCwcr(:,j,k), LDeNwcr(:,j,k), &
+     &                     AGB(:,j),BGB(:,j), PP(:,j,k), AGM(:,j,k),      &
+     &                     AGAR(:,j,k), AGBR(:,j,k), SEARS(:,j,k),        &
+     &                     AGBG(:,j,k), BGAG(:,j,k), BGR(:,j,k),          &
      &                     BGM(:,j,k)) 
             END DO
 !
@@ -1593,15 +1600,16 @@
                 IF (DINwcr_sav(i,j,k).lt.0) THEN 
                   Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav(i,j,k)
                 ELSE
-                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)-DINwcr_sav(i,j,k)*0.5_r8 
-                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)-DINwcr_sav(i,j,k)*0.5_r8
+                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)+DINwcr_sav(i,j,k)*0.5_r8 
+                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav(i,j,k)*0.5_r8
                 END IF 
-                Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeCwcr(i,j,k)
+                Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeNwcr(i,j,k)
 #  ifdef OXYGEN
                 Bio(i,1,iOxyg)=Bio(i,1,iOxyg)+DOwcr(i,j,k)
 #  endif	
 #  ifdef CARBON
                 Bio(i,1,iTIC_)=Bio(i,1,iTIC_)+CO2wcr(i,j,k)
+                Bio(i,1,iLDeC)=Bio(i,1,iLDeC)+LDeCwcr(i,j,k)
 #  endif
               END DO 
             END DO 

@@ -158,7 +158,7 @@
 !  Above ground mortality and above ground active respiration
 !-----------------------------------------------------------------------
 !
-        agm=(kmag(ng)*agb_loc(i))**2
+        agm=kmag(ng)*agb_loc(i)**2
         agar=pp*arsc(ng)*EXP(arc(ng)*wtemp(i))
 !
 !-----------------------------------------------------------------------
@@ -167,14 +167,6 @@
 !
         agbr=agb_loc(i)*(bsrc(ng)*EXP(rc(ng)*wtemp(i)))
         sears=agb_loc(i)*RtSttl(ng)*thresh2
-!
-!-----------------------------------------------------------------------
-!  Updating Nitrogen in water column with N uptake by plant and N 
-!  released from SAV respiration and mortality 
-!  (temp--> converts gram Carbon units to mmol Nitrogen units)
-!-----------------------------------------------------------------------
-!
-        DINwcr_sav_loc(i)=DINwcr_loc(i)+(agar+agbr-pp)*temp*dtdays 
 !
 !-----------------------------------------------------------------------
 !  Translocation of above ground biomass to below ground
@@ -201,7 +193,7 @@
 !  Compute new AGB biomass (g C m-2)
 !-----------------------------------------------------------------------
 !
-        cff=pp
+        cff=pp*temp*dtdays
 !
 !-----------------------------------------------------------------------
 !  If pp>(available nutrients), no growth    
@@ -215,6 +207,18 @@
         ENDIF 
           agb_loc(i)=agb_loc(i)+cff1*dtdays 
 !
+!-----------------------------------------------------------------------
+!  Updating Nitrogen in water column with N uptake by plant and N 
+!  released from SAV respiration and mortality 
+!  (temp--> converts gram Carbon units to mmol Nitrogen units)
+!-----------------------------------------------------------------------
+!
+        IF(cff.gt.DINwcr_loc(i))THEN 
+          DINwcr_sav_loc(i)=(agar+agbr)*temp*dtdays
+        ELSE
+          DINwcr_sav_loc(i)=(agar+agbr-pp)*temp*dtdays
+        ENDIF
+!        
 !-----------------------------------------------------------------------
 !  Compute new BGB Biomass  (g C m-2)
 !-----------------------------------------------------------------------
@@ -247,7 +251,7 @@
         CO2wcr_loc(i)=CO2wcr_loc(i)+(agar+agbr-pp)*gr2mmolC*pqrq*dtdays
 !
 !-----------------------------------------------------------------------
-!  Labile detrital carbon in fennel
+!  Labile detrital carbon and nitrogen interactions with fennel
 !-----------------------------------------------------------------------
 !
         LDeNwcr_loc(i)=LDeNwcr_loc(i)+(agm)*temp*dtdays
