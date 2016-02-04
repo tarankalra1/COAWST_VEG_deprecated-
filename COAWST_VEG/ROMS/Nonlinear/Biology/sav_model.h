@@ -132,7 +132,7 @@
       DO i=Istr, Iend
         agb_loc(i)=5.0_r8
         bgb_loc(i)=30.0_r8
-        DINsed_loc(i)=0.0_r8
+        DINsed_loc(i)=1000.0_r8
         DINwcr_sav_loc(i)=0.0_r8
         DOwcr_loc(i)=0.0_r8
         CO2wcr_loc(i)=0.0_r8
@@ -149,7 +149,11 @@
       dtdays=dt(ng)*sec2day 
 !
       knt=knwc(ng)/knsed(ng)
+!
       DO i=Istr, Iend
+        IF (DINsed_loc(i).lt.1.0_r8) THEN
+          DINsed_loc(i)=1.0_r8
+        END IF 
         llim=PARz(i)/(PARz(i)+ki(ng))
         nlim=(DINwcr_loc(i)+(knt*DINsed_loc(i)))/                        &
      &       (knwc(ng)+(DINwcr_loc(i)+(knt*DINsed_loc(i))))
