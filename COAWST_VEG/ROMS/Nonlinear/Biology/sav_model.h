@@ -250,9 +250,10 @@
 !-----------------------------------------------------------------------
 !
 	IF(cff.gt.DINwcr_loc(i))THEN                                    
-	  DINwcr_sav_loc(i)=(agar+agbr)*temp*dtdays                     
+	  DINwcr_sav_loc(i)=(agar_loc(i)+agbr_loc(i))*temp*dtdays                     
 	ELSE                                                            
-	  DINwcr_sav_loc(i)=(agar+agbr-pp)*temp*dtdays                  
+	  DINwcr_sav_loc(i)=(agar_loc(i)+agbr_loc(i)-pp_loc(i))         &
+     &                                            *temp*dtdays                  
 	ENDIF 
 !
 !-----------------------------------------------------------------------
