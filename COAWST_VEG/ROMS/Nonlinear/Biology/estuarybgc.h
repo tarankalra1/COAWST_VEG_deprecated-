@@ -1597,18 +1597,19 @@
 !
             DO k=1,N(ng)
               DO i=Istr,Iend
-                IF (DINwcr_sav(i,j,k).lt.0) THEN 
+                IF (DINwcr_sav(i,j,k).gt.0) THEN 
                   Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav(i,j,k)
                 ELSE
-                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)-DINwcr_sav(i,j,k)*0.5_r8 
-                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)-DINwcr_sav(i,j,k)*0.5_r8
+                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)+DINwcr_sav(i,j,k)*0.5_r8 
+                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav(i,j,k)*0.5_r8
                 END IF 
-                Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeCwcr(i,j,k)
+                Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeNwcr(i,j,k)
 #  ifdef OXYGEN
                 Bio(i,1,iOxyg)=Bio(i,1,iOxyg)+DOwcr(i,j,k)
 #  endif	
 #  ifdef CARBON
                 Bio(i,1,iTIC_)=Bio(i,1,iTIC_)+CO2wcr(i,j,k)
+                Bio(i,1,iLDeC)=Bio(i,1,iLDeC)+LDeCwcr(i,j,k)
 #  endif
               END DO 
             END DO 
