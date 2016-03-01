@@ -123,14 +123,15 @@
       real(r8), parameter :: gr2mmol=1000.0_r8/14.007_r8 
       real(r8), parameter :: C2N_ratio=30.0_r8 ! Move this to the input file 
       real(r8), parameter :: gr2mmolC=1000.0_r8/12.011_r8 
-      real(r8), parameter :: molNmolC=14.007_r8/12.011_r8*30.0_r8      
+      real(r8), parameter :: molNmolC=(14.007_r8/12.011_r8)*30.0_r8      
       real(r8), parameter :: pqrq=1.0_r8
 !
 !     Initialize local variables and arrays 
 !
       lmba  = 1.0_r8 
         
-      IF ntime=1
+      ntstart(ng)=INT((time(ng)-dstart*day2sec)/dt(ng))+1
+      IF (ntstart(ng)==1) THEN 
         DO i=Istr, Iend
           agb_loc(i)=11.9_r8
           bgb_loc(i)=71.3_r8
@@ -265,9 +266,11 @@
 !-----------------------------------------------------------------------
 !
 	IF(cff.gt.DINwcr_loc(i))THEN                                    
-	  DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+agbr_loc(i))*dtdays                     
+	  DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+             &
+                                               agbr_loc(i))*dtdays                     
 	ELSE                                                            
-	  DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+agbr_loc(i)-pp_loc(i))*dtdays                  
+	  DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+agbr_loc(i)- &
+                                               pp_loc(i))*dtdays                  
 	ENDIF 
 !
 !-----------------------------------------------------------------------
