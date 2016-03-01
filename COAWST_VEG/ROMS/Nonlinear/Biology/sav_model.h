@@ -123,16 +123,22 @@
       real(r8), parameter :: gr2mmol=1000.0_r8/14.007_r8 
       real(r8), parameter :: C2N_ratio=30.0_r8 ! Move this to the input file 
       real(r8), parameter :: gr2mmolC=1000.0_r8/12.011_r8 
+      real(r8), parameter :: molNmolC=14.007_r8/12.011_r8*30.0_r8      
       real(r8), parameter :: pqrq=1.0_r8
 !
 !     Initialize local variables and arrays 
 !
       lmba  = 1.0_r8 
         
+      IF ntime=1
+        DO i=Istr, Iend
+          agb_loc(i)=11.9_r8
+          bgb_loc(i)=71.3_r8
+          DINsed_loc(i)=1000.0_r8
+        END DO
+      END IF 
+      
       DO i=Istr, Iend
-        agb_loc(i)=5.0_r8
-        bgb_loc(i)=30.0_r8
-        DINsed_loc(i)=1000.0_r8
         DINwcr_sav_loc(i)=0.0_r8
         DOwcr_loc(i)=0.0_r8
         CO2wcr_loc(i)=0.0_r8
@@ -145,6 +151,8 @@
 !-----------------------------------------------------------------------
 !
       day_year = (pmonth - 52.0_r8)*365.0_r8
+
+!     Use temp to convert from grams carbon to mmol nitrogen if needed      
       temp=gr2mmol/C2N_ratio
       dtdays=dt(ng)*sec2day 
 !
@@ -221,10 +229,11 @@
         bgr_loc(i)=bgb_loc(i)*bsrc(ng)*EXP(rc(ng)*wtemp(i))
         bgm_loc(i)=bgb_loc(i)*(0.01_r8*EXP(km(ng)*wtemp(i)))
 !
-        DINsed_loc(i)=DINsed_loc(i)+(bgr_loc(i)+bgm_loc(i))*temp*dtdays 
+!       If using carbon units, multiply this term by temp
+        DINsed_loc(i)=DINsed_loc(i)+(bgr_loc(i)+bgm_loc(i))*dtdays 
 !
 !-----------------------------------------------------------------------
-!  Compute new AGB biomass (g C m-2)
+!  Compute new AGB biomass (mmol N m-2)
 !-----------------------------------------------------------------------
 !
         cff=pp_loc(i)*temp*dtdays
@@ -241,23 +250,28 @@
           cff1=bgag_loc(i)-agm_loc(i)-agar_loc(i)-agbr_loc(i)           &
      &                                    -sears_loc(i)-agbg_loc(i)
         ENDIF 
-          agb_loc(i)=agb_loc(i)+cff1*dtdays 
+!
+!-----------------------------------------------------------------------
+!  Update AGB Biomass  (mmol N m-2)
+!-----------------------------------------------------------------------
+!          
+     agb_loc(i)=agb_loc(i)+cff1*dtdays 
 !
 !-----------------------------------------------------------------------
 !  Updating Nitrogen in water column with N uptake by plant and N 
 !  released from SAV respiration and mortality 
 !  (temp--> converts gram Carbon units to mmol Nitrogen units)
+!  If using carbon units, multiply this term by temp
 !-----------------------------------------------------------------------
 !
 	IF(cff.gt.DINwcr_loc(i))THEN                                    
-	  DINwcr_sav_loc(i)=(agar_loc(i)+agbr_loc(i))*temp*dtdays                     
+	  DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+agbr_loc(i))*dtdays                     
 	ELSE                                                            
-	  DINwcr_sav_loc(i)=(agar_loc(i)+agbr_loc(i)-pp_loc(i))         &
-     &                                            *temp*dtdays                  
+	  DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+agbr_loc(i)-pp_loc(i))*dtdays                  
 	ENDIF 
 !
 !-----------------------------------------------------------------------
-!  Compute new BGB Biomass  (g C m-2)
+!  Compute new BGB Biomass  (mmol N m-2)
 !-----------------------------------------------------------------------
 !
         bgb_loc(i)=bgb_loc(i)+(sears_loc(i)+agbg_loc(i)-bgag_loc(i)     &
@@ -283,30 +297,26 @@
 !
 !-----------------------------------------------------------------------
 !  O2 and CO2 interactions with bed 
+!  If using carbon units, multiply DOwcr_loc and CO2wcr_loc by gr2mmolC 
+!  (instead of molNmolC)
 !-----------------------------------------------------------------------
 !
         DOwcr_loc(i)=DOwcr_loc(i)+(pp_loc(i)-agar_loc(i)-agbr_loc(i))   &
-      &                             *gr2mmolC*pqrq*dtdays 
+      &                             *molNmolC*pqrq*dtdays 
         CO2wcr_loc(i)=CO2wcr_loc(i)+(agar_loc(i)+agbr_loc(i)-pp_loc(i)) &
-      &                             *gr2mmolC*pqrq*dtdays
+      &                             *molNmolC*pqrq*dtdays
 !
 !-----------------------------------------------------------------------
 !  Labile detrital carbon and nitrogen interactions with fennel
+!  If using carbon units, multiply LDeNwcr_loc by temp and
+!  LDeCwcr_loc by gr2mmolC (instead of molNmolC)
 !-----------------------------------------------------------------------
 !
-        LDeNwcr_loc(i)=LDeNwcr_loc(i)+(agm_loc(i))*temp*dtdays  
-        LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm_loc(i))*gr2mmolC*dtdays  
+        LDeNwcr_loc(i)=LDeNwcr_loc(i)+(agm_loc(i))*dtdays  
+        LDeCwcr_loc(i)=LDeCwcr_loc(i)+(agm_loc(i))*molNmolC*dtdays  
 
       END DO
 !
-!-----------------------------------------------------------------------
-!  (temp--> converts gram Carbon units to mmol Nitrogen units)
-!-----------------------------------------------------------------------
-!
-     DO i=Istr, Iend
-       agb_loc(i)=agb_loc(i)*temp
-       bgb_loc(i)=bgb_loc(i)*temp 
-     END DO 
      RETURN
      END SUBROUTINE SAV_BIOMASS_SUB
 
