@@ -457,10 +457,12 @@
 #ifdef ALGAL_RESP
       real(r8) :: br20, brthta, N_Flux_BaseResp
 #endif
-#ifdef SAV_BIOMASS
+! Local SAV variables
+#ifdef SAV_BIOMASS 
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: CO2wcr
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeCwcr
       real(r8), dimension(LBi:UBi,LBj:UBj,UBk) :: LDeNwcr
+      real(r8) :: cff1_sav
 #endif 
       real(r8), dimension(Nsink) :: Wbio
 !
@@ -1595,23 +1597,26 @@
      &                     BGM(:,j,k)) 
             END DO
 !
-            DO k=1,N(ng)
-              DO i=Istr,Iend
-                IF (DINwcr_sav(i,j,k).gt.0) THEN 
-                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav(i,j,k)
-                ELSE
-                  Bio(i,1,iNO3_)=Bio(i,1,iNO3_)+DINwcr_sav(i,j,k)*0.5_r8 
-                  Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+DINwcr_sav(i,j,k)*0.5_r8
-                END IF 
-                Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeNwcr(i,j,k)
+!  Only getting the SAV model to work for the bottomost vertical layer
+!  Also multiplied SAV computed quantities with bottom cell thickness
+!
+            DO i=Istr,Iend
+              cff1_sav=DINwcr_sav(i,j,1)*Hz(i,j,1)
+               
+              IF (DINwcr_sav(i,j,1).gt.0) THEN 
+                Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+cff1_sav
+              ELSE
+                Bio(i,1,iNO3_)=Bio(i,1,iNO3_)+cff1_sav*0.5_r8 
+                Bio(i,1,iNH4_)=Bio(i,1,iNH4_)+cff1_sav*0.5_r8
+              END IF 
+              Bio(i,1,iLDeN)=Bio(i,1,iLDeN)+LDeNwcr(i,j,1)*Hz(i,j,1)
 #  ifdef OXYGEN
-                Bio(i,1,iOxyg)=Bio(i,1,iOxyg)+DOwcr(i,j,k)
+              Bio(i,1,iOxyg)=Bio(i,1,iOxyg)+DOwcr(i,j,1)*Hz(i,j,1)
 #  endif	
 #  ifdef CARBON
-                Bio(i,1,iTIC_)=Bio(i,1,iTIC_)+CO2wcr(i,j,k)
-                Bio(i,1,iLDeC)=Bio(i,1,iLDeC)+LDeCwcr(i,j,k)
+              Bio(i,1,iTIC_)=Bio(i,1,iTIC_)+CO2wcr(i,j,1)*Hz(i,j,1)
+              Bio(i,1,iLDeC)=Bio(i,1,iLDeC)+LDeCwcr(i,j,1)*Hz(i,j,1)
 #  endif
-              END DO 
             END DO 
 !
 #  ifdef VEG_BIOMASS  
