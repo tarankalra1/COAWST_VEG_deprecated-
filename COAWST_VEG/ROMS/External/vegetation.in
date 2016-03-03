@@ -46,6 +46,8 @@
 
     VEG_MASSDENS  == 800.0d0
 
+    VEGHMIXCOEF  == 0.0d0
+
 ! Logical switches (TRUE/FALSE) to activate writing of vegetation fields
 ! into HISTORY output file: [1:NVEG,Ngrids].
 
@@ -53,12 +55,13 @@ Hout(ipdens)   == T       ! Plant_density      Density of the plant for each veg
 Hout(iphght)   == T       ! Plant_height       Height of the plant for each vegetation
 Hout(ipdiam)   == T       ! Plant_diameter     Diameter of the plant for each vegetation
 Hout(ipthck)   == F       ! Plant_thickness    Thickness of the plant for each vegetation
-Hout(ipagbm)   == F       ! Plant_agb          Above ground plant biomass for each vegetation
-Hout(ipbgbm)   == F       ! Plant_bgb          Below ground plant biomass for each vegetation
-Hout(idTmsk)   == F       ! mask_thrust        masking for getting thrust due to waves
-Hout(idTmax)   == F       ! Thrust_max         maxmimum thrust due to waves
-Hout(idTton)   == F       ! Thrust_tonelli     Tonelli masking based thrust due to waves
-
+Hout(ipagbm)   == F       ! Plant_agb          Above ground plant biomass
+Hout(ipbgbm)   == F       ! Plant_bgb          Below ground plant biomass
+Hout(idWdvg)   == T       ! Dissip_veg         Wave dissipation due to vegetation
+Hout(idTims)   == T       ! marsh_mask         Initial masking for the marsh
+Hout(idTmsk)   == T       ! mask_thrust        masking for getting thrust due to waves
+Hout(idTmax)   == T       ! Thrust_max         maxmimum thrust due to waves
+Hout(idTton)   == T       ! Thrust_tonelli     Tonelli masking based thrust due to waves
 !
 !  GLOSSARY:
 !  =========
@@ -72,3 +75,5 @@ Hout(idTton)   == F       ! Thrust_tonelli     Tonelli masking based thrust due 
 !  E_VEG          Young's Modulus  for each vegetation type
 !
 !  VEG_MASSDENS   Mass density for each vegetation type
+!
+!  VEGHMIXCOEF    Mixing coefficient
