@@ -93,22 +93,21 @@
 !  To have variable properties in array->plant(x,y,iveg,iprop)
 !-----------------------------------------------------------------------
 !
+!     
+! the vegetation patch has been hardwired in a 100x100 domain to be
+! spread over '11' points in the middle of the domain
+! NVEG=1 (input from vegetation.in) file in /ROMS/External folder
+! 
       DO iveg=1,NVEG
-        DO j=JstrT,JendT
-          DO i=IstrT,IendT
-	    plant(i,j,iveg,pdiam)=0.01_r8        !Diameter
-	    plant(i,j,iveg,phght)=2.0_r8         !Height
-	    plant(i,j,iveg,pdens)=800.0_r8       !Density
-	    plant(i,j,iveg,pthck)=0.0005_r8      !Thickness
+        plant(45:55,45:55,iveg,pdiam)=0.01_r8   ! Diameter
+        plant(45:55,45:55,iveg,phght)=1.0_r8    ! Height
+        plant(45:55,45:55,iveg,pdens)=2500.0_r8 ! Density
+        plant(45:55,45:55,iveg,pthck)=0.0005_r8 ! Thickness
 #ifdef VEGETATION_BIOMASS 
-	    plant(i,j,iveg,pupbm)=0.0_r8         !Above ground Biomass
-	    plant(i,j,iveg,pdwbm)=0.0_r8         !Below ground Biomass
-#endif  
-          END DO 
-        END DO
-             plant(45:55,45:55,iveg,1)=1000.0_r8
+        plant(45:55,45:55,iveg,pagbm)=0.0_r8    !Above ground Biomass
+        plant(45:55,45:55,iveg,pbgbm)=0.0_r8    !Below ground Biomass
+#endif            
       END DO 
-                                        
                                         
       RETURN
 
