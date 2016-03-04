@@ -257,9 +257,6 @@
 !-----------------------------------------------------------------------
 !          
         agb_loc(i)=agb_loc(i)+cff1*dtdays 
-        IF(cff1.gt.1000) THEN 
-        write(60,*) cff1,agb_loc(i)
-        end if  
 !
 !-----------------------------------------------------------------------
 !  Updating Nitrogen in water column with N uptake by plant and N 
