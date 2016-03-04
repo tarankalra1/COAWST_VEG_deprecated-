@@ -106,7 +106,7 @@
 !
 !  Local variable declarations.
 !
-      integer :: i, thresh, thresh2 
+      integer :: i, thresh, thresh2, nlocal
       integer, parameter  :: one=1
       real(r8) :: ua, day_year
       real(r8) :: llim, knt, nlim
@@ -129,9 +129,9 @@
 !     Initialize local variables and arrays 
 !
       lmba  = 1.0_r8 
-        
-      ntstart(ng)=INT((time(ng)-dstart*day2sec)/dt(ng))+1
-      IF (ntstart(ng)==1) THEN 
+!        
+      nlocal=INT((time(ng)-dstart*day2sec)/dt(ng))+1
+      IF (nlocal==1) THEN 
         DO i=Istr, Iend
           agb_loc(i)=11.9_r8
           bgb_loc(i)=71.3_r8
@@ -237,7 +237,7 @@
 !  Compute new AGB biomass (mmol N m-2)
 !-----------------------------------------------------------------------
 !
-        cff=pp_loc(i)*temp*dtdays
+        cff=pp_loc(i)*dtdays
 !
 !-----------------------------------------------------------------------
 !  If pp>(available nutrients), no growth    
@@ -256,7 +256,10 @@
 !  Update AGB Biomass  (mmol N m-2)
 !-----------------------------------------------------------------------
 !          
-     agb_loc(i)=agb_loc(i)+cff1*dtdays 
+        agb_loc(i)=agb_loc(i)+cff1*dtdays 
+        IF(cff1.gt.1000) THEN 
+        write(60,*) cff1,agb_loc(i)
+        end if  
 !
 !-----------------------------------------------------------------------
 !  Updating Nitrogen in water column with N uptake by plant and N 
