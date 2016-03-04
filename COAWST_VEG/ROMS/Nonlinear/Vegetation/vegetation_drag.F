@@ -137,7 +137,7 @@
 ! 
       real(r8), parameter :: one_third  = 1.0_r8/3.0_r8
       real(r8), parameter :: Inival  = 0.0_r8
-      real(r8) :: cff1 , cff2, cff3 
+      real(r8) :: cff, cff1 , cff2, cff3, cff4 
       real(r8) :: sma, buoy, Umag, Ca, cflex 
       real(r8) :: Lveg_loc, plant_height_eff
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: dab  
@@ -153,6 +153,16 @@
       ru_veg=Inival
       rv_veg=Inival
       Lveg=Inival
+      
+# ifdef WET_DRY
+!
+!  Set limiting factor for drag force. The drag force is adjusted
+!  to not change the direction of momentum.  It only should slow down
+!  to zero. The value of 0.75 is arbitrary limitation assigment 
+!  (same as for bottom stress).
+!
+      cff=0.75_r8/dt(ng)
+# endif      
 
       VEG_LOOP: DO iveg=1,NVEG
         K_LOOP: DO k=1,N(ng)
@@ -173,7 +183,7 @@
 !          
               buoy=(rhow-veg_massdens(iveg,ng))*g*plant(i,j,iveg,pdiam)*&
      &              plant(i,j,iveg,pthck)*                              &
-     &              plant(i,j,iveg,phght)**3.0_r8/(E_VEG(iveg,ng)*sma)
+     &              plant(i,j,iveg,phght)**3.0_r8/(E_veg(iveg,ng)*sma)
 !
 ! Current speed at rho points
 !
@@ -243,7 +253,15 @@
 !  Alexis's comment: not confident in what is happening when 
 !                     multiple vegetation types are concomitant
 !
-              ru_veg(i,j,k)=ru_loc_veg(i,j,k,iveg)+ru_veg(i,j,k) 
+              ru_veg(i,j,k)=ru_loc_veg(i,j,k,iveg)+ru_veg(i,j,k)
+
+# ifdef WET_DRY
+          cff4=cff*0.5_r8*(Hz(i-1,j,k)+Hz(i,j,k))
+          ru_veg(i,j,k)=SIGN(1.0_r8, ru_veg(i,j,k))*                      &
+     &               MIN(ABS(ru_veg(i,j,k)),                              &
+     &                   ABS(u(i,j,k,nrhs))*cff4)
+# endif
+
             END DO
           END DO
           DO j=JstrV,Jend
@@ -260,6 +278,14 @@
 !   which can be there at the same point (i,j,k) 
 !
               rv_veg(i,j,k)=rv_loc_veg(i,j,k,iveg)+rv_veg(i,j,k)
+
+# ifdef WET_DRY
+          cff4=cff*0.5_r8*(Hz(i,j-1,k)+Hz(i,j,k))
+          rv_veg(i,j,k)=SIGN(1.0_r8, rv_veg(i,j,k))*                      &
+     &               MIN(ABS(rv_veg(i,j,k)),                              &
+     &                   ABS(v(i,j,k,nrhs))*cff4)
+# endif
+
             END DO
           END DO
         END DO K_LOOP

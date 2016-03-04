@@ -94,6 +94,8 @@
      &                  GRID(ng) % Hz,                                  &
      &                  VEG(ng) % ru_veg,                               &
      &                  VEG(ng) % rv_veg,                               &
+     &                  VEG(ng) % step2d_uveg,                          &
+     &                  VEG(ng) % step2d_vveg,                          &
 # endif
 # if defined VEGETATION && defined VEG_HMIXING 
      &                  VEG(ng) % visc2d_r_veg,                         &
@@ -203,6 +205,7 @@
 # endif
 # if defined VEGETATION && defined VEG_DRAG
      &                        Hz, ru_veg, rv_veg,                       &
+     &                        step2d_uveg, step2d_vveg,                 &
 # endif
 # if defined VEGETATION && defined VEG_HMIXING 
      &                        visc2d_r_veg,                             &
@@ -330,6 +333,8 @@
       real(r8), intent(in) :: Hz(LBi:,LBj:,:)
       real(r8), intent(in) :: ru_veg(LBi:,LBj:,:)
       real(r8), intent(in) :: rv_veg(LBi:,LBj:,:)
+      real(r8), intent(in) :: step2d_uveg(LBi:,LBj:)
+      real(r8), intent(in) :: step2d_vveg(LBi:,LBj:)
 #  endif
 #  if defined VEGETATION && defined VEG_HMIXING 
       real(r8), intent(in) :: visc2d_r_veg(LBi:,LBj:)
@@ -470,6 +475,8 @@
       real(r8), intent(in) :: Hz(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(in) :: ru_veg(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(in) :: rv_veg(LBi:UBi,LBj:UBj,UBk)
+      real(r8), intent(in) :: step2d_uveg(LBi:UBi,LBj:UBj)
+      real(r8), intent(in) :: step2d_vveg(LBi:UBi,LBj:UBj)
 #  endif
 #  if defined VEGETATION && defined VEG_HMIXING 
       real(r8), intent(in) :: visc2d_r_veg(LBi:UBi,LBj:UBj)
@@ -2285,14 +2292,8 @@
 !
       DO j=Jstr,Jend
         DO i=IstrU,Iend
-          cff=0.5_r8*(Hz(i-1,j,1)+Hz(i,j,1))
-          cff2=cff*ru_veg(i,j,1)
-          DO k=2,N(ng)
-            cff=0.5_r8*(Hz(i-1,j,k)+Hz(i,j,k))
-            cff2=cff2+cff*ru_veg(i,j,k)
-          END DO
           cff3=2.0_r8/(Drhs(i-1,j)+Drhs(i,j))
-          fac=cff2*cff3*om_u(i,j)*on_u(i,j)
+          fac=step2d_uveg(i,j)*cff3*om_u(i,j)*on_u(i,j)
           rhs_ubar(i,j)=rhs_ubar(i,j)-fac
 #  ifdef DIAGNOSTICS_UV
           DiaU2rhs(i,j,M2fveg)=-fac
@@ -2301,14 +2302,8 @@
      END DO
      DO i=Istr,Iend
        DO j=JstrV,Jend
-         cff=0.5_r8*(Hz(i,j-1,1)+Hz(i,j,1))
-         cff2=cff*rv_veg(i,j,1)
-         DO k=2,N(ng)
-           cff=0.5_r8*(Hz(i,j-1,k)+Hz(i,j,k))
-           cff2=cff2+cff*rv_veg(i,j,k)
-         END DO
          cff3=2.0_r8/(Drhs(i-1,j)+Drhs(i,j))
-         fac=cff2*cff3*om_v(i,j)*on_v(i,j)
+         fac=step2d_vveg(i,j)*cff3*om_v(i,j)*on_v(i,j)
          rhs_vbar(i,j)=rhs_vbar(i,j)-fac
 #  ifdef DIAGNOSTICS_UV
          DiaV2rhs(i,j,M2fveg)=-fac
