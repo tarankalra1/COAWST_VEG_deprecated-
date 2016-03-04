@@ -143,8 +143,8 @@
         DINwcr_sav_loc(i)=0.0_r8
         DOwcr_loc(i)=0.0_r8
         CO2wcr_loc(i)=0.0_r8
-	LDeNwcr_loc(i)=0.0_r8
-	LDeCwcr_loc(i)=0.0_r8
+        LDeNwcr_loc(i)=0.0_r8
+        LDeCwcr_loc(i)=0.0_r8
       END DO
 !
 !-----------------------------------------------------------------------
@@ -268,13 +268,13 @@
 !  If using carbon units, multiply this term by temp
 !-----------------------------------------------------------------------
 !
-	IF(cff.gt.DINwcr_loc(i))THEN                                    
-	  DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+             &
+        IF(cff.gt.DINwcr_loc(i))THEN                                    
+          DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+             &
                                                agbr_loc(i))*dtdays                     
-	ELSE                                                            
-	  DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+agbr_loc(i)- &
-                                               pp_loc(i))*dtdays                  
-	ENDIF 
+	ELSE
+          DINwcr_sav_loc(i)=DINwcr_sav_loc(i)+(agar_loc(i)+agbr_loc(i)- &
+                                               pp_loc(i))*dtdays
+        ENDIF 
 !
 !-----------------------------------------------------------------------
 !  Compute new BGB Biomass  (mmol N m-2)
