@@ -1586,7 +1586,7 @@
               END DO
             END DO
             DO k = 1,N(ng) 
-              CALL SAV_BIOMASS_SUB(ng, Istr, Iend, LBi, UBi,              &
+              CALL sav_biomass (ng, Istr, Iend, LBi, UBi,                 &
      &                     pmonth, t(:,j,1,nstp,itemp),                   &
      &                     PARout(:,j,k), DINwcr(:,j,k), DINsed(:,j,k),   &
      &                     DINwcr_sav(:,j,k), DOwcr(:,j,k),               &
@@ -1711,7 +1711,7 @@
       END SUBROUTINE biology_tile
 !
 # ifdef SAV_BIOMASS   
-#  include "sav_model.h"
+#  include "sav_biomass.h"
 # endif  
 !
 #ifdef CARBON
