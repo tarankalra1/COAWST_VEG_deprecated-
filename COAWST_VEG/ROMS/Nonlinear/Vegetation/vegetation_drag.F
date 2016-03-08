@@ -19,9 +19,8 @@
 !                                                                      !  
 !  References:                                                         !
 !                                                                      !
-!  Luhar M., and H. M. Nepf (2011), Flow-induced reconfiguration of    !
-!  buoyant and flexible aquatic vegetation, Limnology and Oceanography,!
-!   56(6): 2003-2017.                                                  !
+!  Luhar M., and H. M. Nepf (2011): Flow-induced reconfiguration of    !
+!  buoyant and flexible aquatic vegetation, L&O 56(6): 2003-2017.      !
 !                                                                      !
 !=======================================================================
 !
