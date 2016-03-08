@@ -126,8 +126,8 @@
       allocate ( VEG(ng) % rv_veg(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( VEG(ng) % ru_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG) )
       allocate ( VEG(ng) % rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG) )
-      allocate ( VEG(ng) % step2d_uveg(LBi:UBi,LBj:UBj)
-      allocate ( VEG(ng) % step2d_vveg(LBi:UBi,LBj:UBj)
+      allocate ( VEG(ng) % step2d_uveg(LBi:UBi,LBj:UBj) )
+      allocate ( VEG(ng) % step2d_vveg(LBi:UBi,LBj:UBj) ) 
       allocate ( VEG(ng) % Lveg(LBi:UBi,LBj:UBj,N(ng)) )
 # ifdef VEG_FLEX
       allocate ( VEG(ng) % bend(LBi:UBi,LBj:UBj,NVEG) )
@@ -259,6 +259,7 @@
               END DO 
             END DO 
           END DO 
+	END DO 
 	DO j=Jmin,Jmax
 	  DO i=Imin,Imax
             VEG(ng) % step2d_uveg(i,j) = IniVal

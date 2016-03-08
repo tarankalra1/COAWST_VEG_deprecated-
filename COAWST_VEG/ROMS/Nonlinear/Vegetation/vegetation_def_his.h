@@ -28,7 +28,7 @@
 #  if defined WRITE_WATER && defined MASKING
            Vinfo(20)='mask_rho'
 #  endif
-           Vinfo(22)='coordinates'
+!           Vinfo(22)='coordinates'
            Aval(5)=REAL(Iinfo(1,idvprp(i),ng),r8)
            status=def_var(ng, iNLM, HIS(ng)%ncid,HIS(ng)%Vid(idvprp(i))  &
      &                   ,NF_FOUT, nvd4, v3pgrd, Aval, Vinfo, ncname)
