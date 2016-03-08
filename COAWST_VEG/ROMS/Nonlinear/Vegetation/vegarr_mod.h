@@ -25,6 +25,8 @@
 !                 local vegetation type)                               !
 !  rv_veg_loc     Momentum term for x direction(takes account for all  !
 !                 local vegetation types)                              !
+!  step2d_uveg    Momentum term for 2d x direction                     !
+!  step2d_vveg    Momentum term for 2d y direction                     !
 !  bend           Bending for each vegetation                          !
 !  Lveg           Effective blade length                               ! 
 !  tke_veg        Turbulent kinetic energy from vegetation             !
@@ -58,6 +60,8 @@
 !  Momentum terms feed to the turbulence model 
         real(r8), pointer :: ru_loc_veg(:,:,:,:)
         real(r8), pointer :: rv_loc_veg(:,:,:,:)
+        real(r8), pointer :: step2d_uveg(:,:)
+        real(r8), pointer :: step2d_vveg(:,:)
         real(r8), pointer :: Lveg(:,:,:)
 # ifdef VEG_FLEX 
         real(r8), pointer :: bend(:,:,:)
@@ -122,6 +126,8 @@
       allocate ( VEG(ng) % rv_veg(LBi:UBi,LBj:UBj,N(ng)) )
       allocate ( VEG(ng) % ru_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG) )
       allocate ( VEG(ng) % rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG) )
+      allocate ( VEG(ng) % step2d_uveg(LBi:UBi,LBj:UBj)
+      allocate ( VEG(ng) % step2d_vveg(LBi:UBi,LBj:UBj)
       allocate ( VEG(ng) % Lveg(LBi:UBi,LBj:UBj,N(ng)) )
 # ifdef VEG_FLEX
       allocate ( VEG(ng) % bend(LBi:UBi,LBj:UBj,NVEG) )
@@ -253,7 +259,12 @@
               END DO 
             END DO 
           END DO 
-        END DO 
+	DO j=Jmin,Jmax
+	  DO i=Imin,Imax
+            VEG(ng) % step2d_uveg(i,j) = IniVal
+            VEG(ng) % step2d_vveg(i,j) = IniVal
+	  END DO 
+	END DO 
 # ifdef VEG_FLEX 
         DO iveg=1,NVEG
           DO j=Jmin,Jmax

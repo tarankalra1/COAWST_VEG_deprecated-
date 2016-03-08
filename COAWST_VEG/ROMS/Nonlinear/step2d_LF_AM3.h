@@ -91,9 +91,6 @@
 #  endif
 # endif
 # if defined VEGETATION && defined VEG_DRAG 
-     &                  GRID(ng) % Hz,                                  &
-     &                  VEG(ng) % ru_veg,                               &
-     &                  VEG(ng) % rv_veg,                               &
      &                  VEG(ng) % step2d_uveg,                          &
      &                  VEG(ng) % step2d_vveg,                          &
 # endif
@@ -204,7 +201,6 @@
 #  endif
 # endif
 # if defined VEGETATION && defined VEG_DRAG
-     &                        Hz, ru_veg, rv_veg,                       &
      &                        step2d_uveg, step2d_vveg,                 &
 # endif
 # if defined VEGETATION && defined VEG_HMIXING 
@@ -330,9 +326,6 @@
 #   endif
 #  endif
 #  if defined VEGETATION && defined VEG_DRAG 
-      real(r8), intent(in) :: Hz(LBi:,LBj:,:)
-      real(r8), intent(in) :: ru_veg(LBi:,LBj:,:)
-      real(r8), intent(in) :: rv_veg(LBi:,LBj:,:)
       real(r8), intent(in) :: step2d_uveg(LBi:,LBj:)
       real(r8), intent(in) :: step2d_vveg(LBi:,LBj:)
 #  endif
@@ -472,9 +465,6 @@
 #   endif
 #  endif
 #  if defined VEGETATION && defined VEG_DRAG
-      real(r8), intent(in) :: Hz(LBi:UBi,LBj:UBj,UBk)
-      real(r8), intent(in) :: ru_veg(LBi:UBi,LBj:UBj,UBk)
-      real(r8), intent(in) :: rv_veg(LBi:UBi,LBj:UBj,UBk)
       real(r8), intent(in) :: step2d_uveg(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: step2d_vveg(LBi:UBi,LBj:UBj)
 #  endif

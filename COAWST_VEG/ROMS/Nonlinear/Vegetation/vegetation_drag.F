@@ -66,6 +66,8 @@
      &                        VEG(ng) % rv_loc_veg,                     &
      &                        VEG(ng) % ru_veg,                         &
      &                        VEG(ng) % rv_veg,                         & 
+     &                        VEG(ng) % step2d_uveg,                    &
+     &                        VEG(ng) % step2d_vveg,                    & 
      &                        VEG(ng) % Lveg)                      
 
 # ifdef PROFILE
@@ -87,6 +89,7 @@
 # endif 
      &                              ru_loc_veg, rv_loc_veg,             &
      &                              ru_veg, rv_veg,                     &
+     &                              step2d_uveg, step2d_vveg,           &
      &                              Lveg)
 !***********************************************************************
 !
@@ -114,6 +117,8 @@
       real(r8), intent(inout) :: rv_loc_veg(LBi:,LBj:,:,:)
       real(r8), intent(inout) :: ru_veg(LBi:,LBj:,:)
       real(r8), intent(inout) :: rv_veg(LBi:,LBj:,:)
+      real(r8), intent(inout) :: step2d_uveg(LBi:,LBj:)
+      real(r8), intent(inout) :: step2d_vveg(LBi:,LBj:)
       real(r8), intent(inout) :: Lveg(LBi:,LBj:,:)
 # else
       real(r8), intent(in) :: Hz(LBi:UBi,LBj:UBj,N(ng))
@@ -128,6 +133,8 @@
     &               rv_loc_veg(LBi:UBi,LBj:UBj,N(ng),NVEG)
       real(r8), intent(inout) :: ru_veg(LBi:UBi,LBj:UBj,N(ng))
       real(r8), intent(inout) :: rv_veg(LBi:UBi,LBj:UBj,N(ng))
+      real(r8), intent(inout) :: step2d_uveg(LBi:UBi,LBj:UBj)
+      real(r8), intent(inout) :: step2d_vveg(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: Lveg(LBi:UBi,LBj:UBj,N(ng))
 # endif
 !
@@ -138,7 +145,7 @@
       real(r8), parameter :: one_third  = 1.0_r8/3.0_r8
       real(r8), parameter :: one_twelfth  = 1.0_r8/12.0_r8
       real(r8), parameter :: Inival  = 0.0_r8
-      real(r8) :: cff, cff1 , cff2, cff3, cff4, Hz_inverse 
+      real(r8) :: cff, cff1, cff2, cff3, cff4, Hz_inverse 
       real(r8) :: sma, buoy, Umag, Ca, cflex 
       real(r8) :: Lveg_loc, plant_height_eff
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS,0:N(ng)) :: dab  
@@ -154,7 +161,7 @@
       ru_veg=Inival
       rv_veg=Inival
       Lveg=Inival
-      
+!      
 # ifdef WET_DRY
 !
 !  Set limiting factor for drag force. The drag force is adjusted
@@ -173,7 +180,6 @@
 # ifdef VEG_FLEX
 !
 ! Flexible vegetation
-!
 !
 ! Second moment of area
 ! 
@@ -292,7 +298,36 @@
           END DO
         END DO K_LOOP
       END DO VEG_LOOP
-!             
+!
+!-----------------------------------------------------------------------
+!  Add in resistance imposed on the flow by the vegetation (3D->2D).
+!  Changes feedback in Nonlinear/step2d_LF_AM3.F
+!-----------------------------------------------------------------------
+!
+      DO j=Jstr,Jend
+        DO i=IstrU,Iend
+          cff=0.5_r8*(Hz(i-1,j,1)+Hz(i,j,1))
+          cff2=cff*ru_veg(i,j,1)
+          DO k=2,N(ng)
+            cff=0.5_r8*(Hz(i-1,j,k)+Hz(i,j,k))
+            cff2=cff2+cff*ru_veg(i,j,k)
+            step2d_uveg(i,j)=cff2
+          END DO
+        END DO
+      END DO
+!
+      DO i=Istr,Iend
+        DO j=JstrV,Jend
+          cff=0.5_r8*(Hz(i,j-1,1)+Hz(i,j,1))
+          cff2=cff*rv_veg(i,j,1)
+          DO k=2,N(ng)
+            cff=0.5_r8*(Hz(i,j-1,k)+Hz(i,j,k))
+            cff2=cff2+cff*rv_veg(i,j,k)
+            step2d_vveg(i,j)=cff2
+          END DO
+        END DO
+      END DO
+!        
       RETURN
       END SUBROUTINE vegetation_drag_tile
 #endif
