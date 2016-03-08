@@ -19,10 +19,14 @@
 !                                                                      !
 !  References:                                                         !
 !                                                                      !
-!   Uittenbogaard, R. (2003), Modelling turbulence in vegetated        !
-!   aquatic  flows, International workshop on RIParian FORest          !
-!   vegetated channels: hydraulic, morphological and ecological        !
-!   aspects, 20-22 February 2003, Trento, Italy.                       !
+!   Uittenbogaard R. (2003): Modelling turbulence in vegetated aquatic !
+!   flows. International workshop on RIParian FORest vegetated         !
+!   channels: hydraulic, morphological and ecological aspects,         !
+!   20-22 February 2003, Trento, Italy.                                !
+!                                                                      !
+!   Warner J.C., C.R. Sherwood, H.G. Arango, and R.P. Signell (2005):  !
+!   Performance of four turbulence closure models implemented using a  !
+!   generic length scale method, Ocean Modelling 8: 81-113.            !
 !                                                                      !
 !=======================================================================
 !
@@ -139,13 +143,12 @@
       real(r8), parameter :: one_half=1.0_r8/2.0_r8 
       real(r8), parameter :: one_third=1.0_r8/3.0_r8 
       real(r8), parameter :: Inival=0.0_r8
-      real(r8), parameter :: cl_veg=1.0_r8, cmu=0.09_r8
+      real(r8), parameter :: cl_veg=1.0_r8, ck=0.09_r8
       real(r8), parameter :: max_L=10.0e10_r8 
-      real(r8) :: wku1, wku2, wku3, wku4, wku
-      real(r8) :: wkv1, wkv2, wkv3, wkv4, wkv
-      real(r8) :: L
-      real(r8) :: kveg
-      real(r8) :: solid, eqvegT
+      real(r8) :: wrku1, wrku2, wrku3, wrku4, wrku
+      real(r8) :: wrkv1, wrkv2, wrkv3, wrkv4, wrkv
+      real(r8) :: wrk, cff1, cff2, cff3, dissip
+      real(r8) :: solid, L, eqvegT
       real(r8) :: taufree, tauveg, taueff
       real(r8) :: tke_loc_veg, gls_loc_veg
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: vegu
@@ -172,27 +175,38 @@
 ! work spent by the fluid against the plants (in m3/s3)
 !-----------------------------------------------------------------------
 !
-              wku1=ru_loc_veg(i,j,k,iveg)*u(i,j,k,nstp)
-              wku2=ru_loc_veg(i,j,k+1,iveg)*u(i,j,k+1,nstp)
-              wku3=ru_loc_veg(i+1,j,k,iveg)*u(i+1,j,k,nstp)
-              wku4=ru_loc_veg(i+1,j,k+1,iveg)*u(i+1,j,k+1,nstp)
-              wku=0.25_r8*(wku1+wku2+wku3+wku4)
-              wkv1=rv_loc_veg(i,j,k,iveg)*v(i,j,k,nstp)
-              wkv2=rv_loc_veg(i,j,k+1,iveg)*v(i,j,k+1,nstp)
-              wkv3=rv_loc_veg(i,j+1,k,iveg)*v(i,j+1,k,nstp)
-              wkv4=rv_loc_veg(i,j+1,k+1,iveg)*v(i,j+1,k+1,nstp)
-              wkv=0.25_r8*(wkv1+wkv2+wkv3+wkv4)
-              tke_loc_veg=sqrt(wku*wku+wkv*wkv)
+              wrku1=ru_loc_veg(i,j,k,iveg)*u(i,j,k,nstp)
+              wrku2=ru_loc_veg(i,j,k+1,iveg)*u(i,j,k+1,nstp)
+              wrku3=ru_loc_veg(i+1,j,k,iveg)*u(i+1,j,k,nstp)
+              wrku4=ru_loc_veg(i+1,j,k+1,iveg)*u(i+1,j,k+1,nstp)
+              wrku=0.25_r8*(wrku1+wrku2+wrku3+wrku4)
+              wrkv1=rv_loc_veg(i,j,k,iveg)*v(i,j,k,nstp)
+              wrkv2=rv_loc_veg(i,j,k+1,iveg)*v(i,j,k+1,nstp)
+              wrkv3=rv_loc_veg(i,j+1,k,iveg)*v(i,j+1,k,nstp)
+              wrkv4=rv_loc_veg(i,j+1,k+1,iveg)*v(i,j+1,k+1,nstp)
+              wrkv=0.25_r8*(wrkv1+wrkv2+wrkv3+wrkv4)
+              tke_loc_veg=sqrt(wrku*wrku+wrkv*wrkv)
 !
 !-----------------------------------------------------------------------
 ! Dissipation due to vegetation
 !-----------------------------------------------------------------------
 !
 !
+! Dissipation in GLS (Eq. 12 in Warner et al., 2005)
+!
+!
+              wrk=MAX(tke(i,j,k,nstp),gls_Kmin(ng))
+              cff1=3.0_r8+gls_p(ng)/gls_n(ng)
+              cff2=1.5_r8+gls_m(ng)/gls_n(ng)
+              cff3=-1.0_r8/gls_n(ng)
+              dissip=(gls_cmu0(ng)**cff1)*(wrk**cff2)*                  &
+     &                 (gls(i,j,k,nstp)**cff3)
+!
+!
 ! Dissipation time-scale for free turbulence
 !
 !
-              taufree=MAX(tke(i,j,k,nstp),gls_Kmin(ng))/gls(i,j,k,nstp)  
+              taufree=wrk/dissip
 !
 !# ifdef VEG_FLEX
 !
@@ -224,7 +238,7 @@
 ! Dissipation time-scale of eddies in between the plants
 !
 !
-              tauveg=(L**2.0_r8/(cmu**2.0_r8*tke_loc_veg))**one_third
+              tauveg=(L**2.0_r8/(ck**2.0_r8*tke_loc_veg))**one_third
 !           
 !
 ! Effective dissipation time-scale
