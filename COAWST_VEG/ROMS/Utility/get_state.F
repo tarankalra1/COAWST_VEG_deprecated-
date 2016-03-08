@@ -1796,7 +1796,7 @@
             foundit=find_string(var_name, n_var,                        &
      &                          TRIM(Vname(1,idvprp(i))), varid)
             gtype=var_flag(varid)*r3dvar
-          B status=nf_fread3d(ng, IDmod, ncname, ncINPid,               &
+            status=nf_fread3d(ng, IDmod, ncname, ncINPid,               &
      &                        Vname(1,idvprp(i)), varid,                &
      &                        InpRec, gtype, Vsize,                     &
      &                        LBi, UBi, LBj, UBj, 1, NVEG,              &
