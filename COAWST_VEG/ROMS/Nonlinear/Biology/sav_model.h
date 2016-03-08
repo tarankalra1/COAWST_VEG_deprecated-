@@ -131,13 +131,13 @@
       lmba  = 1.0_r8 
 !        
       nlocal=INT((time(ng)-dstart*day2sec)/dt(ng))+1
-      IF (nlocal==1) THEN 
-        DO i=Istr, Iend
-          agb_loc(i)=11.9_r8
-          bgb_loc(i)=71.3_r8
-          DINsed_loc(i)=1000.0_r8
-        END DO
-      END IF 
+!      IF (nlocal==1) THEN 
+!        DO i=Istr, Iend
+!          agb_loc(i)=11.9_r8
+!          bgb_loc(i)=71.3_r8
+!          DINsed_loc(i)=1000.0_r8
+!        END DO
+!      END IF 
       
       DO i=Istr, Iend
         DINwcr_sav_loc(i)=0.0_r8

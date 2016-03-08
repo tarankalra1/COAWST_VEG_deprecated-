@@ -43,6 +43,9 @@
 #if defined SEDIMENT || defined BBL_MODEL
       USE mod_sediment
 #endif
+#if defined ESTUARYBGC && defined SAV_BIOMASS
+      USE mod_ocean
+#endif 
 #if defined VEGETATION 
       USE mod_vegetation 
       USE mod_vegarr
@@ -176,6 +179,21 @@
         END DO
 #  endif 
 # endif
+!
+#if defined ESTUARYBGC && defined SAV_BIOMASS
+#  ifdef ANA_ESTUARYBGC 
+        IF (nrrec(ng).ne.0) THEN
+          get_var(idsagb)=.TRUE.
+          get_var(idsbgb)=.TRUE.
+          get_var(iddins)=.TRUE.
+        END IF
+#  else
+        get_var(idsagb)=.TRUE.
+        get_var(idsbgb)=.TRUE.
+        get_var(iddins)=.TRUE.
+#  endif 
+# endif
+!
 # ifdef SEDIMENT
 #  ifdef ANA_SEDIMENT
         IF (nrrec(ng).ne.0) THEN
@@ -468,7 +486,7 @@
 # endif
           END IF
         END DO
-
+!
 # ifdef VEGETATION 
 #  if defined VEG_DRAG || defined VEG_BIOMASS 
         DO ivpr=1,NVEGP 
@@ -478,7 +496,17 @@
         END DO 
 #  endif  
 # endif 
-
+!
+# if defined ESTUARYBGC && defined SAV_BIOMASS
+        IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idsagb))) THEN
+          have_var(idsagb)=.true.
+        ELSE IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idsbgb))) THEN
+          have_var(idsbgb)=.true.
+        ELSE IF (TRIM(var_name(i)).eq.TRIM(Vname(1,iddins))) THEN
+          have_var(iddins)=.true.
+        END IF
+# endif 
+!
 # ifdef SEDIMENT
         DO itrc=1,NST
           IF (TRIM(var_name(i)).eq.TRIM(Vname(1,idfrac(itrc)))) THEN
@@ -815,6 +843,27 @@
 #  endif
 # endif
 
+# if defined ESTUARYBGC && defined SAV_BIOMASS
+      IF (.not.have_var(idsagb).and.get_var(idsagb)) THEN
+        IF (Master) WRITE (stdout,10) string, TRIM(Vname(1,idsagb)),    &
+     &                                TRIM(ncname)
+        exit_flag=2
+        RETURN
+      END IF
+      IF (.not.have_var(idsbgb).and.get_var(idsbgb)) THEN
+        IF (Master) WRITE (stdout,10) string, TRIM(Vname(1,idsbgb)),    &
+     &                                TRIM(ncname)
+        exit_flag=2
+        RETURN
+      END IF
+      IF (.not.have_var(iddins).and.get_var(iddins)) THEN
+        IF (Master) WRITE (stdout,10) string, TRIM(Vname(1,iddins)),    &
+     &                                TRIM(ncname)
+        exit_flag=2
+        RETURN
+      END IF
+# endif
+!
 # ifdef VEGETATION 
 #  if defined VEG_DRAG || defined VEG_BIOMASS 
       DO ivpr=1,NVEGP 

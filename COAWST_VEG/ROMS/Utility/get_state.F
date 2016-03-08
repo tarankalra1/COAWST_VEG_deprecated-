@@ -46,6 +46,9 @@
       USE mod_netcdf
       USE mod_ocean
       USE mod_scalars
+#if defined ESTUARYBGC && defined SAV_BIOMASS
+      USE mod_biology
+#endif 
 #if defined SEDIMENT || defined BBL_MODEL
       USE mod_sedbed
       USE mod_sediment
@@ -1697,7 +1700,92 @@
         END DO
 #   endif
 #  endif
-
+!
+#if defined ESTUARYBGC && defined SAV_BIOMASS
+!
+!  Read in AGB and BGB values
+!
+        foundit=find_string(var_name, n_var, TRIM(Vname(1,idsagb)),     & 
+     &                        varid)
+        gtype=var_flag(varid)*r2dvar
+        status=nf_fread2d(ng, IDmod, ncname, ncINPid,                   &
+     &                Vname(1,idsagb), varid, InpRec, gtype,            &
+     &                Vsize, LBi, UBi, LBj, UBj,                        &
+     &                Fscl, Fmin, Fmax,                                 &
+#   ifdef MASKING
+     &                GRID(ng) % rmask,                                 &
+#   endif
+     &                 OCEAN(ng)%AGB)
+        IF (status.ne.nf90_noerr) THEN 
+          IF (Master) THEN 
+            WRITE (stdout,60) string, TRIM(Vname(1,idsagb )),           &
+     &                        InpRec, TRIM(ncname)
+          END IF
+          exit_flag=2
+          ioerror=status
+          RETURN
+        ELSE
+          IF (Master) THEN 
+            WRITE (stdout,70) TRIM(Vname(2,idsagb)), Fmin, Fmax 
+          END IF
+        END IF
+!
+! BGB 
+!  
+        foundit=find_string(var_name, n_var, TRIM(Vname(1,idsbgb)),     & 
+     &                        varid)
+        gtype=var_flag(varid)*r2dvar
+        status=nf_fread2d(ng, IDmod, ncname, ncINPid,                   &
+     &                Vname(1,idsbgb), varid, InpRec, gtype,            &
+     &                Vsize, LBi, UBi, LBj, UBj,                        &
+     &                Fscl, Fmin, Fmax,                                 &
+#   ifdef MASKING
+     &                GRID(ng) % rmask,                                 &
+#   endif
+     &               OCEAN(ng)%BGB)
+        IF (status.ne.nf90_noerr) THEN 
+          IF (Master) THEN 
+            WRITE (stdout,60) string, TRIM(Vname(1,idsbgb )),           &
+     &                        InpRec, TRIM(ncname)
+          END IF
+          exit_flag=2
+          ioerror=status
+          RETURN
+        ELSE
+          IF (Master) THEN 
+            WRITE (stdout,70) TRIM(Vname(2,idsbgb)), Fmin, Fmax 
+          END IF
+        END IF
+!
+! DINsed
+!  
+        foundit=find_string(var_name, n_var, TRIM(Vname(1,iddins)),     & 
+     &                        varid)
+        gtype=var_flag(varid)*r3dvar
+        status=nf_fread3d(ng, IDmod, ncname, ncINPid,                   &
+     &                Vname(1,iddins), varid, InpRec, gtype,            &
+     &                Vsize, LBi, UBi, LBj, UBj,  1, N(ng),             &
+     &                Fscl, Fmin, Fmax,                                 &
+#   ifdef MASKING
+     &                GRID(ng) % rmask,                                 &
+#   endif
+     &               OCEAN(ng)%DINsed)
+        IF (status.ne.nf90_noerr) THEN 
+          IF (Master) THEN 
+            WRITE (stdout,60) string, TRIM(Vname(1,iddins )),           &
+     &                        InpRec, TRIM(ncname)
+          END IF
+          exit_flag=2
+          ioerror=status
+          RETURN
+        ELSE
+          IF (Master) THEN 
+            WRITE (stdout,70) TRIM(Vname(2,iddins)), Fmin, Fmax 
+          END IF
+        END IF
+!
+#  endif 
+!
 #  ifdef VEGETATION 
 #   if defined VEG_DRAG || defined VEG_BIOMASS
 !
@@ -1708,7 +1796,7 @@
             foundit=find_string(var_name, n_var,                        &
      &                          TRIM(Vname(1,idvprp(i))), varid)
             gtype=var_flag(varid)*r3dvar
-            status=nf_fread3d(ng, IDmod, ncname, ncINPid,               &
+          B status=nf_fread3d(ng, IDmod, ncname, ncINPid,               &
      &                        Vname(1,idvprp(i)), varid,                &
      &                        InpRec, gtype, Vsize,                     &
      &                        LBi, UBi, LBj, UBj, 1, NVEG,              &
@@ -1724,7 +1812,9 @@
               END IF
               exit_flag=2
               ioerror=status
-              RETURN
+ 
+
+             RETURN
             ELSE
               IF (Master) THEN
                 WRITE (stdout,70) TRIM(Vname(2,idvprp(i))), Fmin, Fmax
