@@ -1,38 +1,49 @@
-# COAWST_VEG
-This repository contains the COAWST version to compute the effects of
-* Vegetation in ROMS/Nonlinear/Vegetation 
-* Wave thrust calculation on marsh routine in ROMS/Nonlinear/Vegetation
-* Submerged Aquatic Vegetation (SAV model) in ROMS/Nonlinear/Biology
-
---------------------------------------------------
-* 1) Analytical inputs to plant properties 
-* 2) NETCDF based inputs to plant properties
-* 3) NETCDF and Analytical input to initial marsh boundary
-
--------------------------------------------------
- Turning on vegetation or wave thrust (Executable file ./coawstM)  
-* #define vegetation 
-* #ifdef vegetation
-*  #ifdef ana_vegetation 
-*  #ifdef veg_drag
-*  #ifdef veg_turb 
- *  #ifdef veg_flex
-*  #ifdef veg_stream
-*  #ifdef veg_swan_coupling 
-*  #ifdef wave_thrust_marsh
-*  #ifdef ana_marsh_mask 
-* #endif 
+# COAWST_VEG  :seedling:
+This repository contains the version of COAWST accounting for vegetation:
+* Wave-flow-vegetation interaction model in ROMS/Nonlinear/Vegetation 
+* Wave thrust on marsh face calculation routine in ROMS/Nonlinear/Vegetation
+* SAV growth model in ROMS/Nonlinear/Biology
 
 ------------------------------------------------
-Turning on SAV model (Executable file ./coawstM) 
-* #ifdef ESTUARYBGC 
-* # define SPECTRAL_LIGHT 
+C-preprocessing options in application header file (.h extension)
+-------------------------------------------------
+
+/* Turning on vegetation */
+* #define VEGETATION 
+* #ifdef VEGETATION
+* # undef ANA_VEGETATION
+* # define VEG_DRAG
+* # ifdef VEG_DRAG
+* #  define VEG_FLEX
+* #  define VEG_TURB
+* # endif
+* # undef VEG_SWAN_COUPLING
+* # ifdef VEG_SWAN_COUPLING
+* #  define VEG_STREAMING
+* # endif
+* #endif
+
+/* Turning on wave thrust */
+* #define WAVE_THRUST_MARSH
+* #ifdef WAVE_THRUST_MARSH
+* # undef ANA_MARSH_MASK
+* #endif
+
+/* Turning on SAV model */
+* #define ESTUARYBGC
+* #ifdef ESTUARYBGC
+* # define SPECTRAL_LIGHT
 * # define CARBON
 * # define OXYGEN
 * # define DENITRIFICATION
 * # define BIO_SEDIMENT
-* # define SAV_BIOMASS(new flags)
-* # define ALGAL_RESP (new flags) 
+* # define SAV_BIOMASS
+* # define ALGAL_RESP
 * # define DIAGNOSTICS_BIO
 * #endif
 
+--------------------------------------------------
+ANAlytical or NetCDF file for initial conditions
+--------------------------------------------------
+* plant properties and distribution
+* marsh boundary
