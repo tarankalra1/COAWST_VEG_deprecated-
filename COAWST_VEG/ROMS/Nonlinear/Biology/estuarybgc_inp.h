@@ -165,7 +165,7 @@
             CASE ('SCL2')
               Npts=load_r(Nval, Rval, Ngrids, SCL2)
             CASE ('KI')
-              Npts=load_r(Nval, Rval, Ngrids, SR)
+              Npts=load_r(Nval, Rval, Ngrids, KI)
             CASE ('SR')
               Npts=load_r(Nval, Rval, Ngrids, SR)
             CASE ('LMBAMX')
