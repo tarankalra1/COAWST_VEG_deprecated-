@@ -145,9 +145,10 @@
       real(r8), parameter :: Inival=0.0_r8
       real(r8), parameter :: cl_veg=1.0_r8, ck=0.09_r8
       real(r8), parameter :: max_L=10.0e10_r8 
+      real(r8), parameter :: eps=1.0e-12_r8 
       real(r8) :: wrku1, wrku2, wrku3, wrku4, wrku
       real(r8) :: wrkv1, wrkv2, wrkv3, wrkv4, wrkv
-      real(r8) :: wrk, cff1, cff2, cff3, dissip
+      real(r8) :: wrk, cff1, cff2, cff3, dissip, inverse_dissip
       real(r8) :: solid, L, eqvegT
       real(r8) :: taufree, tauveg, taueff
       real(r8) :: tke_loc_veg, gls_loc_veg
@@ -164,6 +165,10 @@
           END DO 
         END DO 
       END DO 
+
+      cff1=3.0_r8+gls_p(ng)/gls_n(ng)
+      cff2=1.5_r8+gls_m(ng)/gls_n(ng)
+      cff3=-1.0_r8/gls_n(ng)
 
       VEG_LOOP: DO iveg=1,NVEG
         DO k=1,N(ng)-1
@@ -190,29 +195,20 @@
 !-----------------------------------------------------------------------
 ! Dissipation due to vegetation
 !-----------------------------------------------------------------------
-!
-!
 ! Dissipation in GLS (Eq. 12 in Warner et al., 2005)
 !
-!
               wrk=MAX(tke(i,j,k,nstp),gls_Kmin(ng))
-              cff1=3.0_r8+gls_p(ng)/gls_n(ng)
-              cff2=1.5_r8+gls_m(ng)/gls_n(ng)
-              cff3=-1.0_r8/gls_n(ng)
               dissip=(gls_cmu0(ng)**cff1)*(wrk**cff2)*                  &
      &                 (gls(i,j,k,nstp)**cff3)
-!
+              inverse_dissip=1.0_r8/MAX(dissip,eps)
 !
 ! Dissipation time-scale for free turbulence
 !
-!
-              taufree=wrk/dissip
+              taufree=wrk*inverse_dissip
 !
 !# ifdef VEG_FLEX
 !
-!
 ! Equivalent thickness: horizontal projection of the bending plant
-!
 ! 
 !              eqvegT=plant(i,j,iveg,pthck)+sin(bend(i,j,iveg))*         &
 !     &                                       plant(i,j,iveg,phght)
@@ -226,23 +222,17 @@
 !
               solid=plant(i,j,iveg,pdiam)*eqvegT*plant(i,j,iveg,pdens)
 !
-!
 ! Eddies typical size constrained by distance in between the plants
-!
 !
               L=cl_veg*((1.0_r8-MIN(solid,1.0_r8))/                     &
      &                 plant(i,j,iveg,pdens))**one_half
               L=MIN(L,max_L)
 !
-!
 ! Dissipation time-scale of eddies in between the plants
 !
-!
               tauveg=(L**2.0_r8/(ck**2.0_r8*tke_loc_veg))**one_third
-!           
 !
 ! Effective dissipation time-scale
-!
 ! 
               taueff=MIN(taufree,tauveg)
               gls_loc_veg=gls_c2(ng)*tke_loc_veg/taueff
@@ -253,7 +243,7 @@
 ! 
               tke_veg(i,j,k)=tke_loc_veg + tke_veg(i,j,k)
               gls_veg(i,j,k)=gls_loc_veg + gls_veg(i,j,k)
-             
+                                            
             END DO 
           END DO
         END DO 
