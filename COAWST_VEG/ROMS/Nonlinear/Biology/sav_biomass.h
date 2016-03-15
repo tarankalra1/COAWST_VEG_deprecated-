@@ -201,7 +201,7 @@
 !  Above ground mortality and above ground active respiration
 !-----------------------------------------------------------------------
 !
-        agm_loc(i)=kmag(ng)*agb_loc(i)**2
+        agm_loc(i)=(kmag(ng)*agb_loc(i))**2
         agar_loc(i)=pp_loc(i)*arsc(ng)*EXP(arc(ng)*wtemp(i))
 !
 !-----------------------------------------------------------------------
