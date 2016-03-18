@@ -253,7 +253,7 @@
 
 ! SAV growth fraction for Growth Model #2 
 
-      SCL2   == 0.06d0
+      SCL2   == 0.08d0
 
 ! Half-saturation for light (uE m-2 s-1)
 

@@ -244,13 +244,13 @@
 !  assumes no new growth if growth exceeds available nutrients      
 !-----------------------------------------------------------------------
 !  
-        IF(cff.gt.DINwcr_loc(i))THEN 
-          cff1=pp_loc(i)+bgag_loc(i)-agm_loc(i)-agar_loc(i)             &
-     &                  -agbr_loc(i)-sears_loc(i)-agbg_loc(i)
-        ELSE
+!        IF(cff.gt.DINwcr_loc(i))THEN 
+!          cff1=pp_loc(i)+bgag_loc(i)-agm_loc(i)-agar_loc(i)             &
+!     &                  -agbr_loc(i)-sears_loc(i)-agbg_loc(i)
+!        ELSE
           cff1=bgag_loc(i)-agm_loc(i)-agar_loc(i)-agbr_loc(i)           &
      &                                    -sears_loc(i)-agbg_loc(i)
-        ENDIF 
+!        ENDIF 
 !
 !-----------------------------------------------------------------------
 !  Update AGB Biomass  (mmol N m-2)
