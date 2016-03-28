@@ -20,6 +20,7 @@
 !                   plant(:,:,:,pthck) => thickness                    !
 !                   plant(:,:,:,pupbm) => above ground biomass         !
 !                   plant(:,:,:,pdwbm) => below ground biomass         !
+!  marsh_mask    Initialize the mask to get wave thrust on marsh       ! 
 !                                                                      !
 !  This routine sets initial conditions for vegetation fields          !
 !                                                                      !
@@ -98,16 +99,24 @@
 ! spread over '11' points in the middle of the domain
 ! NVEG=1 (input from vegetation.in) file in /ROMS/External folder
 ! 
+#ifdef VEG_DRAG
       DO iveg=1,NVEG
         plant(45:55,45:55,iveg,pdiam)=0.01_r8   ! Diameter
         plant(45:55,45:55,iveg,phght)=1.0_r8    ! Height
         plant(45:55,45:55,iveg,pdens)=2500.0_r8 ! Density
         plant(45:55,45:55,iveg,pthck)=0.0005_r8 ! Thickness
-#ifdef VEGETATION_BIOMASS 
+# ifdef VEG_BIOMASS 
         plant(45:55,45:55,iveg,pagbm)=0.0_r8    !Above ground Biomass
         plant(45:55,45:55,iveg,pbgbm)=0.0_r8    !Below ground Biomass
+# endif            
+      END DO
+#endif
+      
+#ifdef WAVE_THRUST_MARSH
+      DO i=IstrT,IendT
+        marsh_mask(i,1:15 )=1.0_r8 
+      END DO  
 #endif            
-      END DO 
                                         
       RETURN
 

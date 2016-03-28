@@ -71,6 +71,9 @@
      &                        GRID(ng) % angler,                        &
      &                        GRID(ng) % om_r,                          &
      &                        GRID(ng) % on_r,                          &
+# ifdef WET_DRY
+      &                       GRID(ng) % rmask_wet,                     &
+# endif 
 # if defined WAVES_HEIGHT 
      &                        FORCES(ng) % Hwave,                       &
 # endif 
@@ -99,6 +102,9 @@
      &                              nstp,                               &
      &                              h,angler,                           &
      &                              om_r, on_r ,                        &
+# ifdef WET_DRY
+      &                             rmask_wet,                          &
+# endif 
 # if defined WAVES_HEIGHT  
      &                              Hwave,                              &
 # endif 
@@ -138,6 +144,9 @@
       real(r8), intent(in)  :: on_r(LBi:,LBj:)
       real(r8), intent(in)  :: h(LBi:,LBj:)
       real(r8), intent(in)  :: angler(LBi:,LBj:)
+#  ifdef WET_DRY
+      real(r8), intent(in)  :: rmask_wet(LBi:,LBj:)
+#  endif 
 #  ifdef WAVES_HEIGHT  
       real(r8), intent(in)  :: Hwave(LBi:,LBj:)
 #  endif 
@@ -158,6 +167,9 @@
       real(r8), intent(in)  :: on_r(LBi:UBi,LBj:UBj)
       real(r8), intent(in)  :: h(LBi:UBi,LBj:UBj)
       real(r8), intent(in)  :: angler(LBi:UBi,LBj:UBj)
+#  ifdef WET_DRY
+      real(r8), intent(in)  :: Hwave(LBi:LBj,LBj:UBj)
+#  endif 
 #  ifdef WAVES_HEIGHT  
       real(r8), intent(in)  :: Hwave(LBi:UBi,LBj:UBj)
 #  endif 
@@ -440,7 +452,11 @@
 !   if marsh is submerged in water depending on depth, wave thrust to 
 !   be reduced 
 !---------------------------------------------------------------------
+#  ifdef WET_DRY  
+          depth_all=h(i,j)+zeta(i,j,3)*rmask_wet(i,j) 
+#  else 
           depth_all=h(i,j)+zeta(i,j,3)
+#  endif 
           IF (depth_all.lt.0.2_r8) THEN
             cff=1.0_r8-0.45_r8*depth_all*5.0_r8
           ELSEIF (0.2_r8.lt.depth_all.and.depth_all.lt.0.4_r8) THEN
