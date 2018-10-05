@@ -9,19 +9,19 @@ C-preprocessing options in application header file (.h extension)
 -------------------------------------------------
 
 Turning on vegetation 
-* #define VEGETATION 
-* #ifdef VEGETATION
-* # undef ANA_VEGETATION
-* # define VEG_DRAG
-* # ifdef VEG_DRAG
-* #  define VEG_FLEX
-* #  define VEG_TURB
-* # endif
-* # undef VEG_SWAN_COUPLING
-* # ifdef VEG_SWAN_COUPLING
-* #  define VEG_STREAMING
-* # endif
-* #endif
+#define VEGETATION 
+#ifdef VEGETATION
+# undef ANA_VEGETATION
+# define VEG_DRAG
+# ifdef VEG_DRAG
+#  define VEG_FLEX
+#  define VEG_TURB
+# endif
+# undef VEG_SWAN_COUPLING
+# ifdef VEG_SWAN_COUPLING
+#  define VEG_STREAMING
+# endif
+#endif
 
 Turning on wave thrust 
 * #define WAVE_THRUST_MARSH
