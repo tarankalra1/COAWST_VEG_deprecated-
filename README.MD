@@ -8,7 +8,7 @@ This repository contains the version of COAWST accounting for vegetation:
 C-preprocessing options in application header file (.h extension)
 -------------------------------------------------
 
-/* Turning on vegetation */
+Turning on vegetation 
 * #define VEGETATION 
 * #ifdef VEGETATION
 * # undef ANA_VEGETATION
@@ -23,13 +23,13 @@ C-preprocessing options in application header file (.h extension)
 * # endif
 * #endif
 
-/* Turning on wave thrust */
+Turning on wave thrust 
 * #define WAVE_THRUST_MARSH
 * #ifdef WAVE_THRUST_MARSH
 * # undef ANA_MARSH_MASK
 * #endif
 
-/* Turning on SAV model */
+ Turning on SAV model 
 * #define ESTUARYBGC
 * #ifdef ESTUARYBGC
 * # define SPECTRAL_LIGHT
@@ -43,7 +43,7 @@ C-preprocessing options in application header file (.h extension)
 * #endif
 
 --------------------------------------------------
-ANAlytical or NetCDF file for initial conditions
+AnAlytical or NetCDF file for initial conditions
 --------------------------------------------------
 * plant properties and distribution
 * marsh boundary
