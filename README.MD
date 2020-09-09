@@ -1,3 +1,5 @@
+# do not use this version of COAWST. This is only a product in development.
+
 # COAWST_VEG  :seedling:
 This repository contains the version of COAWST accounting for vegetation:
 * Wave-flow-vegetation interaction model in ROMS/Nonlinear/Vegetation 
